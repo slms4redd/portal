@@ -13,7 +13,8 @@ public class IndicatorsContextListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent sce) {
 		ServletContext servletContext = sce.getServletContext();
 		LayerFactory layerFactory;
-		layerFactory = new DBLayerFactory("workspace:newlayer");
+		layerFactory = new DBLayerFactory();
+//		layerFactory = new DBLayerFactory("workspace:newlayer");
 		servletContext.setAttribute("layer-factory", layerFactory);
 	}
 
