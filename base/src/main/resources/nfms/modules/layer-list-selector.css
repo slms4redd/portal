@@ -1,9 +1,107 @@
+.layers-container {
+	background-color: #424242;
+	opacity 		: 0.9;
+	position		: relative;
+	z-index			: 1100;	
+	height			: 80%;
+	color			: #E9E9E9;
+	margin			: 0 0 0 20px !important;
+	padding			: 0 0 0 0px !important;
+}
+
+.layers-container .panel,
+.layers-container .panel-heading {
+	background-color: transparent;
+	border-radius	: 0px !important;
+}
+.layers-container > .panel{
+	border-bottom	: 1px solid rgba(233, 233, 233, 0.21);
+	padding-bottom	: 5px;
+}
+.layers-container .sub-group-heading {
+	padding			: 10px 0px 10px 35px;
+	font-size		: 13px;
+}
+.layers-container .group-panel-body {
+/*   border-top: 1px solid #ddd; */
+	border	: none !important;
+}
+
+/* unselected layer button style */
+.layers-container .group-panel-body button.btn,
+.layers-container .group-panel-body button.btn:active {
+	width				: 100%;
+	border-radius		: 0px;
+	text-align			: left;
+/* 	background-color	: #3299BB; */
+	background-color	: rgba(22, 22, 22, 0.43);
+	font-size			: 12px;
+	font-weight 		: 100 !important;
+	letter-spacing		: 0.05em;
+	color				: #E9E9E9;
+}
+.layers-container .group-panel-body button.btn:hover {
+	background-color	: rgba(22, 22, 22, 0.99);;
+}
+
+/* selected layer button style */
+.layers-container .group-panel-body button.active,
+.layers-container .group-panel-body button.active:active {
+	width				: 100%;
+	border-radius		: 0px;
+	text-align			: left;
+/* 	background-color	: #3299BB; */
+	font-size			: 12px;
+	font-weight 		: 100 !important;
+	letter-spacing		: 0.05em;
+	color				: #E9E9E9;
+	background-color	: rgba(50, 153, 187, 0.6);
+}
+.layers-container .group-panel-body button.active:hover {
+	background-color	: rgba(50, 153, 187, 0.99);
+	
+}
+
+
+.layers-container .panel-heading button,
+.layers-container .panel-heading button:active {
+	width				: 100%;
+	border-radius		: 2px;
+	text-align			: left;
+	background-color	: rgba(22, 22, 22, 0.43);
+	font-size			: 15px;
+	font-weight			: 100;
+	letter-spacing		: 0.05em;
+	color				: #E9E9E9;
+}
+.layers-container .panel-heading button:hover {
+	background-color	: rgba(22, 22, 22, 0.99);
+}
+
+.toggle-layers {
+	float: right;
+}
+.toggle-layers button {
+	background-color: transparent;
+	padding: 2px 10px; 
+	font-size: 18px;
+}
+.toggle-layers button:hover {
+	color: rgba(50, 153, 187, 0.99);
+}
+
+
+
+
+
+
 #layers_container {
-	left: 10px;
+	left: 600px;
 	position: absolute;
 	top: 215px;
 	width: 250px;
 	z-index: 1100;
+	display: none;
 }
 
 .layer_container_panel {

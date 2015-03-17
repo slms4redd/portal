@@ -49,6 +49,7 @@
 		<url-pattern>/modules/*</url-pattern>
 		<url-pattern>/jslib/*</url-pattern>
 		<url-pattern>/styles/*</url-pattern>
+		<url-pattern>/fonts/*</url-pattern>
 	</servlet-mapping>
 
 	<!-- config call -->

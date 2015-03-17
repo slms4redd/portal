@@ -7,7 +7,7 @@ define([ "jquery", "message-bus", "customization", "module" ], function($, bus, 
 	};
 
 	var processGroup = function(layerRoot, parentId, group) {
-		var items, item, portalLayers, portalLayer, wmsLayerIds,
+		var item, portalLayers, portalLayer, wmsLayerIds,
 			wmsLayers, wmsLayer, i, j, layerInfoArray;
 
 		var groupInfo = {
@@ -22,12 +22,10 @@ define([ "jquery", "message-bus", "customization", "module" ], function($, bus, 
 			groupInfo.parentId = parentId;
 		}
 
-		bus.send("add-group", groupInfo);
+		bus.send( "add-group", groupInfo );
 
-		items = group.items;
-
-		for (i = 0; i < items.length; i++) {
-			item = items[i];
+		for (i = 0; i < group.items.length; i++) {
+			item = group.items[i];
 			if (typeof item === 'object') {
 				processGroup(layerRoot, group.id, item);
 			} else {
@@ -78,13 +76,12 @@ define([ "jquery", "message-bus", "customization", "module" ], function($, bus, 
 
 
 	bus.listen("modules-loaded", function() {
-		var i;
-		var layerRoot = module.config();
-		var groups = layerRoot.groups;
+		var layerRoot 	= module.config();
+		var groups 		= layerRoot.groups;
 
 		bus.send("before-adding-layers");
 		
-		for (i = 0; i < groups.length; i++) {
+		for (var i = 0; i < groups.length; i++) {
 			processGroup(layerRoot, null, groups[i]);
 		}
 

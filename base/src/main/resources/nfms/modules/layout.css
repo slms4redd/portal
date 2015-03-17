@@ -1,25 +1,34 @@
 html,body {
-	margin: 0px;
+/* 	margin: 0px; */
 	height: 100%;
-	cursor: default;
-	font: 100% "Trebuchet MS", sans-serif;
+	width: 100%;
+/* 	cursor: default; */
+/* 	font: 100% "Trebuchet MS", sans-serif; */
+/* 	font-family: Tahoma,Verdana,Segoe,sans-serif; */
+	font-weight: 100 !important;
+	letter-spacing: 0.05em;
 }
-
+a {
+	font-weight: 100 !important;
+}
 body {
     -moz-user-select: -moz-none;
     -webkit-user-select: none;
 }
 
-#center {
-	height: 100%;
-}
+/* #center { */
+/* 	height: 100%; */
+/* } */
 
-#header {
-	position: absolute;
-	top: 0;
-	left: 0;
+.header {
+	position: relative;
+/* 	background-color: #FFF; */
+/* 	position: absolute; */
+/* 	top: 0; */
+/* 	left: 0; */
 	width: 100%;
-	height: 142px;
+	height: 10%;
+/* 	height: 142px; */
 	z-index: 1001;
 }
 
@@ -27,8 +36,24 @@ body {
 	height: auto;
 	width: 100%;
 	position: absolute;
-	top: 142px;
+	top: 0px;
+	left: 0px;
 	bottom: 0px;
+}
+
+/* common utility css classes */
+.no-padding {
+	padding: 0 !important;
+}
+.no-margin {
+	margin: 0 !important;
+}
+.height100 {
+	height: 100% !important;
+}
+
+.width100 {
+	width: 100% !important;
 }
 
 .ui-front {

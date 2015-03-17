@@ -50,8 +50,7 @@ public class DefaultConfig implements Config {
 	private String layersContent;
 	private ArrayList<ModuleConfigurationProvider> moduleConfigurationProviders = new ArrayList<ModuleConfigurationProvider>();
 
-	public DefaultConfig(String rootPath, String configInitParameter,
-			boolean useCache) {
+	public DefaultConfig(String rootPath, String configInitParameter, boolean useCache) {
 		this.rootPath = rootPath;
 		this.configInitParameter = configInitParameter;
 		this.useCache = useCache;
@@ -67,8 +66,7 @@ public class DefaultConfig implements Config {
 	@Override
 	public File getDir() {
 		if (dir == null) {
-			String defaultDir = rootPath + File.separator + "WEB-INF"
-					+ File.separator + "default_config";
+			String defaultDir = rootPath + File.separator + "WEB-INF" + File.separator + "default_config";
 
 			// Get the portal config dir property from Java system properties
 			String portalConfigDir = System.getProperty("PORTAL_CONFIG_DIR");
@@ -87,9 +85,7 @@ public class DefaultConfig implements Config {
 				// if set but not existing, use the default portal config dir
 				dir = new File(portalConfigDir);
 				if (!dir.exists()) {
-					logger.warn("PORTAL_CONFIG_DIR is set to "
-							+ dir.getAbsolutePath()
-							+ ", but it doesn't exist. Using default config.");
+					logger.warn("PORTAL_CONFIG_DIR is set to " + dir.getAbsolutePath() + ", but it doesn't exist. Using default config.");
 					dir = new File(defaultDir);
 				}
 			}
@@ -123,10 +119,8 @@ public class DefaultConfig implements Config {
 	}
 
 	/**
-	 * Returns an array of <code>Map&lt;String, String&gt;</code>. For each
-	 * element of the array, a {@link Map} is returned containing two
-	 * keys/values: <code>code</code> (for language code) and <code>name</code>
-	 * (for language name).
+	 * Returns an array of <code>Map&lt;String, String&gt;</code>. For each element of the array, a {@link Map} is returned containing two keys/values: <code>code</code> (for
+	 * language code) and <code>name</code> (for language name).
 	 * 
 	 * @return
 	 */
@@ -152,11 +146,9 @@ public class DefaultConfig implements Config {
 	}
 
 	@Override
-	public String getLayers(Locale locale, HttpServletRequest request)
-			throws IOException, ConfigurationException {
+	public String getLayers(Locale locale, HttpServletRequest request) throws IOException, ConfigurationException {
 		if (layersContent == null || !useCache) {
-			layersContent = getLocalizedFileContents(getLayersFile(request),
-					locale);
+			layersContent = getLocalizedFileContents(getLayersFile(request), locale);
 		}
 		return layersContent;
 	}
@@ -167,33 +159,26 @@ public class DefaultConfig implements Config {
 	}
 
 	@Override
-	public ResourceBundle getMessages(Locale locale)
-			throws ConfigurationException {
+	public ResourceBundle getMessages(Locale locale) throws ConfigurationException {
 		ResourceBundle bundle = localeBundles.get(locale);
 		if (bundle == null || !useCache) {
 			URLClassLoader urlClassLoader;
 			try {
-				urlClassLoader = new URLClassLoader(
-						new URL[] { getTranslationFolder().toURI().toURL() });
+				urlClassLoader = new URLClassLoader(new URL[] { getTranslationFolder().toURI().toURL() });
 			} catch (MalformedURLException e) {
-				logger.error(
-						"Something is wrong with the configuration directory",
-						e);
+				logger.error("Something is wrong with the configuration directory", e);
 				throw new ConfigurationException(e);
 			}
-			bundle = ResourceBundle.getBundle("messages", locale,
-					urlClassLoader);
+			bundle = ResourceBundle.getBundle("messages", locale, urlClassLoader);
 			localeBundles.put(locale, bundle);
 		}
 
 		return bundle;
 	}
 
-	private String getLocalizedFileContents(File file, Locale locale)
-			throws IOException, ConfigurationException {
+	private String getLocalizedFileContents(File file, Locale locale) throws IOException, ConfigurationException {
 		try {
-			BufferedInputStream bis = new BufferedInputStream(
-					new FileInputStream(file));
+			BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file));
 			String template = IOUtils.toString(bis, "UTF-8");
 			bis.close();
 			Pattern patt = Pattern.compile("\\$\\{([\\w.]*)\\}");
@@ -233,18 +218,15 @@ public class DefaultConfig implements Config {
 			}
 		}
 
-		throw new ConfigurationException("No \"" + PROPERTY_DEFAULT_LANG
-				+ "\" property in configuration");
+		throw new ConfigurationException("No \"" + PROPERTY_DEFAULT_LANG + "\" property in configuration");
 	}
 
-	private String getProperty(String propertyName)
-			throws ConfigurationException {
+	private String getProperty(String propertyName) throws ConfigurationException {
 		String value = getProperties().getProperty(propertyName);
 		if (value != null) {
 			return value;
 		} else {
-			throw new ConfigurationException("No \"" + propertyName
-					+ "\" property in configuration");
+			throw new ConfigurationException("No \"" + propertyName + "\" property in configuration");
 		}
 	}
 
@@ -254,12 +236,10 @@ public class DefaultConfig implements Config {
 	}
 
 	@Override
-	public Map<String, JSONObject> getPluginConfiguration(
-			HttpServletRequest request) throws IOException {
+	public Map<String, JSONObject> getPluginConfiguration(HttpServletRequest request) throws IOException {
 		Map<String, JSONObject> ret = new HashMap<String, JSONObject>();
 		for (ModuleConfigurationProvider provider : moduleConfigurationProviders) {
-			Map<String, JSONObject> moduleConfigurations = provider
-					.getConfigurationMap(request);
+			Map<String, JSONObject> moduleConfigurations = provider.getConfigurationMap(request);
 			Set<String> moduleNames = moduleConfigurations.keySet();
 			for (String moduleName : moduleNames) {
 				JSONObject moduleConfiguration = ret.get(moduleName);
@@ -268,8 +248,7 @@ public class DefaultConfig implements Config {
 					ret.put(moduleName, moduleConfiguration);
 				}
 
-				JSONObject moduleConfigurationToMerge = moduleConfigurations
-						.get(moduleName);
+				JSONObject moduleConfigurationToMerge = moduleConfigurations.get(moduleName);
 				moduleConfiguration.putAll(moduleConfigurationToMerge);
 			}
 
@@ -278,22 +257,18 @@ public class DefaultConfig implements Config {
 	}
 
 	@Override
-	public void addModuleConfigurationProvider(
-			ModuleConfigurationProvider provider) {
+	public void addModuleConfigurationProvider(ModuleConfigurationProvider provider) {
 		moduleConfigurationProviders.add(provider);
 	}
 
-	private class PluginJSONConfigurationProvider implements
-			ModuleConfigurationProvider {
+	private class PluginJSONConfigurationProvider implements ModuleConfigurationProvider {
 
 		@Override
-		public Map<String, JSONObject> getConfigurationMap(
-				HttpServletRequest request) throws IOException {
+		public Map<String, JSONObject> getConfigurationMap(HttpServletRequest request) throws IOException {
 			File configProperties = new File(getDir() + "/plugin-conf.json");
 			BufferedInputStream stream;
 			try {
-				stream = new BufferedInputStream(new FileInputStream(
-						configProperties));
+				stream = new BufferedInputStream(new FileInputStream(configProperties));
 			} catch (FileNotFoundException e) {
 				return new HashMap<String, JSONObject>();
 			}

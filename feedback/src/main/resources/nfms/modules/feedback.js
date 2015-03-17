@@ -128,7 +128,7 @@ function(bus, urlParameters, map, toolbar, i18n, $) {
 
 	// Install feedback button
 	var btn = $("<a/>").attr("id", "feedback-button").addClass("blue_button").html("Feedback");
-	btn.appendTo(toolbar);
+//	btn.appendTo(toolbar);
 	btn.click(function() {
 		if (!btn.hasClass("selected")) {
 			activateFeedback();

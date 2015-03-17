@@ -23,22 +23,20 @@ public class IndexHTMLServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		VelocityEngine engine = new VelocityEngine();
+		
 		engine.setProperty("resource.loader", "string");
-		engine.setProperty("string.resource.loader.class",
-				"org.apache.velocity.runtime.resource.loader.StringResourceLoader");
-		engine.setProperty("string.resource.loader.repository.class",
-				"org.apache.velocity.runtime.resource.util.StringResourceRepositoryImpl");
-		engine.setProperty("runtime.log.logsystem.class",
-				"org.apache.velocity.runtime.log.SimpleLog4JLogSystem");
+		engine.setProperty("string.resource.loader.class", "org.apache.velocity.runtime.resource.loader.StringResourceLoader");
+		engine.setProperty("string.resource.loader.repository.class", "org.apache.velocity.runtime.resource.util.StringResourceRepositoryImpl");
+		engine.setProperty("runtime.log.logsystem.class", "org.apache.velocity.runtime.log.SimpleLog4JLogSystem");
 		engine.setProperty("runtime.log.logsystem.log4j.category", "velocity");
 		engine.setProperty("runtime.log.logsystem.log4j.logger", "velocity");
 		engine.init();
+		
 		VelocityContext context = new VelocityContext();
 
-		boolean minifiedjs = Boolean.parseBoolean(System.getenv("MINIFIED_JS"));
+		boolean minifiedjs = Boolean.parseBoolean( System.getenv("MINIFIED_JS") );
 		ServletContext servletContext = getServletContext();
 		Config config = (Config) getServletContext().getAttribute("config");
 		ArrayList<String> styleSheets = new ArrayList<String>();
@@ -46,8 +44,7 @@ public class IndexHTMLServlet extends HttpServlet {
 			styleSheets.add(OPTIMIZED_FOLDER + "/portal-style.css");
 		} else {
 			@SuppressWarnings("unchecked")
-			ArrayList<String> classPathStylesheets = (ArrayList<String>) servletContext
-					.getAttribute("css-paths");
+			ArrayList<String> classPathStylesheets = (ArrayList<String>) servletContext.getAttribute("css-paths");
 			styleSheets.addAll(classPathStylesheets);
 			styleSheets.addAll(getStyleSheets(config, "modules"));
 		}
@@ -68,8 +65,7 @@ public class IndexHTMLServlet extends HttpServlet {
 
 		StringResourceRepository repo = StringResourceLoader.getRepository();
 		String templateName = "/index.html";
-		BufferedInputStream bis = new BufferedInputStream(this.getClass()
-				.getResourceAsStream("/index.html"));
+		BufferedInputStream bis = new BufferedInputStream(this.getClass().getResourceAsStream("/index.html"));
 		String indexContent = IOUtils.toString(bis);
 		bis.close();
 		repo.putStringResource(templateName, indexContent);
