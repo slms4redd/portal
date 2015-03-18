@@ -34,13 +34,13 @@ function(bus, urlParameters, map, toolbar, i18n, $) {
 
 		dlg.append("<br/>");
 		var btnClose = $("<div/>").html("Cerrar").appendTo($("<div/>").addClass("feedback-form-left").appendTo(dlg));
-		btnClose.button().click(function() {
-			dlg.dialog('close');
-		});
+//		btnClose.button().click(function() {
+//			dlg.dialog('close');
+//		});
 		var btnSubmit = $("<div/>").html("Enviar").appendTo(dlg);
-		btnSubmit.button().click(function() {
-			submit();
-		});
+//		btnSubmit.button().click(function() {
+//			submit();
+//		});
 
 		dlg.dialog({
 			autoOpen : false,

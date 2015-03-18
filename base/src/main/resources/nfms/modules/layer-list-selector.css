@@ -1,12 +1,13 @@
 .layers-container {
-	background-color: #424242;
+	background-color: rgba(66, 66, 66, 0.85);
 	opacity 		: 0.9;
 	position		: relative;
 	z-index			: 1100;	
 	height			: 80%;
 	color			: #E9E9E9;
-	margin			: 0 0 0 20px !important;
-	padding			: 0 0 0 0px !important;
+	margin			: 0 !important;
+/* 	margin			: 0 0 0 20px !important; */
+	padding			: 0 !important;
 }
 
 .layers-container .panel,
@@ -15,7 +16,7 @@
 	border-radius	: 0px !important;
 }
 .layers-container > .panel{
-	border-bottom	: 1px solid rgba(233, 233, 233, 0.21);
+/* 	border-bottom	: 1px solid rgba(233, 233, 233, 0.21); */
 	padding-bottom	: 5px;
 }
 .layers-container .sub-group-heading {
@@ -34,14 +35,15 @@
 	border-radius		: 0px;
 	text-align			: left;
 /* 	background-color	: #3299BB; */
-	background-color	: rgba(22, 22, 22, 0.43);
+	background-color	: rgba(40, 34, 34, 0.7);
+/* 	background-color	: rgba(22, 22, 22, 0.70); */
 	font-size			: 12px;
 	font-weight 		: 100 !important;
 	letter-spacing		: 0.05em;
 	color				: #E9E9E9;
 }
 .layers-container .group-panel-body button.btn:hover {
-	background-color	: rgba(22, 22, 22, 0.99);;
+	background-color	: rgba(40, 34, 34, 0.99)
 }
 
 /* selected layer button style */
@@ -55,7 +57,7 @@
 	font-weight 		: 100 !important;
 	letter-spacing		: 0.05em;
 	color				: #E9E9E9;
-	background-color	: rgba(50, 153, 187, 0.6);
+	background-color	: rgba(50, 153, 187, 0.7);
 }
 .layers-container .group-panel-body button.active:hover {
 	background-color	: rgba(50, 153, 187, 0.99);
@@ -66,13 +68,16 @@
 .layers-container .panel-heading button,
 .layers-container .panel-heading button:active {
 	width				: 100%;
-	border-radius		: 2px;
+	border-radius		: 0px;
 	text-align			: left;
-	background-color	: rgba(22, 22, 22, 0.43);
+/* 	background-color	: rgba(255,153,0,0.35); */
+	background-color	: rgba(22, 22, 22, 0.7);
 	font-size			: 15px;
 	font-weight			: 100;
 	letter-spacing		: 0.05em;
 	color				: #E9E9E9;
+/* 	border				: 1px solid rgba(255,153,0,0.35); */
+	border				: 1px solid rgba(22, 22, 22, 0.25);
 }
 .layers-container .panel-heading button:hover {
 	background-color	: rgba(22, 22, 22, 0.99);
@@ -84,7 +89,8 @@
 .toggle-layers button {
 	background-color: transparent;
 	padding: 2px 10px; 
-	font-size: 18px;
+	font-size: 12px;
+  	opacity: 0.5;
 }
 .toggle-layers button:hover {
 	color: rgba(50, 153, 187, 0.99);

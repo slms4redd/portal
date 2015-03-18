@@ -1,13 +1,18 @@
 define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "fancy-box" , "bootstrap" ], function($, bus, layerListSelector, i18n) {
-
-	var groupHeadingPrefix	= "group-heading-";
-	var groupCollapsePrefix	= "group-collapse-";
-	var layerRowPrefix		= "row-layer-";
 	
+	// common id prexif 
+	var groupHeadingPrefix			= "group-heading-";
+	var groupCollapsePrefix			= "group-collapse-";
+	var layerRowPrefix				= "row-layer-";
+	var layerRowSettingsPrefix		= "row-layer-settings-";
+	
+	
+
+	
+	// OLD
 	var layerActions 	= new Array();
 	var temporalLayers 	= new Array();
 	var divLayers 		= null;
-
 	bus.listen("register-layer-action", function (event, action) {
 		layerActions.push(action);
 	});
@@ -25,7 +30,11 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 		"active" : false
 	});
 	layerListSelector.registerLayerPanel("all_layers_selector", i18n.layers, divLayers);
-
+	//	END OLD
+	
+	
+	
+	
 	bus.listen("add-group", function(event, groupInfo) {
 		
 		var divTitle, tblLayerGroup, parentId, tblParentLayerGroup, divContent;
@@ -71,7 +80,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 			col.html( groupInfo.name );
 			row.append( col );
 			
-			// TODO 
+			// OLD 
 			parentId = groupInfo.parentId;
 			tblParentLayerGroup = $("#group-content-table-" + parentId);
 			if (tblParentLayerGroup.length == 0) {
@@ -96,7 +105,8 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 //			var a			= $( '<a data-toggle="collapse" data-parent="#group-accordion" aria-expanded="true" />' );
 			a.attr( 'href' , "#" + collapseId );
 			a.attr( 'aria-controls' , collapseId );
-			a.html( groupInfo.name );
+			a.append( '<i class="fa fa-caret-right" style="padding: 0 5px 3px 0; font-size:10px;opacity: 0.5;"></i>' );
+			a.append( groupInfo.name );
 			h4.append( a );
 			
 			var content	= $( '<div class="panel-collapse collapse" role="tabpanel" />' );
@@ -114,6 +124,8 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 //		    </div>
 			
 			
+			
+			
 			divLayers.append(divTitle);
 			divContent = $("<div/>").css("padding", "10px 2px 10px 2px");
 			divContent.append(tblLayerGroup);
@@ -123,36 +135,81 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 
 	bus.listen("add-layer", function(event, portalLayer) {
 		var groupContainer	= $( "#" + groupCollapsePrefix + portalLayer.groupId );
+		
 		if (groupContainer.length == 0) {
+			
 			bus.send( "error", "Layer " + portalLayer.label + " references nonexistent group: " + portalLayer.groupId );
+			
 		} else {
 			var groupContainerBody	= groupContainer.find( '.panel-body' );
-			var row					= $( '<div class="row no-margin no-padding" />' );
+			var row					= $( '<div class="row row-layer no-margin no-padding" />' );
 			row.attr( 'id' , layerRowPrefix + portalLayer.id );
 			groupContainerBody.append( row );
 			
-			var legend				= $( '<div class="col-md-1 legend" />' );
-			row.append( legend );
-			var layer				= $( '<div class="col-md-10 layer" />' );
-			row.append( layer );
-			var action				= $( '<div class="col-md-1 action" />' );
-			row.append( action );
+			var settings				= $( '<div class="col-md-1 no-padding settings" />' );
+			row.append( settings );
 			
-//			layer.html( portalLayer.label );
-			var btnLayer 			= $( '<button class="btn"></button>' );
-			btnLayer.html( portalLayer.label );
-			btnLayer.click(function(e){
-				btnLayer.toggleClass( "active" );
-				bus.send("layer-visibility", [ portalLayer.id, btnLayer.hasClass("active") ]);
+			var layer				= $( '<div class="col-md-10 no-padding layer" />' );
+			row.append( layer );
+//			var action				= $( '<div class="col-md-1 no-padding action" />' );
+//			row.append( action );
+			
+			if ( portalLayer.isPlaceholder ){
 				
-				btnLayer.blur();
-			});
-			layer.append( btnLayer );
+				var divLabel	= $( '<div class="width100"/>' );
+				divLabel.html( portalLayer.label );
+				layer.append( divLabel );
+				
+			} else {
+				//add settings button
+				var settingsBtn     = $( '<button class="btn btn-transparent"><i class="fa fa-sliders"></i></button>');
+				settings.append( settingsBtn );
+				settingsBtn.click(function(){
+					var toggle	= ! $('#'+layerRowSettingsPrefix + portalLayer.id).is( ':visible' );
+					bus.send( "layer-toggle-settings" , [portalLayer.id, toggle] );
+				});
+				
+				// add layer button
+				var btnLayer 			= $( '<button class="btn"></button>' );
+				btnLayer.html( portalLayer.label );
+				btnLayer.click(function(e){
+					btnLayer.toggleClass( "active" );
+					bus.send("layer-visibility", [ portalLayer.id, btnLayer.hasClass("active") ]);
+					
+					btnLayer.blur();
+				});
+				layer.append( btnLayer );
+
+				
+				// add settings row
+				var rowSettings = $( '<div class="row row-layer-settings" />' );
+				rowSettings.attr( 'id' , layerRowSettingsPrefix + portalLayer.id );
+				groupContainerBody.append( rowSettings );
+				
+				var colSettingsIcon = $( '<div class="col-md-1 row-layer-settings-icon no-padding" />' );
+				colSettingsIcon.append( '<i class="fa fa-adjust"></i>' );
+				rowSettings.append( colSettingsIcon );
+				
+				var colSettingsOpacitySlider = $( '<div class="col-md-10 row-layer-settings-slider no-padding" />' );
+				rowSettings.append( colSettingsOpacitySlider );
+
+				colSettingsOpacitySlider.slider({
+					min : 0,
+					max : 100,
+					value : 100,
+					slide : function(event, ui) {
+						bus.send("transparency-slider-changed", [ portalLayer.id, ui.value / 100 ]);
+					}
+				});
+	
+			}
+			
 		}
 		
+		
 		var tblLayerGroup, trLayer, tdLegend, tdVisibility, divCheckbox, tdName, tdInfo, aLink, inlineLegend;
-		tblLayerGroup = $("#group-content-table-" + portalLayer.groupId);
-		if (tblLayerGroup.length == 0) {
+		tblLayerGroup = $( "#group-content-table-" + portalLayer.groupId );
+		if ( tblLayerGroup.length == 0 ){
 			bus.send("error", "Layer " + portalLayer.label + " references nonexistent group: " + portalLayer.groupId);
 		} else {
 			trLayer = $("<tr/>").attr("id", "layer-row-" + portalLayer.id).addClass("layer_row");
@@ -257,12 +314,20 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 	bus.listen("layer-visibility", function(event, layerId, visible) {
 		var row	= $( '#' + layerRowPrefix + layerId );
 		var btn = row.find( '.layer button' );
+		// enable/disable setting button
+		var settingsBtn		= $( '#' + layerRowPrefix + layerId).find( '.settings button' );
+
 		if( visible ){
 			btn.addClass( "active" );
+			// enable settings button
+			settingsBtn.prop( 'disabled' , false );
 		} else {
 			btn.removeClass( 'active' );
+			// hide settings button if visible
+			bus.send( "layer-toggle-settings", [ layerId , false ] );
+			// disable setting button
+			settingsBtn.prop( 'disabled' , true );
 		}
-		
 		// OLD
 		var divCheckbox = $("#" + layerId + "_visibility_checkbox");
 		if (visible) {
@@ -273,6 +338,19 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 		
 	});
 
+	bus.listen( "layer-toggle-settings" , function( event, layerId, showLayer ){
+		console.log( layerId );
+		var settingsRow	= $( '#' + layerRowSettingsPrefix + layerId );
+		var settingsBtn		= $( '#' + layerRowPrefix + layerId).find( '.settings button' );
+
+		if( showLayer ){
+			settingsRow.slideDown();
+		} else {
+			settingsRow.slideUp();
+		}
+		
+	});
+	
 	bus.listen("time-slider.selection", function(event, date) {
 		for (var i = 0; i < temporalLayers.length; i++) {
 			var layer = temporalLayers[i];
@@ -302,6 +380,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 			bus.send("layer-timestamp-selected", [ layer.id, closestPrevious ]);
 		}
 	});
+	
 	bus.listen("layer-time-slider.selection", function(event, layerid, date) {
 		var tdLayerName = $("#layer-row-" + layerid + " .layer_name");
 		tdLayerName.find("span").remove();

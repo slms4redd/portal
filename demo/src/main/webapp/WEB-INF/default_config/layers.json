@@ -75,7 +75,7 @@
 			"baseUrl" : "http://demo1.geo-solutions.it/diss_geoserver/wms",
 			"wmsName" : "unredd:drc_provinces",
 			"imageFormat" : "image/png8",
-			"visible" : true,
+			"visible" : false,
 			"sourceLink" : "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
 			"sourceLabel" : "WRI",
 			"queryable" : true

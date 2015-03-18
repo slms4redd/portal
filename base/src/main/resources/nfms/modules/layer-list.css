@@ -1,5 +1,56 @@
+.row-layer .settings button.btn-transparent {
+	padding: 5px;
+	border: none;
+/* 	remove after refactoring btn-default */
+	background-color: transparent;
+}
+.row-layer .settings button.btn-transparent:hover {
+	background-color: transparent;
+	color : rgb(50, 153, 187);
+}
+.row-layer .settings button.btn-transparent.active {
+	color : rgb(50, 153, 187);
+}
 
+.row-layer-settings {
+	padding: 15px 25px;
+	margin: 0px !important;
+	height: 65px;
+	display: none;
+}
 
+.row-layer-settings-icon {
+	opacity: 0.5;
+}
+
+/* slider  */
+div.row-layer-settings-slider  {
+	border-radius: 1px;
+	/* padding-top: 5px !important; */
+	border: 1px solid rgba(50, 153, 187, 0.3);
+	background: none;
+	background-color: rgba(50, 153, 187, 0.3);
+	height: 6px;
+	margin-top: 4px;
+}
+
+div.row-layer-settings-slider  a.ui-slider-handle {
+  border-radius: 1px;
+  cursor: pointer;
+  /* color: rgba(50, 153, 187, 0.3); */
+  background: rgba(50, 153, 187, 0.7);
+  width: 10px;
+  height: 17px;
+  position: absolute;
+  top: -6px;
+  border: none;
+}
+div.row-layer-settings-slider  a.ui-slider-handle:hover {
+	background: rgba(50, 153, 187, 0.9);
+}
+div.row-layer-settings-slider  a.ui-slider-handle.ui-state-active {
+	background: rgba( 255,153,0 , 0.5 );
+}
 
 /* JQuery UI hack */
 .ui-widget {

@@ -84,7 +84,7 @@ define([ "jquery", "message-bus", "customization", "module" ], function($, bus, 
 		for (var i = 0; i < groups.length; i++) {
 			processGroup(layerRoot, null, groups[i]);
 		}
-
+		
 		bus.send("layers-loaded");
 	});
 

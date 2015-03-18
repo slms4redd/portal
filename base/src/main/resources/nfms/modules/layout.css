@@ -2,7 +2,6 @@ html,body {
 /* 	margin: 0px; */
 	height: 100%;
 	width: 100%;
-/* 	cursor: default; */
 /* 	font: 100% "Trebuchet MS", sans-serif; */
 /* 	font-family: Tahoma,Verdana,Segoe,sans-serif; */
 	font-weight: 100 !important;
@@ -55,7 +54,14 @@ body {
 .width100 {
 	width: 100% !important;
 }
+.btn-transparent {
+	background-color: transparent;
+}
+.btn-transparent.active {
+	color : rgb(50, 153, 187);
+}
 
+/* OLD */
 .ui-front {
 	/* 
 	Apparently it is possible to put the dialogs on top
