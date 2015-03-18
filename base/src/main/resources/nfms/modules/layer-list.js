@@ -5,8 +5,9 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 	var groupCollapsePrefix			= "group-collapse-";
 	var layerRowPrefix				= "row-layer-";
 	var layerRowSettingsPrefix		= "row-layer-settings-";
-	
-	
+
+	// map of active layers count
+	var activeLayersCountMap		= {};
 
 	
 	// OLD
@@ -101,13 +102,13 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 			heading.append( h4 );
 
 			var collapseId 	= groupCollapsePrefix + groupInfo.id;
-			var a			= $( '<button class="btn" data-toggle="collapse" data-parent="#group-accordion" aria-expanded="true" />' );
-//			var a			= $( '<a data-toggle="collapse" data-parent="#group-accordion" aria-expanded="true" />' );
-			a.attr( 'href' , "#" + collapseId );
-			a.attr( 'aria-controls' , collapseId );
-			a.append( '<i class="fa fa-caret-right" style="padding: 0 5px 3px 0; font-size:10px;opacity: 0.5;"></i>' );
-			a.append( groupInfo.name );
-			h4.append( a );
+			var btn			= $( '<button class="btn" data-toggle="collapse" data-parent="#group-accordion" aria-expanded="true" />' );
+			btn.attr( 'href' , "#" + collapseId );
+			btn.attr( 'aria-controls' , collapseId );
+			btn.append( '<i class="fa fa-caret-right" style="padding: 0 5px 3px 0; font-size:10px;opacity: 0.5;"></i>' );
+			btn.append( groupInfo.name );
+			btn.append( '<span class="badge">0</span>' );
+			h4.append( btn );
 			
 			var content	= $( '<div class="panel-collapse collapse" role="tabpanel" />' );
 			content.attr( 'id' , collapseId );
@@ -134,11 +135,11 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 	});
 
 	bus.listen("add-layer", function(event, portalLayer) {
-		var groupContainer	= $( "#" + groupCollapsePrefix + portalLayer.groupId );
+		var groupContainer	= $( "#" + groupCollapsePrefix + portalLayer.groupInfo.id );
 		
 		if (groupContainer.length == 0) {
 			
-			bus.send( "error", "Layer " + portalLayer.label + " references nonexistent group: " + portalLayer.groupId );
+			bus.send( "error", "Layer " + portalLayer.label + " references nonexistent group: " + portalLayer.groupInfo.id );
 			
 		} else {
 			var groupContainerBody	= groupContainer.find( '.panel-body' );
@@ -175,7 +176,8 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 				btnLayer.click(function(e){
 					btnLayer.toggleClass( "active" );
 					bus.send("layer-visibility", [ portalLayer.id, btnLayer.hasClass("active") ]);
-					
+					bus.send("layer-update-active-count" , [portalLayer.id ,  btnLayer.hasClass("active") , portalLayer.groupInfo] );
+
 					btnLayer.blur();
 				});
 				layer.append( btnLayer );
@@ -202,15 +204,17 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 					}
 				});
 	
+				
+				
+				bus.send("layer-update-active-count" , [portalLayer.id , portalLayer.active||false , portalLayer.groupInfo] );
 			}
 			
 		}
 		
-		
 		var tblLayerGroup, trLayer, tdLegend, tdVisibility, divCheckbox, tdName, tdInfo, aLink, inlineLegend;
-		tblLayerGroup = $( "#group-content-table-" + portalLayer.groupId );
+		tblLayerGroup = $( "#group-content-table-" + portalLayer.groupInfo.id );
 		if ( tblLayerGroup.length == 0 ){
-			bus.send("error", "Layer " + portalLayer.label + " references nonexistent group: " + portalLayer.groupId);
+			bus.send("error", "Layer " + portalLayer.label + " references nonexistent group: " + portalLayer.groupInfo.id);
 		} else {
 			trLayer = $("<tr/>").attr("id", "layer-row-" + portalLayer.id).addClass("layer_row");
 
@@ -319,15 +323,20 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 
 		if( visible ){
 			btn.addClass( "active" );
+			
+			// settings methods
 			// enable settings button
 			settingsBtn.prop( 'disabled' , false );
 		} else {
 			btn.removeClass( 'active' );
+			
+			// settings methods
 			// hide settings button if visible
 			bus.send( "layer-toggle-settings", [ layerId , false ] );
 			// disable setting button
 			settingsBtn.prop( 'disabled' , true );
 		}
+		
 		// OLD
 		var divCheckbox = $("#" + layerId + "_visibility_checkbox");
 		if (visible) {
@@ -337,9 +346,9 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 		}
 		
 	});
-
+	
+	// settings methods
 	bus.listen( "layer-toggle-settings" , function( event, layerId, showLayer ){
-		console.log( layerId );
 		var settingsRow	= $( '#' + layerRowSettingsPrefix + layerId );
 		var settingsBtn		= $( '#' + layerRowPrefix + layerId).find( '.settings button' );
 
@@ -350,6 +359,31 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 		}
 		
 	});
+	bus.listen("layer-update-active-count" , function(event, layerId , active , groupInfo){
+		var groupId = ( groupInfo.hasOwnProperty("parentId") ) ? groupInfo.parentId : groupInfo.id;
+		var count = activeLayersCountMap[ groupId ];
+		if(count){
+			if( active ){
+				count += 1;
+			} else {
+				count -=1;
+			}
+		} else {
+			if( active ){
+				count = 1;
+			} else {
+				count = 0;
+			}
+		}
+		activeLayersCountMap[ groupId ] = count;
+		var span = $( '#' + groupHeadingPrefix + groupId ).find( 'button span[class=badge]' );
+		span.stop().animate( {opacity: "0"}, 400 , function(){
+			span.html( count );
+			span.animate( {opacity: "1"}, 200);
+		});
+		
+	});
+	
 	
 	bus.listen("time-slider.selection", function(event, date) {
 		for (var i = 0; i < temporalLayers.length; i++) {

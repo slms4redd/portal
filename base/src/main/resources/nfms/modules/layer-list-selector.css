@@ -82,7 +82,16 @@
 .layers-container .panel-heading button:hover {
 	background-color	: rgba(22, 22, 22, 0.99);
 }
-
+.layers-container .panel-heading button span.badge {
+  float: right;
+  border-radius: 1px;
+  font-weight: 100;
+  border: 1px solid rgba(255, 153, 0, 0.16);
+  background: rgba(22, 22, 22, 0.1);
+  font-size: 10px;
+  right: -8px;
+  top: -2px;
+}
 .toggle-layers {
 	float: right;
 }

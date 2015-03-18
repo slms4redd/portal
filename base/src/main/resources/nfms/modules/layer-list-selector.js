@@ -95,24 +95,27 @@ define([ "jquery", "message-bus", "layout", "customization", "i18n", "jquery-ui"
 		var btn = container.find( '.toggle-layers button' );
 		if( container.hasClass( 'open' ) ) {
 			container.removeClass( 'open' );
+			
 			container.animate( {width: "45px"}, 600 );
 			
 			var panel = container.children( '.panel' );
 			panel.animate( {opacity: "0"}, 500 );
-			panel.find( '.in' ).animate( {opacity: "0"}, 500 );
+//			panel.find( '.in' ).animate( {opacity: "0"}, 500 );
 			
 			setTimeout( function(){
 				btn.empty();
 				btn.append( iconClosed );
 				btn.blur();
+				
 			}, 200 );
+			
 		} else {
 			container.addClass( 'open' );
 			container.animate( {width: $( document ).width() / 4 }, 600 );
 			
 			var panel = container.children( '.panel' );
 			panel.animate( {opacity: "1"}, 400 );
-			panel.find( '.in' ).animate( {opacity: "1"}, 0 );				
+//			panel.find( '.in' ).animate( {opacity: "1"}, 0 );				
 
 			setTimeout( function(){
 				btn.empty();

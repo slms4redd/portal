@@ -64,9 +64,11 @@ define([ "jquery", "message-bus", "customization", "module" ], function($, bus, 
                     wmsLayer.zIndex = layerRoot.wmsLayers.indexOf(wmsLayer);
 					layerInfoArray.push(wmsLayer);
 				}
-
-				portalLayer.groupId = group.id
-				portalLayer.wmsLayers = layerInfoArray;
+				//deprecated
+				portalLayer.groupId 	= group.id;
+				
+				portalLayer.groupInfo	= groupInfo;
+				portalLayer.wmsLayers 	= layerInfoArray;
 
 				bus.send("add-layer", portalLayer);
 				bus.send("layer-visibility", [ portalLayer.id, portalLayer.active || false ]);
