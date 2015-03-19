@@ -6,6 +6,7 @@ html,body {
 /* 	font-family: Tahoma,Verdana,Segoe,sans-serif; */
 	font-weight: 100 !important;
 	letter-spacing: 0.05em;
+	color: #E9E9E9;
 }
 a {
 	font-weight: 100 !important;
@@ -54,12 +55,63 @@ body {
 .width100 {
 	width: 100% !important;
 }
-.btn-transparent {
+
+/* default button style */
+.btn-transparent,
+.btn-transparent:active,
+.btn-transparent:focus {
 	background-color: transparent;
+	color: #E9E9E9;
 }
 .btn-transparent.active {
 	color : rgb(50, 153, 187);
 }
+
+button.btn-default ,
+a.btn-default ,
+button.btn-default:active ,
+a.btn-default:active ,
+button.btn-default:focus ,
+a.btn-default:focus {
+	color: #E9E9E9;
+	background-color: rgba(40, 34, 34, 0.7);
+	
+	border-radius: 0px;
+	border: 1px solid transparent;
+	font-size: 12px;
+  	font-weight: 100 !important;
+  	letter-spacing: 0.05em;
+  	
+  	width : 100%;
+}
+
+button.btn-default:hover ,
+a.btn-default:hover {
+	color: #E9E9E9;
+	text-decoration: none;
+	background-color: rgba(40, 34, 34, 0.95);
+	border: 1px solid transparent;
+}
+
+button.btn-default.active ,
+a.btn-default.active ,
+button.btn-default.active:active ,
+a.btn-default.active:active {
+	color: #E9E9E9;
+	border: 1px solid transparent;
+	background-color: rgba(50, 153, 187, 0.7);
+}
+
+button.btn-default.active:hover ,
+a.btn-default.active:hover {
+	color: #E9E9E9;
+	text-decoration: none;
+	background-color: rgba(50, 153, 187, 0.95);
+	border: 1px solid transparent;
+}
+
+
+
 
 /* OLD */
 .ui-front {

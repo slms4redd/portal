@@ -5,33 +5,15 @@
 	padding: 15px 10px;
 }
 
-.lang-buttons a.lang-button {
+.lang-buttons a.btn-default {
 	margin: 0px 2px;
 	padding: 10px 18px;
-	color: #E9E9E9;
-	background-color: rgba(62, 64, 60, 0.68);
-	font-size: 12px;
 	border-radius: 10px;
 	border: 1px solid rgba(50, 153, 187, 0.6);
 }
-.lang-buttons a.lang-button:hover {
-	text-decoration: none;
-	background-color: rgba(62, 64, 60, 0.95);
-}
-.lang-buttons a.selected {
+
+.lang-buttons a.btn-default.active {
 	background-color: rgba(50, 153, 187, 0.8);
 	pointer-events: none;
    	cursor: default;
-}
-/* .lang-buttons a.lang-button:hover { */
-/* 	background-color: rgba(50, 153, 187, 0.); */
-/* } */
-
-.blue_button.selected {
-	color: #fff;
-}
-
-.lang_button {
-	float: right;
-	margin-left: 20px;
 }

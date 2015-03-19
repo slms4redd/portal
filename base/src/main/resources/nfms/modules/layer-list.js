@@ -102,7 +102,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 			heading.append( h4 );
 
 			var collapseId 	= groupCollapsePrefix + groupInfo.id;
-			var btn			= $( '<button class="btn" data-toggle="collapse" data-parent="#group-accordion" aria-expanded="true" />' );
+			var btn			= $( '<button class="btn btn-default" data-toggle="collapse" data-parent="#group-accordion" aria-expanded="true" />' );
 			btn.attr( 'href' , "#" + collapseId );
 			btn.attr( 'aria-controls' , collapseId );
 			btn.append( '<i class="fa fa-caret-right" style="padding: 0 5px 3px 0; font-size:10px;opacity: 0.5;"></i>' );
@@ -171,7 +171,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 				});
 				
 				// add layer button
-				var btnLayer 			= $( '<button class="btn"></button>' );
+				var btnLayer 			= $( '<button class="btn btn-default"></button>' );
 				btnLayer.html( portalLayer.label );
 				btnLayer.click(function(e){
 					btnLayer.toggleClass( "active" );

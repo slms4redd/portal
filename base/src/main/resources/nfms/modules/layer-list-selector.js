@@ -96,6 +96,7 @@ define([ "jquery", "message-bus", "layout", "customization", "i18n", "jquery-ui"
 		if( container.hasClass( 'open' ) ) {
 			container.removeClass( 'open' );
 			
+//			container.slide( {direction:'left'} );
 			container.animate( {width: "45px"}, 600 );
 			
 			var panel = container.children( '.panel' );

@@ -28,60 +28,21 @@
 	border	: none !important;
 }
 
-/* unselected layer button style */
-.layers-container .group-panel-body button.btn,
-.layers-container .group-panel-body button.btn:active {
-	width				: 100%;
-	border-radius		: 0px;
-	text-align			: left;
-/* 	background-color	: #3299BB; */
-	background-color	: rgba(40, 34, 34, 0.7);
-/* 	background-color	: rgba(22, 22, 22, 0.70); */
-	font-size			: 12px;
-	font-weight 		: 100 !important;
-	letter-spacing		: 0.05em;
-	color				: #E9E9E9;
-}
-.layers-container .group-panel-body button.btn:hover {
-	background-color	: rgba(40, 34, 34, 0.99)
-}
-
-/* selected layer button style */
-.layers-container .group-panel-body button.active,
-.layers-container .group-panel-body button.active:active {
-	width				: 100%;
-	border-radius		: 0px;
-	text-align			: left;
-/* 	background-color	: #3299BB; */
-	font-size			: 12px;
-	font-weight 		: 100 !important;
-	letter-spacing		: 0.05em;
-	color				: #E9E9E9;
-	background-color	: rgba(50, 153, 187, 0.7);
-}
-.layers-container .group-panel-body button.active:hover {
-	background-color	: rgba(50, 153, 187, 0.99);
-	
+.layers-container button.btn-default {
+	text-align: left;
 }
 
 
-.layers-container .panel-heading button,
-.layers-container .panel-heading button:active {
-	width				: 100%;
-	border-radius		: 0px;
+.layers-container .panel-heading button.btn-default,
+.layers-container .panel-heading button.btn-default:active {
 	text-align			: left;
-/* 	background-color	: rgba(255,153,0,0.35); */
-	background-color	: rgba(22, 22, 22, 0.7);
 	font-size			: 15px;
-	font-weight			: 100;
-	letter-spacing		: 0.05em;
-	color				: #E9E9E9;
-/* 	border				: 1px solid rgba(255,153,0,0.35); */
 	border				: 1px solid rgba(22, 22, 22, 0.25);
 }
-.layers-container .panel-heading button:hover {
+.layers-container .panel-heading button.btn-default:hover {
 	background-color	: rgba(22, 22, 22, 0.99);
 }
+
 .layers-container .panel-heading button span.badge {
   float: right;
   border-radius: 1px;
@@ -105,32 +66,3 @@
 	color: rgba(50, 153, 187, 0.99);
 }
 
-
-
-
-
-
-#layers_container {
-	left: 600px;
-	position: absolute;
-	top: 215px;
-	width: 250px;
-	z-index: 1100;
-	display: none;
-}
-
-.layer_container_panel {
-	padding: 10px 15px;
-	background-color: black;
-	border-radius: 6px;
-	color: white;
-	font-size: 11px;
-	border: 1px solid #666666;
-}
-
-#layer_list_selector_pane {
-    top: 186px;
-    left: 10px;
-    position: absolute;
-    z-index: 1100;
-}

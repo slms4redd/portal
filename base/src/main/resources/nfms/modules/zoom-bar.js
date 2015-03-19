@@ -3,7 +3,7 @@ define([ "jquery", "message-bus" , "layout" ], function($, bus , layout) {
 	var div		= $( '<div class="zoom-bar" />' );
 	layout.container.append( div );
 	
-	var zoomIn	= $( '<button class="btn"><i class="fa fa-plus"></i></button>' );
+	var zoomIn	= $( '<button class="btn btn-default"><i class="fa fa-plus"></i></button>' );
 	zoomIn.click(function() {
 		bus.send( "zoom-in" );
 		zoomIn.blur();
@@ -11,7 +11,7 @@ define([ "jquery", "message-bus" , "layout" ], function($, bus , layout) {
 	div.append( zoomIn );
 	
 	
-	var zoomOut	= $( '<button class="btn"><i class="fa fa-minus"></i></button>' );
+	var zoomOut	= $( '<button class="btn btn-default"><i class="fa fa-minus"></i></button>' );
 	zoomOut.click(function() {
 		bus.send( "zoom-out" );
 		zoomOut.blur();
@@ -19,7 +19,7 @@ define([ "jquery", "message-bus" , "layout" ], function($, bus , layout) {
 	div.append( zoomOut );
 	
 	
-	var zoomFull	= $( '<button class="btn"><i class="fa fa-crosshairs"></i></button>' );
+	var zoomFull	= $( '<button class="btn btn-default"><i class="fa fa-crosshairs"></i></button>' );
 	zoomFull.click(function() {
 		bus.send( "initial-zoom" );
 		zoomFull.blur();
