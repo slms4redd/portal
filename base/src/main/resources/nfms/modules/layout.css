@@ -1,15 +1,20 @@
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,100);
+
 html,body {
 /* 	margin: 0px; */
 	height: 100%;
 	width: 100%;
-/* 	font: 100% "Trebuchet MS", sans-serif; */
-/* 	font-family: Tahoma,Verdana,Segoe,sans-serif; */
 	font-weight: 100 !important;
-	letter-spacing: 0.05em;
 	color: #E9E9E9;
+	
+	font-family: 'Roboto', sans-serif !important;
 }
 a {
 	font-weight: 100 !important;
+	font-family: 'Roboto', sans-serif !important;
+}
+button{
+	font-family: 'Roboto', sans-serif !important;
 }
 body {
     -moz-user-select: -moz-none;
@@ -80,7 +85,7 @@ a.btn-default:focus {
 	border: 1px solid transparent;
 	font-size: 12px;
   	font-weight: 100 !important;
-  	letter-spacing: 0.05em;
+/*   	letter-spacing: 0.05em; */
   	
   	width : 100%;
 }
