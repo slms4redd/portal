@@ -66,3 +66,9 @@
 	color: rgba(50, 153, 187, 0.99);
 }
 
+
+/* // OLD */
+#layers_container {
+	display: none;
+}
+

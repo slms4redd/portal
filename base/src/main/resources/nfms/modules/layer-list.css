@@ -12,18 +12,27 @@
 	color : rgb(50, 153, 187);
 }
 
+
+.layer-placeholder {
+	padding: 10px 0px 5px 10px;
+	font-size: 12px;
+}
+
+/* settings css classes */
+.row-layers-settings {
+	height: auto;
+	display: none;
+}
 .row-layer-settings {
 	padding: 15px 25px;
 	margin: 0px !important;
-	height: 65px;
-	display: none;
 }
 
 .row-layer-settings-icon {
 	opacity: 0.5;
 }
 
-/* slider  */
+/* slider  refactor to make it global */
 div.row-layer-settings-slider  {
 	border-radius: 1px;
 	/* padding-top: 5px !important; */
@@ -50,99 +59,4 @@ div.row-layer-settings-slider  a.ui-slider-handle:hover {
 }
 div.row-layer-settings-slider  a.ui-slider-handle.ui-state-active {
 	background: rgba( 255,153,0 , 0.5 );
-}
-
-/* JQuery UI hack */
-.ui-widget {
-	font-size: 11px !important;
-}
-
-#active_layers>table {
-	width: 100%;
-	padding: 0px;
-}
-
-#all_layers {
-	position: relative;
-	top: 0;
-	left: 0;
-	width: 100%;
-}
-
-#all_layers table {
-	width: 100%;
-	border-collapse: collapse;
-}
-
-.layer_row {
-	font-size: 10px;
-	height: 22px;
-}
-
-.layer_legend {
-	font-size: 9px;
-	width: 20px;
-	height: 20px;
-}
-
-td.layer_visibility {
-	width: 16px;
-}
-
-.layer_visibility {
-	width: 16px;
-	height: 16px;
-	background: url(images/ui-elements.png) no-repeat scroll 0 0 transparent;
-	cursor: pointer;
-}
-
-.layer_visibility.in.mousedown {
-	width: 16px;
-	height: 16px;
-	background-position: -48px 0px;
-}
-
-.layer_visibility.checked {
-	width: 16px;
-	height: 16px;
-	background-position: -32px 0px;
-}
-
-.layer_visibility.checked.in.mousedown {
-	width: 16px;
-	height: 16px;
-	background-position: -16px 0px;
-}
-
-.layer_name {
-	/* 	color: #FFF; */
-	
-}
-
-.layer_action {
-	width: 16px;
-}
-
-.layer_info_button {
-	background: url("images/ui-elements.png") no-repeat scroll 0 -130px
-		rgba(0, 0, 0, 0);
-	display: block;
-	height: 16px;
-	padding: 0;
-	text-decoration: none;
-	width: 16px;
-}
-
-.inline-legend-button {
-    width: 16px;
-    height: 16px;
-    padding: 0;
-    background: url('images/ui-elements.png') no-repeat scroll 0px -114px transparent;
-    display: block;
-    cursor: default;
-}
-
-.inline-legend-button.visible {
-	background-position: -24px -114px;
-	cursor: pointer;
 }

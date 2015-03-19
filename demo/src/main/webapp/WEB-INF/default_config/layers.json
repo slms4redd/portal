@@ -79,7 +79,23 @@
 			"sourceLink" : "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
 			"sourceLabel" : "WRI",
 			"queryable" : true
-		}
+		} ,
+		
+		{
+			"id": "intactForest",
+			"label": "Intact Forest",
+			"baseUrl": "http://178.33.8.115/diss_geoserver/wms",
+			"wmsTime": "2000,2005,2010",
+			"wmsName": "unredd:intact_forest",
+			"imageFormat": "image/png8",
+			"visible": true,
+			"legend": "intact_forest.png",
+			"sourceLink": "http://www.intactforests.org/",
+			"sourceLabel": "www.intactforests.org",
+			"wmsParameters": {
+				"tiled": "true"
+				}
+			}
 	],
 
 	"portalLayers" : [
@@ -91,13 +107,13 @@
 		},
 		{
 			"id" : "osm-layer",
-			"active" : true,
+			"active" : false,
 			"label" : "Open Cycle Map",
 			"layers" : [ "cycle-osm" ]
 		},
 		{
 			"id" : "forestClassification",
-			"active" : true,
+			"active" : false,
 			"infoFile" : "forest_classification_def.html",
 			"label" : "${facet_forest_classification}",
 			"layers" : [ "forestClassification" ],
@@ -133,6 +149,11 @@
 		}, {
 			"id" : "provinces_title_placeholder",
 			"label" : "Provincias"
+		} , {
+			"id" : "forest-intact",
+			"active" : true,
+			"label" : "Intact forest",
+			"layers" : [ "intactForest" ]
 		}
 	],
 
@@ -149,7 +170,7 @@
 				}, {
 					"id" : "innerforest",
 					"label" : "Forest classifications",
-					"items": [ "forestClassification" ]
+					"items": [ "forestClassification" , "forest-intact" ]
 				}
 			]
 		}, {

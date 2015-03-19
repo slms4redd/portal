@@ -5,7 +5,6 @@ define([ "jquery", "message-bus", "layout", "customization", "i18n", "jquery-ui"
 	var divsById = [];
 
 	var row 		= $( '<div class="row no-margin"></div>' );
-//	var row 		= $( '<div class="row height100"></div>' );
 	var container	= $( '<div class="col-md-3 col-sm-3 col-xs-3 panel-group layers-container open" id="group-accordion" role="tablist" aria-multiselectable="true"></div>' );
 	row.append( container );
 	layout.container.append( row );

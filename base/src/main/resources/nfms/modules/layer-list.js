@@ -157,7 +157,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 			
 			if ( portalLayer.isPlaceholder ){
 				
-				var divLabel	= $( '<div class="width100"/>' );
+				var divLabel	= $( '<div class="width100 layer-placeholder"/>' );
 				divLabel.html( portalLayer.label );
 				layer.append( divLabel );
 				
@@ -184,15 +184,19 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 
 				
 				// add settings row
-				var rowSettings = $( '<div class="row row-layer-settings" />' );
-				rowSettings.attr( 'id' , layerRowSettingsPrefix + portalLayer.id );
-				groupContainerBody.append( rowSettings );
+				var rowLayerSettings	= $( '<div class="row row-layers-settings no-margin no-padding" />' );
+				rowLayerSettings.attr( 'id' , layerRowSettingsPrefix + portalLayer.id );
+				groupContainerBody.append( rowLayerSettings );
+				
+				// add transparency settings row
+				var rowSettings = $( '<div class="row row-layer-settings layer-transparency" />' );
+				rowLayerSettings.append( rowSettings );
 				
 				var colSettingsIcon = $( '<div class="col-md-1 row-layer-settings-icon no-padding" />' );
 				colSettingsIcon.append( '<i class="fa fa-adjust"></i>' );
 				rowSettings.append( colSettingsIcon );
 				
-				var colSettingsOpacitySlider = $( '<div class="col-md-10 row-layer-settings-slider no-padding" />' );
+				var colSettingsOpacitySlider = $( '<div class="col-md-11 row-layer-settings-slider no-padding" />' );
 				rowSettings.append( colSettingsOpacitySlider );
 
 				colSettingsOpacitySlider.slider({
@@ -205,12 +209,16 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 				});
 	
 				
+				// after adding a layer, bus sends: layer-update-active-count , add-layer-timestamp
+				bus.send( "layer-update-active-count" , [portalLayer.id , portalLayer.active||false , portalLayer.groupInfo, true] );
+				bus.send( "add-layer-timestamp" , [portalLayer] );
 				
-				bus.send("layer-update-active-count" , [portalLayer.id , portalLayer.active||false , portalLayer.groupInfo] );
 			}
 			
 		}
 		
+		
+		//OLD
 		var tblLayerGroup, trLayer, tdLegend, tdVisibility, divCheckbox, tdName, tdInfo, aLink, inlineLegend;
 		tblLayerGroup = $( "#group-content-table-" + portalLayer.groupInfo.id );
 		if ( tblLayerGroup.length == 0 ){
@@ -350,7 +358,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 	// settings methods
 	bus.listen( "layer-toggle-settings" , function( event, layerId, showLayer ){
 		var settingsRow	= $( '#' + layerRowSettingsPrefix + layerId );
-		var settingsBtn		= $( '#' + layerRowPrefix + layerId).find( '.settings button' );
+//		var settingsBtn		= $( '#' + layerRowPrefix + layerId).find( '.settings button' );
 
 		if( showLayer ){
 			settingsRow.slideDown();
@@ -359,19 +367,20 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 		}
 		
 	});
-	bus.listen("layer-update-active-count" , function(event, layerId , active , groupInfo){
+	
+	bus.listen("layer-update-active-count" , function(event, layerId , active , groupInfo, incrementOnly){
 		var groupId = ( groupInfo.hasOwnProperty("parentId") ) ? groupInfo.parentId : groupInfo.id;
 		var count = activeLayersCountMap[ groupId ];
 		if(count){
 			if( active ){
 				count += 1;
-			} else {
+			} else if(!incrementOnly) {
 				count -=1;
 			}
 		} else {
 			if( active ){
 				count = 1;
-			} else {
+			} else if(!incrementOnly) {
 				count = 0;
 			}
 		}
@@ -385,40 +394,46 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 	});
 	
 	
-	bus.listen("time-slider.selection", function(event, date) {
-		for (var i = 0; i < temporalLayers.length; i++) {
-			var layer = temporalLayers[i];
-			var timestamps = layer.timestamps;
-			var closestPrevious = null;
-			timestamps.sort();
-			for (var j = 0; j < timestamps.length; j++) {
-				var timestampString = timestamps[j];
-				var timestamp = new Date();
-				timestamp.setISO8601(timestampString);
-				if (timestamp <= date) {
-					closestPrevious = timestamp;
-				} else {
-					break;
-				}
-			}
-
-			if (closestPrevious == null) {
-				closestPrevious = new Date();
-				closestPrevious.setISO8601(timestamps[0]);
-			}
-
-			var tdLayerName = $("#layer-row-" + layer.id + " .layer_name");
-			tdLayerName.find("span").remove();
-			$("<span/>").html(" (" + closestPrevious.getUTCFullYear() + ")").appendTo(tdLayerName);
-
-			bus.send("layer-timestamp-selected", [ layer.id, closestPrevious ]);
-		}
-	});
+//	bus.listen("time-slider.selection", function(event, date) {
+//		for (var i = 0; i < temporalLayers.length; i++) {
+//			var layer = temporalLayers[i];
+//			var timestamps = layer.timestamps;
+//			var closestPrevious = null;
+//			timestamps.sort();
+//			for (var j = 0; j < timestamps.length; j++) {
+//				var timestampString = timestamps[j];
+//				var timestamp = new Date();
+//				timestamp.setISO8601(timestampString);
+//				if (timestamp <= date) {
+//					closestPrevious = timestamp;
+//				} else {
+//					break;
+//				}
+//			}
+//
+//			if (closestPrevious == null) {
+//				closestPrevious = new Date();
+//				closestPrevious.setISO8601(timestamps[0]);
+//			}
+//
+//			var tdLayerName = $("#layer-row-" + layer.id + " .layer_name");
+//			tdLayerName.find("span").remove();
+//			$("<span/>").html(" (" + closestPrevious.getUTCFullYear() + ")").appendTo(tdLayerName);
+//
+//			bus.send("layer-timestamp-selected", [ layer.id, closestPrevious ]);
+//		}
+//	});
 	
-	bus.listen("layer-time-slider.selection", function(event, layerid, date) {
-		var tdLayerName = $("#layer-row-" + layerid + " .layer_name");
-		tdLayerName.find("span").remove();
-		$("<span/>").html(" (" + date.getUTCFullYear() + ")").appendTo(tdLayerName);
-
-	});
+//	bus.listen("layer-time-slider.selection", function(event, layerid, date) {
+//		var tdLayerName = $("#layer-row-" + layerid + " .layer_name");
+//		tdLayerName.find("span").remove();
+//		$("<span/>").html(" (" + date.getUTCFullYear() + ")").appendTo(tdLayerName);
+//
+//	});
+	
+	// returns settings layer
+	return {
+		layerRowPrefix				: layerRowPrefix ,
+		layerRowSettingsPrefix		: layerRowSettingsPrefix
+	};
 });
