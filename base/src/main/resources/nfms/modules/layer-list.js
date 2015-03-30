@@ -115,7 +115,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 			content.attr( 'aria-labelledby' , headingId );
 			panel.append( content );
 			
-			var panelBody = $( '<div class="panel-body group-panel-body no-padding" />' );
+			var panelBody = $( '<div class="panel-body group-panel-body" />' );
 			content.append( panelBody );
 			
 //			panelBody.append( '<div class="row separator"><div class="col-md-10 col-md-offset-1"><hr></div></div>' );

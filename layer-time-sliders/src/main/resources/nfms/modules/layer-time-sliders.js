@@ -10,9 +10,12 @@ define([ "jquery" , "message-bus" , "map", "layer-list", "jquery-ui" ], function
 			var timestamps = getTimestamps( layerInfo );
 		
 			if (timestamps.length > 0) {
+				
+				aTimestampsLayers[layerInfo.id]=timestamps;
+				
 				// add badge to layer button
 				var layerRow			= $( '#' + layerList.layerRowPrefix + layerInfo.id );
-				var layerRowSettings	= $( '#' + layerList.layerRowSettingsPrefix + layerInfo.id );//.find( '.layer-settings-container' );
+				var layerRowSettings	= $( '#' + layerList.layerRowSettingsPrefix + layerInfo.id );
 				
 				var div 				= $( '<div class="layer-badge-timestamp" />' );
 				layerRow.find( '.layer button' ).append( div );
@@ -33,6 +36,7 @@ define([ "jquery" , "message-bus" , "map", "layer-list", "jquery-ui" ], function
 				row.append( colIcon );
 				
 				var colSlider = $( '<div class="col-md-11 row-layer-settings-slider no-padding" />' );
+				colSlider.addClass( 'layer-time-slider-'+layerInfo.id );
 				row.append( colSlider );
 
 				
@@ -45,6 +49,11 @@ define([ "jquery" , "message-bus" , "map", "layer-list", "jquery-ui" ], function
 								'time' : date.toISO8601String()
 							});
 							bus.send("layer-time-slider.selection", [layerInfo.id,date]);
+							
+							layerBadgeTimestamp.stop().animate( {opacity:'0'} , 100 , function(e){
+								layerBadgeTimestamp.text( date.getLocalizedDate() );
+								layerBadgeTimestamp.animate( {opacity:'1'} , 200 );
+							});
 						});
 					},
 					slide : function(event, ui) {
@@ -74,9 +83,9 @@ define([ "jquery" , "message-bus" , "map", "layer-list", "jquery-ui" ], function
 			if (wmsLayer.hasOwnProperty("timestamps")) {
 				for (var i = 0; i < wmsLayer.timestamps.length; i++) {
 					var d = new Date();
-					console.log( wmsLayer.timestamps[i] );
+//					console.log( wmsLayer.timestamps[i] );
 					d.setISO8601(wmsLayer.timestamps[i]);
-					console.log( d );
+//					console.log( d );
 					timestamps.push(d);
 				}
 			}
@@ -145,32 +154,33 @@ define([ "jquery" , "message-bus" , "map", "layer-list", "jquery-ui" ], function
 //
 //	});
 	
-	// let's see if it has to be implemented
-//	bus.listen("time-slider.selection",function(obj,d){
-//
+	bus.listen("time-slider.selection",function(obj,d){
+
 //		console.log(aTimestampsLayers);
-//		$.each(aTimestampsLayers, function(layerid,steps){
-//			var position_i=-1,position_min=-1,position_max=-1;
-//			console.log(layerid);
-//			$.each(steps,function(position,date_value){
-//				if (date_value.valueOf()==d.valueOf()) {
+		$.each(aTimestampsLayers, function(layerid,steps){
+			var position_i= -1 , 
+				position_min = -1 , 
+				position_max = -1;
+
+			$.each(steps,function(position,date_value){
+				if (date_value.valueOf()==d.valueOf()) {
 //					position_i=position;
-//					
-//				} else if (date_value.valueOf()<d.valueOf()) {
-//					position_min=position;
-//					//console.log(date_value+' menor');
-//				}else{
-//					if (position_max==-1) {position_max=position;};
-//					//console.log(date_value+' mayor');
-//				};
-//				});
+					
+				} else if (date_value.valueOf()<d.valueOf()) {
+					position_min=position;
+					//console.log(date_value+' menor');
+				}else{
+					if (position_max==-1) {position_max=position;};
+					//console.log(date_value+' mayor');
+				};
+				});
 //			console.log(layerid+' -> '+position_i+', '+position_min+', '+position_max);
-//			var pos;
-//			if (position_i>-1)
-//				{pos=position_i;}
-//			else{ pos=position_min;}
-//			$('#layer_time_slider_'+layerid).slider('value',pos);
-//		}
-//		);
-//	});
+			var pos;
+			if (position_i>-1)
+				{pos=position_i;}
+			else{ pos=position_min;}
+			$(  '.layer-time-slider-'+layerid ).slider( 'value' , pos );
+		}
+		);
+	});
 });

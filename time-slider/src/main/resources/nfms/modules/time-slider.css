@@ -1,31 +1,43 @@
-#time_slider_pane {
-	z-index: 2000;
-	position: absolute;
-	top: 8px;
-	left: 220px;
-	width: 180px;
-	font-size: 60%;
-	font-size: 11px;
-	border: 1px solid #333;
-	height: 30px;
-	background-color: #456;
+div.time-slider-container {
+	padding: 15px 10px !important;
+	border: 1px solid rgba(22, 22, 22, 0.25);
+	background-color: rgba(40, 34, 34, 0.2) !important;
+}
+.time-slider  {
+	border-radius: 1px;
+	/* padding-top: 5px !important; */
+	border: 1px solid rgba(50, 153, 187, 0.3);
+	background: none;
+	background-color: rgba(50, 153, 187, 0.3);
+	height: 6px;
+	margin-top: 4px;
 }
 
-#time_slider_label {
-	position: absolute;
-	color: #fff;
-	padding: 0;
-	margin: 0;
-	left: 10px;
-	top: 8px;
-	font-size: 11px;
+.time-slider  a.ui-slider-handle {
+  border-radius: 1px;
+  cursor: pointer;
+  /* color: rgba(50, 153, 187, 0.3); */
+  background: rgba(50, 153, 187, 0.7);
+  width: 10px;
+  height: 17px;
+  position: absolute;
+  top: -6px;
+  border: none;
+}
+.time-slider  a.ui-slider-handle:hover {
+	background: rgba(50, 153, 187, 0.9);
+}
+.time-slider  a.ui-slider-handle.ui-state-active {
+	background: rgba( 255,153,0 , 0.5 );
 }
 
-#time_slider {
-	position: absolute;
-	left: 100px;
-	top: 10px;
-	width: 60px;
-	padding: 0;
-	margin: 0;
+.time-slider-label {
+	padding: 0px 0px 0px 4px !important;
+	font-size: 10px;
+}
+.time-slider-label span {
+	padding-left: 3px;
+}
+.time-slider-label i {
+	font-size: 12px;
 }

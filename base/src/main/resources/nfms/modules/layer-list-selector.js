@@ -5,9 +5,15 @@ define([ "jquery", "message-bus", "layout", "customization", "i18n", "jquery-ui"
 	var divsById = [];
 
 	var row 		= $( '<div class="row no-margin"></div>' );
-	var container	= $( '<div class="col-md-3 col-sm-3 col-xs-3 panel-group layers-container open" id="group-accordion" role="tablist" aria-multiselectable="true"></div>' );
-	row.append( container );
 	layout.container.append( row );
+//	var container	= $( '<div class="col-md-3 col-sm-3 col-xs-3 panel-group layers-container open" id="group-accordion" role="tablist" aria-multiselectable="true"></div>' );
+//	row.append( container );
+	var col	= $( '<div class="col-md-3 col-sm-3 col-xs-3"></div>' );
+	row.append( col );
+	var rowContainer = $( '<div class="row no-margin"></div>' );
+	col.append( rowContainer );
+	var container	= $( '<div class="col-md-12 col-sm-12 col-xs-12 panel-group layers-container open" id="group-accordion" role="tablist" aria-multiselectable="true"></div>' );
+	rowContainer.append( container );
 	
 	var addToggleLayersSection = function(){
 		var row = $( '<div class="row no-margin no-padding" />' );
@@ -111,7 +117,8 @@ define([ "jquery", "message-bus", "layout", "customization", "i18n", "jquery-ui"
 			
 		} else {
 			container.addClass( 'open' );
-			container.animate( {width: $( document ).width() / 4 }, 600 );
+//			container.animate( {width: $( document ).width() / 4 }, 600 );
+			container.animate( {width: container.parent().width() }, 600 );
 			
 			var panel = container.children( '.panel' );
 			panel.animate( {opacity: "1"}, 400 );

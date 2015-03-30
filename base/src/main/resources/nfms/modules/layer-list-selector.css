@@ -26,6 +26,7 @@
 .layers-container .group-panel-body {
 /*   border-top: 1px solid #ddd; */
 	border	: none !important;
+	padding: 3px 0px 20px 5px;
 }
 
 .layers-container button.btn-default {
