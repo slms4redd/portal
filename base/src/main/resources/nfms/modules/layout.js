@@ -2,10 +2,10 @@ define([ "jquery" ], function($) {
 
 	var body 			= $( "body" );
 	
-	var divContainer	= $( '<div class="container-fluid no-padding height100"></div>' );
+	var divContainer	= $( '<div class="container-fluid height100"></div>' );
 	body.append( divContainer );
 
-	var divHeader 		= $( '<div class="row header no-margin" ></div>' );
+	var divHeader 		= $( '<div class="row header" ></div>' );
 	divContainer.append( divHeader );
 	//	var divCenter = $("<div/>").attr("id", "center");
 //	body.append(divCenter);

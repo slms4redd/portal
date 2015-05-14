@@ -1,0 +1,66 @@
+div.dashboard {
+	opacity: 0.9;
+	z-index: 1100;
+	position: relative;
+	/* 	width: 90px; */
+	/* 	position: fixed; */
+	/* 	right: 0px; */
+	/* 	height: 60px !important; */
+}
+
+div.dashboard-toggle {
+	background-color: rgba(66, 66, 66, 0.85);
+/* 	border-left: 1px solid rgba(22, 22, 22, 0.25); */
+/* 	border-top: 1px solid rgba(22, 22, 22, 0.25); */
+/* 	border-bottom: 1px solid rgba(22, 22, 22, 0.25); */
+/* 	border-radius: 3px; */
+	height: 60px;
+	padding-top: 12px !important;
+	text-align: center;
+}
+
+div.dashboard-header {
+	padding: 15px 10px;
+	text-align: center;
+	height: 60px;
+}
+
+div.dashboard-container {
+	background-color: rgba(66, 66, 66, 0.85);
+}
+
+button.layer-label {
+	pointer-events: none;
+	cursor: default;
+	min-width: 200px;
+}
+
+.dashboard-content-selector {
+	padding: 0px 50px;
+}
+
+div.dashboard-header ul.dropdown-menu {
+	min-width: 200px;
+	background-color: rgba(40, 34, 34, 0.96);
+	border-radius: 3px;
+	top: 90%;
+}
+div.dashboard-header button {
+	padding: 6px 12px !important;
+}
+
+div.dashboard-header ul.dropdown-menu button, 
+div.dashboard-header ul.dropdown-menu button:focus {
+	border: none;
+	background: none;
+	text-align: left;
+/* 	background-color: rgba(40, 34, 34, 0.96); */
+}
+
+div.dashboard-header ul.dropdown-menu button:hover {
+	background-color: rgba(66, 66, 66, 0.4);
+}
+div.dashboard-content-selector button i{
+  position: relative;
+  left: -5%;
+}

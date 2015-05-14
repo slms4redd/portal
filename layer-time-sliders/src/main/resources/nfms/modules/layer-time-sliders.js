@@ -28,14 +28,14 @@ define([ "jquery" , "message-bus" , "map", "layer-list", "jquery-ui" ], function
 			
 			
 				// add time-slider row
-				var row = $( '<div class="row row-layer-settings layer-time-slider" />' );
+				var row = $( '<div class="row layer-time-slider" />' );
 				layerRowSettings.append( row );
 				
-				var colIcon = $( '<div class="col-md-1 row-layer-settings-icon no-padding" />' );
+				var colIcon = $( '<div class="col-md-offset-1 col-md-1 row-layer-settings-icon no-padding" />' );
 				colIcon.append( '<i class="fa fa-calendar"></i>' );
 				row.append( colIcon );
 				
-				var colSlider = $( '<div class="col-md-11 row-layer-settings-slider no-padding" />' );
+				var colSlider = $( '<div class="col-md-9 row-layer-settings-slider no-padding" />' );
 				colSlider.addClass( 'layer-time-slider-'+layerInfo.id );
 				row.append( colSlider );
 

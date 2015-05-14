@@ -3,7 +3,7 @@
 	z-index: 1001;
 	float: right;
   	bottom: 60px;
-  	right: 2px;
+  	right: 0px;
 }
 .zoom-bar button.btn-default {
 	font-size : 16px;

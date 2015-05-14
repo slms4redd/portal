@@ -20,16 +20,16 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 
 	divLayers = $("<div/>").attr("id", "all_layers");
 	divLayers.addClass("ui-accordion-icons");
-	divLayers.accordion({
-		"animate" : false,
-		"heightStyle" : "content",
-		/*
-		 * Collapse all content since otherwise the accordion sets the 'display'
-		 * to 'block' instead than to 'table'
-		 */
-		"collapsible" : true,
-		"active" : false
-	});
+//	divLayers.accordion({
+//		"animate" : false,
+//		"heightStyle" : "content",
+//		/*
+//		 * Collapse all content since otherwise the accordion sets the 'display'
+//		 * to 'block' instead than to 'table'
+//		 */
+//		"collapsible" : true,
+//		"active" : false
+//	});
 	layerListSelector.registerLayerPanel("all_layers_selector", i18n.layers, divLayers);
 	//	END OLD
 	
@@ -38,9 +38,12 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 	
 	bus.listen("add-group", function(event, groupInfo) {
 		
+		// OLD 
 		var divTitle, tblLayerGroup, parentId, tblParentLayerGroup, divContent;
 		divTitle = $("<div/>").html(groupInfo.name).disableSelection();
 		
+		tblLayerGroup = $("<table/>");
+		tblLayerGroup.attr("id", "group-content-table-" + groupInfo.id);
 		
 		// TODO
 //		if (groupInfo.hasOwnProperty("infoLink")) {
@@ -63,43 +66,89 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 //			divTitle.append(infoButton);
 //		}
 
-		tblLayerGroup = $("<table/>");
-		tblLayerGroup.attr("id", "group-content-table-" + groupInfo.id);
-
 		if (groupInfo.hasOwnProperty("parentId")) {
 			
+			
+//			var grp = layerListSelector.layersContainer.find( '.'+ groupCollapsePrefix + groupInfo.parentId );
+//			var row = $( '<div class="row"/>' );
+//			grp.append( row );
+//			var col					= $( '<div class="col-md-12 sub-group-heading"></div>' );
+//			col.html( groupInfo.name );
+//			row.append( col );
+//			
+//			var rowLayers = $( '<div class="row"/>' );
+//			grp.append( rowLayers );
+//			
+//			var colLayers	= $( '<div class="col-md-12" />' );
+//			colLayers.addClass( groupCollapsePrefix + groupInfo.id );
+//			rowLayers.append( colLayers );
+			
+			
+			
 			var groupContainer		= $( "#" + groupCollapsePrefix + groupInfo.parentId );
-			var subGroupContainer	= $( '<div class="row no-margin no-padding">' );
+			var subGroupContainer	= $( '<div class="col-md-12 no-padding">' );
 			subGroupContainer.attr( 'id' , groupCollapsePrefix + groupInfo.id );
 			var subGroupPanel		= $( '<div class="panel-body no-padding">' );
 			subGroupContainer.append( subGroupPanel );
 			groupContainer.find( '.group-panel-body' ).append( subGroupContainer );
 			
-			var row					= $( '<div class="row no-margin no-padding" />' );
+			var row					= $( '<div class="row" />' );
 			subGroupPanel.append( row );
-			var col					= $( '<div class="col-md-12 sub-group-heading"></div>' );
+			var col					= $( '<div class="col-md-11 col-md-offset-1 sub-group-heading"></div>' );
 			col.html( groupInfo.name );
 			row.append( col );
-			
-			// OLD 
-			parentId = groupInfo.parentId;
-			tblParentLayerGroup = $("#group-content-table-" + parentId);
-			if (tblParentLayerGroup.length == 0) {
-				bus.send("error", "Group " + groupInfo.name + " references nonexistent group: " + parentId);
-			}
-			tblParentLayerGroup.append(divTitle).append(tblLayerGroup);
+//			
+//			// OLD 
+//			parentId = groupInfo.parentId;
+//			tblParentLayerGroup = $("#group-content-table-" + parentId);
+//			if (tblParentLayerGroup.length == 0) {
+////				bus.send("error", "Group " + groupInfo.name + " references nonexistent group: " + parentId);
+//			}
+//			tblParentLayerGroup.append(divTitle).append(tblLayerGroup);
 			
 		} else {
+//			var headingId	= groupHeadingPrefix + groupInfo.id;
+//			var row = $( '<div class="row"/>' );
+//			row.addClass( groupHeadingPrefix + groupInfo.id );
+//			layerListSelector.layersContainer.append( row );
+//			
+//			var colLeft	= $( '<div class="col-md-1 col-sm-1" />' );
+//			row.append( colLeft );
+//			
+//			var colBtn	= $( '<div class="col-md-10 col-sm-10 no-padding group-heading-btn" />' );
+//			row.append( colBtn );
+//			var btnGroup = $( '<button class="btn btn-default" />' );
+//			btnGroup.click( function(){
+//				bus.send( "group-toggle-visibility",  groupInfo.id );
+//			});
+//			btnGroup.append( '<i class="fa fa-caret-right" style="padding: 0 5px 3px 0; font-size:10px;opacity: 0.5;"></i>' );
+//			btnGroup.append( groupInfo.name );
+//			colBtn.append( btnGroup );
+//			var colBadge	= $( '<div class="col-md-1 col-sm-1 no-padding group-count" />' );
+//			row.append( colBadge );
+//
+//			
+//			var rowLayers = $( '<div class="row"/>' );
+//			layerListSelector.layersContainer.append( rowLayers );
+//			
+//			var colLayers	= $( '<div class="col-md-11 col-md-offset-1 group-content" />' );
+//			colLayers.addClass( groupCollapsePrefix + groupInfo.id );
+//			rowLayers.append( colLayers );
+//			
+			
 			// see http://getbootstrap.com/javascript/#collapse-example-accordion
 			var panel	= $( '<div class="panel width100" />' );
 			layerListSelector.layersContainer.append( panel );
+			
 			
 			var headingId	= groupHeadingPrefix + groupInfo.id;
 			var heading 	= $( '<div class="panel-heading" role="tab" />' ).attr( 'id' , headingId ) ;
 			panel.append( heading );
 			
-			var h4 		= $( '<h4 class="panel-title" />' );
-			heading.append( h4 );
+			var rowHeading = $( '<div class="row"/>' );
+			heading.append( rowHeading );
+			var h4 		= $( '<div class="col-md-10 col-md-offset-1 panel-title no-padding" />' );
+			rowHeading.append( h4 );
 
 			var collapseId 	= groupCollapsePrefix + groupInfo.id;
 			var btn			= $( '<button class="btn btn-default" data-toggle="collapse" data-parent="#group-accordion" aria-expanded="true" />' );
@@ -118,36 +167,35 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 			var panelBody = $( '<div class="panel-body group-panel-body" />' );
 			content.append( panelBody );
 			
-//			panelBody.append( '<div class="row separator"><div class="col-md-10 col-md-offset-1"><hr></div></div>' );
 			
 			
 			
 			
-			divLayers.append(divTitle);
-			divContent = $("<div/>").css("padding", "10px 2px 10px 2px");
-			divContent.append(tblLayerGroup);
-			divLayers.append(divContent).accordion("refresh");
 		}
 	});
 
 	bus.listen("add-layer", function(event, portalLayer) {
-		var groupContainer	= $( "#" + groupCollapsePrefix + portalLayer.groupInfo.id );
+		var group	= $( "#" + groupCollapsePrefix + portalLayer.groupInfo.id );
+//		var group		= $( "." + groupCollapsePrefix + portalLayer.groupInfo.id );
 		
-		if (groupContainer.length == 0) {
+		if (group.length == 0) {
 			
 			bus.send( "error", "Layer " + portalLayer.label + " references nonexistent group: " + portalLayer.groupInfo.id );
 			
 		} else {
-			var groupContainerBody	= groupContainer.find( '.panel-body' );
-			var row					= $( '<div class="row row-layer no-margin no-padding" />' );
+			var groupContainerBody	= group.find( '.panel-body' );
+			
+			
+			
+			var row					= $( '<div class="row row-layer" />' );
 			row.attr( 'id' , layerRowPrefix + portalLayer.id );
 			groupContainerBody.append( row );
 //			row.insertBefore( $(":last-child", groupContainerBody) );
 //			row.insertBefore( groupContainerBody.find(".separator") );
-			var settings				= $( '<div class="col-md-1 no-padding settings" />' );
+			var settings				= $( '<div class="col-md-1 settings no-padding" />' );
 			row.append( settings );
 			
-			var layer				= $( '<div class="col-md-10 no-padding layer" />' );
+			var layer				= $( '<div class="col-md-10 layer" />' );
 			row.append( layer );
 //			var action				= $( '<div class="col-md-1 no-padding action" />' );
 //			row.append( action );
@@ -181,19 +229,19 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 
 				
 				// add settings row
-				var rowLayerSettings	= $( '<div class="row row-layers-settings no-margin no-padding" />' );
+				var rowLayerSettings	= $( '<div class="row row-layers-settings" />' );
 				rowLayerSettings.attr( 'id' , layerRowSettingsPrefix + portalLayer.id );
 				groupContainerBody.append( rowLayerSettings );
 				
 				// add transparency settings row
-				var rowSettings = $( '<div class="row row-layer-settings layer-transparency" />' );
+				var rowSettings = $( '<div class="row layer-transparency" />' );
 				rowLayerSettings.append( rowSettings );
 				
-				var colSettingsIcon = $( '<div class="col-md-1 row-layer-settings-icon no-padding" />' );
+				var colSettingsIcon = $( '<div class="col-md-offset-1 col-md-1 row-layer-settings-icon no-padding" />' );
 				colSettingsIcon.append( '<i class="fa fa-adjust"></i>' );
 				rowSettings.append( colSettingsIcon );
 				
-				var colSettingsOpacitySlider = $( '<div class="col-md-11 row-layer-settings-slider no-padding" />' );
+				var colSettingsOpacitySlider = $( '<div class="col-md-9 row-layer-settings-slider no-padding" />' );
 				rowSettings.append( colSettingsOpacitySlider );
 
 				colSettingsOpacitySlider.slider({
@@ -219,7 +267,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 		var tblLayerGroup, trLayer, tdLegend, tdVisibility, divCheckbox, tdName, tdInfo, aLink, inlineLegend;
 		tblLayerGroup = $( "#group-content-table-" + portalLayer.groupInfo.id );
 		if ( tblLayerGroup.length == 0 ){
-			bus.send("error", "Layer " + portalLayer.label + " references nonexistent group: " + portalLayer.groupInfo.id);
+//			bus.send("error", "Layer " + portalLayer.label + " references nonexistent group: " + portalLayer.groupInfo.id);
 		} else {
 			trLayer = $("<tr/>").attr("id", "layer-row-" + portalLayer.id).addClass("layer_row");
 
@@ -382,7 +430,9 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 			}
 		}
 		activeLayersCountMap[ groupId ] = count;
+//		var span = $( '.' + groupHeadingPrefix + groupId ).find( '.group-count' );
 		var span = $( '#' + groupHeadingPrefix + groupId ).find( 'button span[class=badge]' );
+
 		span.stop().animate( {opacity: "0"}, 400 , function(){
 			span.html( count );
 			span.animate( {opacity: "1"}, 200);

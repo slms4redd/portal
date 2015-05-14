@@ -4,26 +4,36 @@ define([ "jquery", "message-bus", "layout", "customization", "i18n", "jquery-ui"
 
 	var divsById = [];
 
-	var row 		= $( '<div class="row no-margin"></div>' );
+	var row 		= $( '<div class="row height80"></div>' );
 	layout.container.append( row );
 //	var container	= $( '<div class="col-md-3 col-sm-3 col-xs-3 panel-group layers-container open" id="group-accordion" role="tablist" aria-multiselectable="true"></div>' );
 //	row.append( container );
-	var col	= $( '<div class="col-md-3 col-sm-3 col-xs-3"></div>' );
+	
+	var col	= $( '<div class="col-md-3 col-sm-3 col-xs-3 height100"></div>' );
 	row.append( col );
-	var rowContainer = $( '<div class="row no-margin"></div>' );
+	var rowContainer = $( '<div class="row height100" style="  overflow: hidden;"></div>' );
 	col.append( rowContainer );
-	var container	= $( '<div class="col-md-12 col-sm-12 col-xs-12 panel-group layers-container open" id="group-accordion" role="tablist" aria-multiselectable="true"></div>' );
+	var container	= $( '<div class="col-md-12 col-sm-12 col-xs-12 layers-container no-padding open" id="group-accordion" role="tablist" aria-multiselectable="true"></div>' );
 	rowContainer.append( container );
 	
+	var dashboardCol = $( '<div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-4 height100"></div>' );
+	row.append( dashboardCol );
+	
+	$( window ).resize(function() {
+		if( container.hasClass( 'open' ) ) {
+			container.stop().animate( {width: container.parent().width() }, 300 );
+		}
+	});
+	
 	var addToggleLayersSection = function(){
-		var row = $( '<div class="row no-margin no-padding" />' );
+		var row = $( '<div class="row no-margin" />' );
 		container.append( row );
-		var col	= $( '<div class="col-md-12 no-margin no-padding" />' );
+		var col	= $( '<div class="col-md-1 col-md-offset-11 no-padding" />' );
 		row.append( col );
 		var btnDiv	= $( '<div class="toggle-layers" />' );
 		col.append( btnDiv );
 		
-		var btn		= $( '<button class="btn">'+iconOpened+'</button>' );
+		var btn		= $( '<button class="btn btn-collapse no-padding">'+iconOpened+'</button>' );
 		btnDiv.append( btn );
 		
 		btn.click( function(e){
@@ -97,16 +107,16 @@ define([ "jquery", "message-bus", "layout", "customization", "i18n", "jquery-ui"
 	});
 	
 	bus.listen( "layers-toggle-visibility", function( event ){
-		var btn = container.find( '.toggle-layers button' );
+		var toggleLayersSection = container.find( '.toggle-layers' );
+		var btn = toggleLayersSection.find( 'button' );
 		if( container.hasClass( 'open' ) ) {
 			container.removeClass( 'open' );
 			
-//			container.slide( {direction:'left'} );
-			container.animate( {width: "45px"}, 600 );
-			
+//			container.animate( {width: "45px"}, 600 );
+			container.animate( {'left': '-' + (container.parent().width() - toggleLayersSection.width() ) +'px' }, 500 );
+
 			var panel = container.children( '.panel' );
 			panel.animate( {opacity: "0"}, 500 );
-//			panel.find( '.in' ).animate( {opacity: "0"}, 500 );
 			
 			setTimeout( function(){
 				btn.empty();
@@ -117,12 +127,11 @@ define([ "jquery", "message-bus", "layout", "customization", "i18n", "jquery-ui"
 			
 		} else {
 			container.addClass( 'open' );
-//			container.animate( {width: $( document ).width() / 4 }, 600 );
-			container.animate( {width: container.parent().width() }, 600 );
-			
+//			container.animate( {width: container.parent().width() }, 600 );
+			container.animate( {'left': '0px' }, 500 );
+
 			var panel = container.children( '.panel' );
 			panel.animate( {opacity: "1"}, 400 );
-//			panel.find( '.in' ).animate( {opacity: "1"}, 0 );				
 
 			setTimeout( function(){
 				btn.empty();
@@ -133,7 +142,8 @@ define([ "jquery", "message-bus", "layout", "customization", "i18n", "jquery-ui"
 	});
 	
 	return {
-		"registerLayerPanel" 	: registerLayerPanel ,
-		"layersContainer"		: container
+		"registerLayerPanel" 		: registerLayerPanel ,
+		"layersContainer"			: container ,
+		"layersDashboardContainer"	: dashboardCol 
 	};
 });

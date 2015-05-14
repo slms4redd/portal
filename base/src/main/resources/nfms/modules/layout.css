@@ -1,4 +1,9 @@
 @import url(http://fonts.googleapis.com/css?family=Roboto:400,100);
+body {
+    -moz-user-select: -moz-none;
+    -webkit-user-select: none;
+	overflow: hidden;
+}
 
 html,body {
 /* 	margin: 0px; */
@@ -15,12 +20,22 @@ a {
 }
 button{
 	font-family: 'Roboto', sans-serif !important;
-}
-body {
-    -moz-user-select: -moz-none;
-    -webkit-user-select: none;
+	font-weight: 100 !important;
 }
 
+label.control-label {
+	font-weight: 100;
+	color : #E9E9E9;
+}
+input.form-control, select.form-control, textarea.form-control {
+	border-radius : 0px;
+	border: none;
+	background-color: rgba(157, 157, 157, 0.20);
+	color: #E9E9E9;
+}
+option {
+	font-weight: 100;
+}
 /* #center { */
 /* 	height: 100%; */
 /* } */
@@ -56,12 +71,13 @@ body {
 .height100 {
 	height: 100% !important;
 }
-
+.height80 {
+	height: 80% !important;
+}
 .width100 {
 	width: 100% !important;
 }
-
-/* default button style */
+/* button transparent */
 .btn-transparent,
 .btn-transparent:active,
 .btn-transparent:focus {
@@ -72,6 +88,7 @@ body {
 	color : rgb(50, 153, 187);
 }
 
+/* default button style */
 button.btn-default ,
 a.btn-default ,
 button.btn-default:active ,
@@ -80,13 +97,10 @@ button.btn-default:focus ,
 a.btn-default:focus {
 	color: #E9E9E9;
 	background-color: rgba(40, 34, 34, 0.7);
-	
 	border-radius: 0px;
 	border: 1px solid transparent;
 	font-size: 12px;
   	font-weight: 100 !important;
-/*   	letter-spacing: 0.05em; */
-  	
   	width : 100%;
 }
 
@@ -115,8 +129,68 @@ a.btn-default.active:hover {
 	border: 1px solid transparent;
 }
 
+/* collapsable button  */
+button.btn-collapse {
+	background-color: transparent;
+	padding: 2px 10px; 
+	font-size: 12px;
+  	opacity: 0.5;
+  	color: rgba(233, 233, 233, 0.9);
+}
+button.btn-collapse:hover {
+	color: rgba(50, 153, 187, 0.99);
+}
 
+/* button group  */
+.btn-group button {
+	border: 1px solid rgba(22, 22, 22, 0.15);
+	color: #E9E9E9;
+	background-color: rgba(40, 34, 34, 0.7);
+}
+.btn-group button:hover,
+.btn-group button:focus {
+	color: #E9E9E9;
+}
 
+.btn-group > .btn + .dropdown-toggle {
+	padding: 14px 8px;
+}
+
+/* Slider  */
+div.ui-slider  {
+	border-radius: 1px;
+	/* padding-top: 5px !important; */
+	border: 1px solid rgba(50, 153, 187, 0.3);
+	background: none;
+	background-color: rgba(50, 153, 187, 0.3);
+	height: 6px;
+	margin-top: 4px;
+}
+
+div.ui-slider a.ui-slider-handle {
+	border-radius: 20px;
+  cursor: pointer;
+  /* color: rgba(50, 153, 187, 0.3); */
+  background: rgba(50, 153, 187, 0.7);
+  width: 15px;
+  height: 15px;
+  position: absolute;
+  top: -5px;
+  border: 1px solid rgba(50, 153, 187, 0.9);
+}
+div.ui-slider a.ui-slider-handle:hover {
+	background: rgba(50, 153, 187, 0.9);
+}
+div.ui-slider a.ui-slider-handle.ui-state-active {
+	background: rgba( 255,153,0 , 0.5 );
+}
+
+/* nav bar */
+div.nav.nav-tabs > li > a {
+	color : #E9E9E9;
+	border-bottom: 1px solid rgba(40, 34, 34, 0.7);
+  	border-radius: 4px 4px 0 0;
+}
 
 /* OLD */
 .ui-front {

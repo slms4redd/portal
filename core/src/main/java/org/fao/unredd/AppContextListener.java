@@ -32,6 +32,8 @@ public class AppContextListener implements ServletContextListener {
 		servletContext.setAttribute("requirejs-paths", context.getNonRequirePathMap());
 		servletContext.setAttribute("requirejs-shims", context.getNonRequireShimMap());
 		servletContext.setAttribute("plugin-configuration", context.getConfigurationElements());
+		
+//		System.setProperty( "content.types.user.table", servletContext.getRealPath("/WEB-INF/default_config/content-types.properties") );
 	}
 
 	@Override

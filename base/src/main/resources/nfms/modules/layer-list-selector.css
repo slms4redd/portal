@@ -1,32 +1,38 @@
-.layers-container {
+div.layers-container {
 	background-color: rgba(66, 66, 66, 0.85);
 	opacity 		: 0.9;
 	position		: relative;
 	z-index			: 1100;	
-	height			: 80%;
+	max-height		: 100%;
 	color			: #E9E9E9;
-	margin			: 0 !important;
-/* 	margin			: 0 0 0 20px !important; */
-	padding			: 0 !important;
+	overflow		: auto;
 }
 
 .layers-container .panel,
 .layers-container .panel-heading {
 	background-color: transparent;
 	border-radius	: 0px !important;
+	padding			: 0 !important;
+	border			: none;
 }
-.layers-container > .panel{
-/* 	border-bottom	: 1px solid rgba(233, 233, 233, 0.21); */
-	padding-bottom	: 5px;
+.layers-container .row {
+	margin: 0px !important;
 }
+/* .layers-container .group-layers { */
+/* 	padding			: 10px 10px 10px 10px; */
+/* } */
 .layers-container .sub-group-heading {
-	padding			: 10px 0px 10px 35px;
+	padding			: 10px 0px 10px 18px;
 	font-size		: 13px;
 }
 .layers-container .group-panel-body {
-/*   border-top: 1px solid #ddd; */
-	border	: none !important;
-	padding: 3px 0px 20px 5px;
+	padding: 10px 0px !important;
+  	margin: 0px 10% !important;
+  	background-color: rgba(40, 34, 34, 0.35);
+  	border-top: none;
+  	border-left: 1px solid rgba(22, 22, 22, 0.25);
+  	border-bottom: 1px solid rgba(22, 22, 22, 0.25);
+  	border-right: 1px solid rgba(22, 22, 22, 0.25);
 }
 
 .layers-container button.btn-default {
@@ -55,21 +61,14 @@
   top: -2px;
 }
 .toggle-layers {
-	float: right;
-}
-.toggle-layers button {
-	background-color: transparent;
-	padding: 2px 10px; 
-	font-size: 12px;
-  	opacity: 0.5;
-}
-.toggle-layers button:hover {
-	color: rgba(50, 153, 187, 0.99);
+	text-align: center;
+	width: 100%;
+	padding: 5px 0px 10px 0px;
 }
 
 
-/* // OLD */
-#layers_container {
-	display: none;
-}
+/* /* // OLD */ */
+/* #layers_container { */
+/* 	display: none; */
+/* } */
 

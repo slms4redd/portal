@@ -1,6 +1,88 @@
-define([ "message-bus", "url-parameters", "map", "toolbar", "i18n", "jquery", "openlayers", "edit-controls" ],//
-function(bus, urlParameters, map, toolbar, i18n, $) {
+define([ "message-bus", "layout" , "url-parameters", "map", "toolbar", "i18n", "jquery", "openlayers", "edit-controls" ],//
+function(bus, layout, urlParameters, map, toolbar, i18n, $) {
+	
+	var container		= $( '<div class="feedback-container" />' );
+	layout.container.append( container );
+		
+	var feedback = $(  '<div class="feedback closed" />' );
+	container.append( feedback );	
+	
+	
+	var rowButton = $(  '<div class="row feedback-btn" />' );
+	feedback.append( rowButton );
+	
+	rowButton.append( '<div class="col-md-4 feedback-btn-bottom-border height100" />' );
+	var colButton = $(  '<div class="col-md-4 no-padding height100" />' );
+	rowButton.append( colButton );
+	rowButton.append( '<div class="col-md-4 feedback-btn-bottom-border height100" />' );
+	
+	var btn = $( '<button class="btn btn-default height100"><i class="fa fa-bullhorn"></i>  Feedback</button>' );
+	colButton.append( btn );
 
+	btn.click( function(){
+		var top 		= '90%';
+		var cssClass 	= 'closed';
+		if( feedback.hasClass( 'closed' ) ){
+			top 		= '0px';
+			cssClass 	= 'opened';
+		}
+		feedback.animate( {'top': top }, 400 );
+		feedback.removeClass().addClass( 'feedback ' + cssClass );
+	});	
+	
+	var rowForm = $(  '<div class="row feedback-form" />' );
+	feedback.append( rowForm );
+	
+	var colForm = $(  '<div class="col-md-12" />' );
+	rowForm.append( colForm );
+	
+	
+	var form 		= $( '<form class="form-horizontal"/>' );
+	colForm.append( form );
+	var fieldset	= $( '<fieldset/>' );
+	form.append( fieldset );
+	
+	var email = 
+		'<div class="form-group">'+
+	      '<label for="inputEmail" class="col-md-2 col-md-offset-1 control-label">Email*</label>'+
+	      '<div class="col-md-8">'+
+	        '<input type="text" class="form-control" id="inputEmail" placeholder="Email">'+
+	      '</div>'+
+	    '</div>';
+	fieldset.append( $(email) );
+	
+	var comments = 
+		'<div class="form-group">'+
+			'<label for="comments" class="col-md-2 col-md-offset-1 control-label">Comments*</label>'+
+			'<div class="col-md-8">'+
+				'<textarea class="form-control" rows="5" id="comments"></textarea>'+
+			'</div>'+
+		'</div>';
+	fieldset.append( $(comments) );
+	
+	var layerSelect = 
+		'<div class="form-group">'+
+			'<label for="layersFeedback" class="col-md-2 col-md-offset-1 control-label">Mention layers</label>'+
+			'<div class="col-md-8">'+
+				'<select multiple="" class="form-control" id="layersFeedback"/>'+
+			'</div>'+
+		'</div>';
+	fieldset.append( $(layerSelect) );
+
+	
+	var buttons = 
+		'<div class="form-group">'+
+			'<div class="col-md-3 col-md-offset-3">'+
+				'<button type="reset" class="btn btn-default active">Reset</button>'+
+			'</div>'+
+			'<div class="col-md-3">'+
+				' <button type="button" class="btn btn-default active feedback-submit-btn">Submit</button>'+
+			'</div>'+
+		'</div>';
+	fieldset.append( $(buttons) );
+	
+	
+	
 	var feedbackLayers = new Array();
 
 	// Dialog controls
@@ -163,6 +245,13 @@ function(bus, urlParameters, map, toolbar, i18n, $) {
 				name : portalLayer.label,
 				visibility : false
 			};
+			
+			var option = $( '<option />' );
+			option.attr( 'value' , portalLayer.id );
+			option.html( portalLayer.label );
+			
+			$( '#layersFeedback' ).append( option );
+			
 		}
 	});
 

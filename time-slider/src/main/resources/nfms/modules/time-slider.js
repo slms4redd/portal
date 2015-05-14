@@ -1,4 +1,4 @@
-define([ "jquery", "message-bus", "toolbar", "jquery-ui","layer-list-selector" ], function($, bus, toolbar, ui, layerList) {
+define([ "jquery", "message-bus", "toolbar", "jquery-ui-slider","layer-list-selector" ], function($, bus, toolbar, ui, layerList) {
 
 	var timestampSet = {};
 	
@@ -22,9 +22,9 @@ define([ "jquery", "message-bus", "toolbar", "jquery-ui","layer-list-selector" ]
 		var lastTimestampIndex = timestamps.length - 1;
 
 		if (timestamps.length > 0) {
-			var row = $( '<div class="row panel no-margin time-slider-container"></div>' );
+			var row = $( '<div class="row no-margin time-slider-container"></div>' );
 			layerList.layersContainer.append( row );
-			var colSlider = $( '<div class="col-md-8 time-slider"></div>' );
+			var colSlider = $( '<div class="col-md-7 col-md-offset-1 time-slider"></div>' );
 			row.append( colSlider );
 			var colLabel = $( '<div class="col-md-4 time-slider-label"><i class="fa fa-calendar"></i><span></span></div>' );
 			row.append( colLabel );

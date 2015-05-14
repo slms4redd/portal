@@ -1,8 +1,43 @@
-.row-layer .settings button.btn-transparent {
-	padding: 5px;
-	border: none;
+/* .group-heading-btn button{ */
+/* 	text-align: left; */
+/* } */
+/* .group-content { */
+/* 	display: none;	 */
+/* } */
+
+
+/* .row-layer .settings button.btn-transparent { */
+/* 	padding: 5px; */
+/* 	border: none; */
 /* 	remove after refactoring btn-default */
-	background-color: transparent;
+/* 	background-color: transparent; */
+/* } */
+/* settings css classes */
+.row-layers-settings {
+	height: auto;
+	display: none;
+	padding: 0px 15% 2% 15%;
+	margin: 0px !important;
+	top: -5px;
+  	position: relative;
+}
+
+.row-layers-settings .row {
+/* 	padding: 10px 20px; */
+	padding: 5px 0px;
+	border-left : 1px solid rgba(47, 117, 144, 0.3);
+	border-right : 1px solid rgba(47, 117, 144, 0.3);
+}
+.row-layers-settings .row:first-of-type {
+	padding-top : 8%;
+}
+.row-layers-settings .row:last-of-type {
+	padding-bottom : 8%;
+	border-bottom : 1px solid rgba(47, 117, 144, 0.3);
+	
+}
+.row-layers-settings .row-layer-settings-slider {
+	margin-top: 8px;
 }
 .row-layer .settings button.btn-transparent:hover {
 	background-color: transparent;
@@ -18,45 +53,8 @@
 	font-size: 12px;
 }
 
-/* settings css classes */
-.row-layers-settings {
-	height: auto;
-	display: none;
-}
-.row-layer-settings {
-	padding: 15px 25px;
-	margin: 0px !important;
-}
 
 .row-layer-settings-icon {
 	opacity: 0.5;
 }
 
-/* slider  refactor to make it global */
-div.row-layer-settings-slider  {
-	border-radius: 1px;
-	/* padding-top: 5px !important; */
-	border: 1px solid rgba(50, 153, 187, 0.3);
-	background: none;
-	background-color: rgba(50, 153, 187, 0.3);
-	height: 6px;
-	margin-top: 4px;
-}
-
-div.row-layer-settings-slider  a.ui-slider-handle {
-  border-radius: 1px;
-  cursor: pointer;
-  /* color: rgba(50, 153, 187, 0.3); */
-  background: rgba(50, 153, 187, 0.7);
-  width: 10px;
-  height: 17px;
-  position: absolute;
-  top: -6px;
-  border: none;
-}
-div.row-layer-settings-slider  a.ui-slider-handle:hover {
-	background: rgba(50, 153, 187, 0.9);
-}
-div.row-layer-settings-slider  a.ui-slider-handle.ui-state-active {
-	background: rgba( 255,153,0 , 0.5 );
-}
