@@ -3,10 +3,11 @@
 		{
 			"id" : "cycle-osm",
 			"type" : "osm",
+			"wmsName" : "osm:cycle-osm",
 			"osmUrls" : [
-				"http://a.tile.openstreetmap.org/${z}/${x}/${y}.png",
-				"http://b.tile.openstreetmap.org/${z}/${x}/${y}.png",
-				"http://c.tile.openstreetmap.org/${z}/${x}/${y}.png"
+				"http://b.tile.thunderforest.com/cycle/${z}/${x}/${y}.png",
+				"http://b.tile.thunderforest.com/cycle/${z}/${x}/${y}.png",
+				"http://b.tile.thunderforest.com/cycle/${z}/${x}/${y}.png"
 			]
 		},
 		{
@@ -15,53 +16,50 @@
 			"wmsName" : "unredd:blue_marble",
 			"imageFormat" : "image/jpeg",
 			"visible" : true
-		}, {
-			"id" : "nexrad",
-			"baseUrl" : "http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r-t.cgi?",
-			"wmsName" : "nexrad-n0r-wmst",
-			"imageFormat" : "image/png",
-			"visible" : true,
-			"wmsTime" : "2010-03-01T00:00,2010-03-02T00:00,2010-03-03T00:00"
-		}, {
-			"id" : "forestClassification",
-			"label" : "${facet_forest_classification}",
-			"baseUrl" : "http://demo1.geo-solutions.it/diss_geoserver/gwc/service/wms",
-			"wmsName" : "unredd:drc_forest_classification",
+		},
+		{
+			"id": "jica",
+			"label": "Jica",
+			"baseUrl": "http://178.33.8.123/stg_geoserver/wms",
+			"wmsTime": "1990-01-01T00:00:00.000Z,1995-01-01T00:00:00.000Z,2000-01-01T00:00:00.000Z,2005-01-01T00:00:00.000Z,2010-01-01T00:00:00.000Z",
+			"wmsName": "unredd:jica",
+			"imageFormat": "image/png8",
+			"visible": true,
+			"queryable" : true
+		},
+		{
+			"id" : "commune",
+			"baseUrl" : "http://178.33.8.123/diss_geoserver/wms",
+			"wmsName" : "unredd:commune",
 			"imageFormat" : "image/png8",
 			"visible" : true,
-			"legend" : "forest_classification.png",
-			"sourceLink" : "http://osfac.net/facet.html",
-			"sourceLabel" : "FACET"
-		}, {
-			"id" : "forest_mask",
-			"label" : "${forest_mask}",
-			"baseUrl" : "http://demo1.geo-solutions.it/diss_geoserver/wms",
-			"wmsName" : "unredd:drc_forest_mask_mosaic",
+			"queryable" : true
+		} ,
+		{
+			"id" : "district",
+			"baseUrl" : "http://178.33.8.123/diss_geoserver/wms",
+			"wmsName" : "unredd:district",
 			"imageFormat" : "image/png8",
 			"visible" : true,
-			"legend" : "forest_mask.png",
-			"sourceLink" : "http://osfac.net/facet.html",
-			"sourceLabel" : "FACET",
-			"wmsTime" : "2000-01-01T00:00:00.000Z,2005-01-01T00:00:00.000Z,2010-01-01T00:00:00.000Z"
-		}, {
-			"id" : "forestClassification2",
-			"label" : "grouped facet forest classification",
-			"baseUrl" : "http://demo1.geo-solutions.it/diss_geoserver/unredd/wms",
-			"wmsName" : "drc_forest_classification",
+			"queryable" : true
+		} ,
+		{
+			"id" : "province",
+			"baseUrl" : "http://178.33.8.123/diss_geoserver/wms",
+			"wmsName" : "unredd:province",
+			"imageFormat" : "image/png8",
 			"visible" : true,
-			"legend" : "forest_classification.png",
-			"sourceLink" : "http://osfac.net/facet.html",
-			"sourceLabel" : "FACET2"
-		}, {
-			"id" : "forest_mask2",
-			"label" : "Grouped forest mask",
-			"baseUrl" : "http://demo1.geo-solutions.it/diss_geoserver/unredd/wms",
-			"wmsName" : "drc_forest_mask_mosaic",
+			"queryable" : true
+		} ,
+		{
+			"id" : "ecoregion",
+			"baseUrl" : "http://178.33.8.123/diss_geoserver/wms",
+			"wmsName" : "unredd:ecoregion",
+			"imageFormat" : "image/png8",
 			"visible" : true,
-			"legend" : "forest_mask.png",
-			"sourceLink" : "http://osfac.net/facet.html",
-			"sourceLabel" : "FACET2"
-		}, {
+			"queryable" : true
+		} ,
+		{
 			"id" : "countryBoundaries",
 			"baseUrl" : "http://demo1.geo-solutions.it/diss_geoserver/wms",
 			"wmsName" : "unredd:drc_boundary",
@@ -70,90 +68,100 @@
 			"sourceLink" : "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
 			"sourceLabel" : "WRI",
 			"queryable" : true
-		}, {
-			"id" : "provinces",
-			"baseUrl" : "http://demo1.geo-solutions.it/diss_geoserver/wms",
-			"wmsName" : "unredd:drc_provinces",
-			"imageFormat" : "image/png8",
-			"visible" : false,
-			"sourceLink" : "http://www.wri.org/publication/interactive-forest-atlas-democratic-republic-of-congo",
-			"sourceLabel" : "WRI",
-			"queryable" : true
-		} ,
-		
+		},
 		{
-			"id": "intactForest",
-			"label": "Intact Forest",
-			"baseUrl": "http://178.33.8.115/diss_geoserver/wms",
-			"wmsTime": "2000,2005,2010",
-			"wmsName": "unredd:intact_forest",
-			"imageFormat": "image/png8",
-			"visible": true,
-			"legend": "intact_forest.png",
-			"sourceLink": "http://www.intactforests.org/",
-			"sourceLabel": "www.intactforests.org",
-			"wmsParameters": {
-				"tiled": "true"
-				}
-			}
+			"id" : "urban_areas",
+			"baseUrl" : "http://178.33.8.123/diss_geoserver/wms",
+			"wmsName" : "unredd:Vietnam_UrbanAreas_50M",
+			"imageFormat" : "image/png8",
+			"visible" : true
+		},
+		{
+			"id" : "major_cities",
+			"baseUrl" : "http://178.33.8.123/diss_geoserver/wms",
+			"wmsName" : "unredd:Vietnam_major_cities",
+			"imageFormat" : "image/png8",
+			"visible" : true
+		},
+		{
+			"id" : "rivers_lakes",
+			"baseUrl" : "http://178.33.8.123/diss_geoserver/wms",
+			"wmsName" : "unredd:Vietnam_Rivers_Lakes",
+			"imageFormat" : "image/png8",
+			"visible" : true
+		},
+		
 	],
 
 	"portalLayers" : [
 		{
-			"id" : "blue-marble",
+			"id" : "major_cities",
+			"active" : false,
+			"label" : "${major_cities}",
+			"layers" : [ "major_cities" ]
+		}, 
+		{
+			"id" : "urban_areas",
+			"active" : false,
+			"label" : "${urban_areas}",
+			"layers" : [ "urban_areas" ]
+		}, 
+		{
+			"id" : "rivers_lakes",
+			"active" : false,
+			"label" : "${rivers_lakes}",
+			"layers" : [ "rivers_lakes" ]
+		}, 
+		{
+			"id" : "countryBoundaries",
+			"active" : false,
+			"label" : "${country_boundaries}",
+			"layers" : [ "countryBoundaries" ]
+		}, 
+		{
+			"id" : "ecoregion",
+			"active" : false,
+			"label" : "${eco-region}",
+			"layers" : [ "ecoregion" ]
+		}, {
+			"id" : "province",
 			"active" : true,
+			"label" : "${provinces}",
+			"layers" : [ "province" ]
+		} ,
+		{
+			"id" : "district",
+			"active" : false,
+			"label" : "${district}",
+			"layers" : [ "district" ]
+		},
+		{
+			"id" : "commune",
+			"active" : false,
+			"label" : "${commune}",
+			"layers" : [ "commune" ]
+		},
+		{
+			"id" : "blue-marble",
+			"active" : false,
 			"label" : "Blue marble",
 			"layers" : [ "blue-marble" ]
 		},
 		{
 			"id" : "osm-layer",
-			"active" : false,
+			"active" : true,
 			"label" : "Open Cycle Map",
 			"layers" : [ "cycle-osm" ]
-		},
+		}, 
 		{
-			"id" : "forestClassification",
-			"active" : false,
-			"infoFile" : "forest_classification_def.html",
-			"label" : "${facet_forest_classification}",
-			"layers" : [ "forestClassification" ],
-			"feedback" : true
-		}, {
-			"id" : "forest_mask",
-			"label" : "${forest_mask}",
-			"layers" : [ "forest_mask" ],
-			"feedback" : true
-		}, {
-			"id" : "countryBoundaries",
+			"id" : "jica",
 			"active" : true,
-			"label" : "${country_boundaries}",
-			"layers" : [ "countryBoundaries" ],
+			"label" : "Jica",
+			"layers" : [ "jica" ],
+			"feedback" : true,
+			"infoFile" : "jica_info.html",
+			"legendFile" : "jica_legend.html",
 			"inlineLegendUrl" : "http://demo1.geo-solutions.it/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:drc_boundary&TRANSPARENT=true"
-		}, {
-			"id" : "provinces",
-			"active" : true,
-			"infoFile" : "provinces_def.html",
-			"label" : "${provinces}",
-			"layers" : [ "provinces" ],
-			"inlineLegendUrl" : "http://demo1.geo-solutions.it/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:drc_provinces&TRANSPARENT=true"
-		}, {
-			"id" : "forest",
-			"active" : false,
-			"label" : "All forestry layers",
-			"layers" : [ "forest_mask2", "forestClassification2" ]
-		}, {
-			"id" : "nexrad_layer",
-			"active" : false,
-			"label" : "Nexrad",
-			"layers" : [ "nexrad" ]
-		}, {
-			"id" : "provinces_title_placeholder",
-			"label" : "Provincias"
-		} , {
-			"id" : "forest-intact",
-			"active" : true,
-			"label" : "Intact forest",
-			"layers" : [ "intactForest" ]
 		}
 	],
 
@@ -166,21 +174,22 @@
 				{
 					"id" : "innerbase",
 					"label" : "General purpose",
-					"items": ["blue-marble", "osm-layer"]
-				}, {
-					"id" : "innerforest",
-					"label" : "Forest classifications",
-					"items": [ "forestClassification" , "forest-intact" ]
+					"items": [ "osm-layer" , "blue-marble" ]
+				},
+				{
+					"id" : "os-layers",
+					"label" : "${opensource_data}",
+					"items": [ "urban_areas" , "rivers_lakes" ]
 				}
 			]
 		}, {
 			"id" : "admin",
 			"label" : "${admin_areas}",
-			"items" : [ "countryBoundaries", "provinces_title_placeholder", "provinces" ]
+			"items" : [ "countryBoundaries", "ecoregion" , "province" , "district", "commune" ]
 		}, {
 			"id" : "landcover",
 			"label" : "${land_cover_maps}",
-			"items" : [ "forest_mask", "forest", "nexrad_layer" ]
+			"items" : ["jica" ]
 		}
 	]
 }

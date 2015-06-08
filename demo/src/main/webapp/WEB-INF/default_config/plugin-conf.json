@@ -10,6 +10,8 @@
 		},
 		"error-management" : {
 			"div-id" : null
+		}, footer : {
+			"logo" : "static/img/logo.png" 
 		}
 	}
 }

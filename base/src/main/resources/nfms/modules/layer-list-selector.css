@@ -64,6 +64,8 @@ div.layers-container {
 	text-align: center;
 	width: 100%;
 	padding: 5px 0px 10px 0px;
+	right: 10%;
+  	position: relative;
 }
 
 

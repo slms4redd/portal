@@ -69,7 +69,7 @@ define([ "message-bus", "layout", "openlayers" ], function(bus, layout) {
 				map.addLayer(layer);
 				map.setLayerIndex(layer, wmsLayer.zIndex);
 			}
-			mapLayerArray.push(wmsLayer.id);
+			mapLayerArray.push(wmsLayer);
 		});
 		if (mapLayerArray.length > 0) {
 			mapLayersByLayerId[layerInfo.id] = mapLayerArray;
@@ -77,6 +77,7 @@ define([ "message-bus", "layout", "openlayers" ], function(bus, layout) {
 	});
 
 	bus.listen("layers-loaded", function() {
+		
 		// Add the vector layer for highlighted features on top of all the other
 		// layers
 
@@ -100,7 +101,7 @@ define([ "message-bus", "layout", "openlayers" ], function(bus, layout) {
 		var mapLayers = mapLayersByLayerId[layerId];
 		if (mapLayers) {
 			$.each(mapLayers, function(index, mapLayerId) {
-				var layer = map.getLayer(mapLayerId);
+				var layer = map.getLayer(mapLayerId.id);
 				layer.setVisibility(visibility);
 			});
 		}
@@ -147,7 +148,7 @@ define([ "message-bus", "layout", "openlayers" ], function(bus, layout) {
 		var mapLayers = mapLayersByLayerId[layerId];
 		if (mapLayers) {
 			$.each(mapLayers, function(index, mapLayerId) {
-				var layer = map.getLayer(mapLayerId);
+				var layer = map.getLayer(mapLayerId.id);
 				layer.setOpacity(opacity);
 			});
 		}

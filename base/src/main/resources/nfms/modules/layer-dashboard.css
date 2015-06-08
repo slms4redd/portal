@@ -2,6 +2,8 @@ div.dashboard {
 	opacity: 0.9;
 	z-index: 1100;
 	position: relative;
+	color: #E9E9E9;
+	overflow: hidden;
 	/* 	width: 90px; */
 	/* 	position: fixed; */
 	/* 	right: 0px; */
@@ -25,8 +27,23 @@ div.dashboard-header {
 	height: 60px;
 }
 
+div.layer-label {
+	font-size: 16px;
+}
+
 div.dashboard-container {
 	background-color: rgba(66, 66, 66, 0.85);
+	padding: 0 0 2% 0;
+}
+
+div.dashboard-content {
+	height: auto;
+	overflow: auto;
+	max-height: 85%;
+}
+
+div.dashboard-content div.col-md-12 {
+	padding: 3% 8%;	
 }
 
 button.layer-label {
@@ -63,4 +80,27 @@ div.dashboard-header ul.dropdown-menu button:hover {
 div.dashboard-content-selector button i{
   position: relative;
   left: -5%;
+}
+
+
+.dashboard-content-item {
+	width: 100%;
+	height: 100%;
+}
+
+/* ###### */
+/* Legend Style */
+/* ###### */
+.legend-box-column {
+/* 	padding: 3px; */
+/* 	border: 1px solid  */
+}
+.legend-box {
+	width: 24px;
+	height: 24px;
+	border: 1px solid rgba(233, 233, 233, 0.15);
+}
+.legend-label {
+	font-size: 12px;
+  	padding: 4px 5px;
 }

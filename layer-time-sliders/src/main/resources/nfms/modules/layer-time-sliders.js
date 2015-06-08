@@ -162,24 +162,26 @@ define([ "jquery" , "message-bus" , "map", "layer-list", "jquery-ui" ], function
 				position_min = -1 , 
 				position_max = -1;
 
-			$.each(steps,function(position,date_value){
+			$.each(steps,function( position, date_value){
 				if (date_value.valueOf()==d.valueOf()) {
-//					position_i=position;
+					position_i=position;
 					
 				} else if (date_value.valueOf()<d.valueOf()) {
 					position_min=position;
-					//console.log(date_value+' menor');
+//					console.log(date_value+' menor');
 				}else{
 					if (position_max==-1) {position_max=position;};
-					//console.log(date_value+' mayor');
+//					console.log(date_value+' mayor');
 				};
-				});
+			});
 //			console.log(layerid+' -> '+position_i+', '+position_min+', '+position_max);
 			var pos;
-			if (position_i>-1)
-				{pos=position_i;}
-			else{ pos=position_min;}
-			$(  '.layer-time-slider-'+layerid ).slider( 'value' , pos );
+			if (position_i>-1) { 
+				pos=position_i;
+			} else { 
+				pos = position_min;
+			}
+			$(  '.layer-time-slider-' + layerid ).slider( 'value' , pos );
 		}
 		);
 	});

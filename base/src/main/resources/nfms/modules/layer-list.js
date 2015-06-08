@@ -190,15 +190,15 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 			var row					= $( '<div class="row row-layer" />' );
 			row.attr( 'id' , layerRowPrefix + portalLayer.id );
 			groupContainerBody.append( row );
-//			row.insertBefore( $(":last-child", groupContainerBody) );
-//			row.insertBefore( groupContainerBody.find(".separator") );
+
 			var settings				= $( '<div class="col-md-1 settings no-padding" />' );
 			row.append( settings );
 			
 			var layer				= $( '<div class="col-md-10 layer" />' );
 			row.append( layer );
-//			var action				= $( '<div class="col-md-1 no-padding action" />' );
-//			row.append( action );
+			
+			var dashboard			= $( '<div class="col-md-1 no-padding dashboard" />' );
+			row.append( dashboard );
 			
 			if ( portalLayer.isPlaceholder ){
 				
@@ -211,8 +211,10 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 				var settingsBtn     = $( '<button class="btn btn-transparent"><i class="fa fa-sliders"></i></button>');
 				settings.append( settingsBtn );
 				settingsBtn.click(function(){
-					var toggle	= ! $('#'+layerRowSettingsPrefix + portalLayer.id).is( ':visible' );
+					var toggle	= ! $( '#'+layerRowSettingsPrefix + portalLayer.id).is( ':visible' );
 					bus.send( "layer-toggle-settings" , [portalLayer.id, toggle] );
+					
+					settingsBtn.blur();
 				});
 				
 				// add layer button
@@ -226,7 +228,21 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 					btnLayer.blur();
 				});
 				layer.append( btnLayer );
-
+				
+				// add dashboard button
+				if( portalLayer.hasDashboard ){
+//					var dashboardBtn = $( '<button class="btn btn-transparent"><i class="fa fa-info-circle"></button>' );
+//					var dashboardBtn = $( '<button class="btn btn-transparent"><span class="fa-stack"><i class="fa fa-circle-thin fa-stack-2x"></i><i class="fa fa-tachometer fa-stack-1x"></i></span></button>' );
+					var dashboardBtn = $( '<button class="btn btn-transparent"><i class="fa fa-tachometer"></i></button>' );
+					dashboard.append( dashboardBtn );
+					
+					dashboardBtn.click(function(){
+						bus.send( "open-layer-dashboard-info" , portalLayer );
+						
+						dashboardBtn.blur();
+					});
+					
+				}
 				
 				// add settings row
 				var rowLayerSettings	= $( '<div class="row row-layers-settings" />' );
@@ -373,6 +389,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 		var btn = row.find( '.layer button' );
 		// enable/disable setting button
 		var settingsBtn		= $( '#' + layerRowPrefix + layerId).find( '.settings button' );
+		var dashboardBtn	= $( '#' + layerRowPrefix + layerId).find( '.dashboard button' );
 
 		if( visible ){
 			btn.addClass( "active" );
@@ -380,6 +397,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 			// settings methods
 			// enable settings button
 			settingsBtn.prop( 'disabled' , false );
+			dashboardBtn.prop( 'disabled' , false );
 		} else {
 			btn.removeClass( 'active' );
 			
@@ -388,6 +406,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 			bus.send( "layer-toggle-settings", [ layerId , false ] );
 			// disable setting button
 			settingsBtn.prop( 'disabled' , true );
+			dashboardBtn.prop( 'disabled' , true );
 		}
 		
 		// OLD

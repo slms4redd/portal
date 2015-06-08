@@ -26,6 +26,7 @@ button{
 label.control-label {
 	font-weight: 100;
 	color : #E9E9E9;
+	padding: 0px;
 }
 input.form-control, select.form-control, textarea.form-control {
 	border-radius : 0px;
@@ -68,15 +69,24 @@ option {
 .no-margin {
 	margin: 0 !important;
 }
-.height100 {
-	height: 100% !important;
+.height5 {
+	height: 5% !important;
+}
+.height10 {
+	height: 10% !important;
 }
 .height80 {
 	height: 80% !important;
 }
+.height100 {
+	height: 100% !important;
+}
 .width100 {
 	width: 100% !important;
 }
+
+/* Common button styles */
+
 /* button transparent */
 .btn-transparent,
 .btn-transparent:active,
@@ -90,6 +100,7 @@ option {
 
 /* default button style */
 button.btn-default ,
+button.btn-default[disabled] ,
 a.btn-default ,
 button.btn-default:active ,
 a.btn-default:active ,
@@ -113,6 +124,7 @@ a.btn-default:hover {
 }
 
 button.btn-default.active ,
+button.btn-default.active[disabled] ,
 a.btn-default.active ,
 button.btn-default.active:active ,
 a.btn-default.active:active {

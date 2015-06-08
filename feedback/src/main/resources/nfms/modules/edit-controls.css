@@ -4,47 +4,57 @@
 
 .olControlPortalToolbar div {
 	float: left;
-	background-repeat: no-repeat;
-	margin: 2px;
-	width: 20px;
-	height: 20px;
-	background-position: center;
+/* 	background-repeat: no-repeat; */
+/* 	margin: 2px; */
+	margin-right : 10px;
+	width: 25px;
+	height: 25px;
+/* 	background-position: center; */
 	cursor: pointer;
-	-moz-border-radius: 5px;
-	border-radius: 5px;
+	-moz-border-radius: 1px;
+	border-radius: 1px;
 	background-repeat: no-repeat;
-	background-repeat: no-repeat;
+	color : #E9E9E9;
+	position:relative;
 }
 
-.olControlPortalToolbarAddItemActive,.olControlPortalToolbarAddItemInactive
-	{
-	background-image: url("images/silk/add.png");
-	background-color: #555555;
-	border-color: #dddddd;
+.olControlPortalToolbar div:before {
+	position: absolute;
+	font-family: FontAwesome;
+	top: 2px;
+	left: 5px;
 }
 
-.olControlPortalToolbarEditItemActive,.olControlPortalToolbarEditItemInactive
-	{
-	background-image: url("images/silk/pencil.png");
+.olControlPortalToolbarAddItemActive:before,
+.olControlPortalToolbarAddItemInactive:before {
+	content: "\f040";
+}
+.olControlPortalToolbarEditItemActive:before,
+.olControlPortalToolbarEditItemInactive:before {
+	content: "\f044";
 }
 
-.olControlPortalToolbarGetItemActive,.olControlPortalToolbarGetItemInactive
-	{
-	background-image: url("images/silk/down.png");
-}
+/* .olControlPortalToolbarEditItemActive,.olControlPortalToolbarEditItemInactive */
+/* { */
+/* 	background-image: url("images/silk/pencil.png"); */
+/* } */
+
+/* .olControlPortalToolbarGetItemActive,.olControlPortalToolbarGetItemInactive */
+/* 	{ */
+/* 	background-image: url("images/silk/down.png"); */
+/* } */
+
 
 .olControlPortalToolbarAddItemInactive,.olControlPortalToolbarEditItemInactive,.olControlPortalToolbarGetItemInactive
-	{
-	background-color: #445566;
-	border: 1px solid #444444;
-	display:;
+{
+	background-color: rgba(157, 157, 157, 0.20);
+	border: 1px solid rgba(157, 157, 157, 0.30);
 }
 
 .olControlPortalToolbarAddItemActive,.olControlPortalToolbarEditItemActive,.olControlPortalToolbarGetItemActive
-	{
-	background-color: #3388cc;
-	border: 1px solid #26b3f7;
-	display:;
+{
+	background-color: rgba(50, 153, 187, 0.7);
+	border: 1px solid  rgba(50, 153, 187, 0.8);
 }
 
 .olControlPortalToolbarGetItemHidden {

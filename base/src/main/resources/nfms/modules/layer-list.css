@@ -4,7 +4,23 @@
 /* .group-content { */
 /* 	display: none;	 */
 /* } */
-
+.row-layer  button.btn-transparent:hover {
+	background-color: transparent;
+	color : rgb(50, 153, 187);
+}
+.row-layer  button.btn-transparent.active {
+	color : rgb(50, 153, 187);
+}
+.row-layer .dashboard button.btn-transparent {
+	padding: 20% 20%;
+  	position: relative;
+  	right: 25%;
+}
+.row-layer .settings button.btn-transparent {
+	padding: 20% 20%;
+	position: absolute;
+  	left: 10%;
+}
 
 /* .row-layer .settings button.btn-transparent { */
 /* 	padding: 5px; */
@@ -39,13 +55,7 @@
 .row-layers-settings .row-layer-settings-slider {
 	margin-top: 8px;
 }
-.row-layer .settings button.btn-transparent:hover {
-	background-color: transparent;
-	color : rgb(50, 153, 187);
-}
-.row-layer .settings button.btn-transparent.active {
-	color : rgb(50, 153, 187);
-}
+
 
 
 .layer-placeholder {

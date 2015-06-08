@@ -37,6 +37,7 @@ define([ "jquery", "message-bus", "customization", "module" ], function($, bus, 
 
 				portalLayer = portalLayers[0];
 				
+				
 				// CHECK IF the CURRENT portalLayer is a PLACEHOLDER
 				// if no layers(wmsLayers) are defined in portalLayers means that the portalLayer
 				// is just a placeholder in the layer menu, used to store generic info 
@@ -45,7 +46,21 @@ define([ "jquery", "message-bus", "customization", "module" ], function($, bus, 
 				if (portalLayer.hasOwnProperty("infoFile")) {
 					portalLayer.infoLink = "static/loc/" + customization.languageCode + "/html/" + portalLayer.infoFile;
 				}
-
+				
+				if (portalLayer.hasOwnProperty("legendFile")) {
+					portalLayer.legendLink = "static/loc/" + customization.languageCode + "/html/" + portalLayer.legendFile;
+				} else if (portalLayer.hasOwnProperty("inlineLegendUrl") ){
+					portalLayer.legendLink = portalLayer.inlineLegendUrl;
+				}
+				
+				// check if layer has dashboard enabled
+				portalLayer.hasDashboard = false;
+				
+				if (portalLayer.hasOwnProperty("legendLink") || portalLayer.hasOwnProperty("infoFile") ) {
+					portalLayer.hasDashboard = true;
+				}
+				
+				
 				wmsLayerIds = (portalLayer.isPlaceholder)?null:portalLayer.layers;
 
 				layerInfoArray = [];
@@ -62,6 +77,12 @@ define([ "jquery", "message-bus", "customization", "module" ], function($, bus, 
 						wmsLayer.timestamps = wmsLayer.wmsTime.split(",")
 					}
                     wmsLayer.zIndex = layerRoot.wmsLayers.indexOf(wmsLayer);
+
+//                  if( wmsLayer.hasOwnProperty("legend") || wmsLayer.queryable){
+                    if( wmsLayer.hasOwnProperty("legend") ){
+                    	portalLayer.hasDashboard = true;
+                    }
+                    
 					layerInfoArray.push(wmsLayer);
 				}
 				//deprecated
