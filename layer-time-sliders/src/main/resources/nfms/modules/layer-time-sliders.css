@@ -1,7 +1,9 @@
 .layer-badge-timestamp {
 	font-size: 10px;
-	position: relative;
-	float: right;
+	position: absolute;
+/* 	float: right; */
+	left: 70%;
+	top: 5px;
 }
 
 .layer-badge-timestamp i.fa {

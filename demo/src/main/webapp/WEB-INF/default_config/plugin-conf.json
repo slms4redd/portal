@@ -12,6 +12,8 @@
 			"div-id" : null
 		}, footer : {
 			"logo" : "static/img/logo.png" 
+		}, tutorial : {
+			"href" : "tutorial.html"
 		}
 	}
 }

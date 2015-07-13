@@ -1,5 +1,7 @@
 define([ "jquery", "message-bus", "customization", "module" ], function($, bus, customization, module) {
-
+	
+	var groups = [];
+	
 	var findById = function(array, id) {
 		return $.grep(array, function(l) {
 			return l.id === id;
@@ -11,15 +13,19 @@ define([ "jquery", "message-bus", "customization", "module" ], function($, bus, 
 			wmsLayers, wmsLayer, i, j, layerInfoArray;
 
 		var groupInfo = {
-			"id" : group.id,
-			"name" : group.label
+			"id" 		: group.id,
+			"name" 		: group.label,
+			"visible"	: ( group.visible === false ) ? false : true
 		};
-
-		if (group.hasOwnProperty("infoFile")) {
+		groups[group.id] = groupInfo;
+		
+		if ( group.hasOwnProperty("infoFile") ){
 			groupInfo.infoLink = "static/loc/" + customization.languageCode + "/html/" + group.infoFile;
 		}
-		if (parentId !== null) {
+
+		if ( parentId !== null ){
 			groupInfo.parentId = parentId;
+			groupInfo.parentGroupInfo = groups[ parentId ];
 		}
 
 		bus.send( "add-group", groupInfo );

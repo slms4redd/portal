@@ -65,7 +65,11 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 //
 //			divTitle.append(infoButton);
 //		}
-
+		if( groupInfo.visible === false ){
+			
+		} else {
+			
+		
 		if (groupInfo.hasOwnProperty("parentId")) {
 			
 			
@@ -166,116 +170,120 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 			
 			var panelBody = $( '<div class="panel-body group-panel-body" />' );
 			content.append( panelBody );
-			
-			
-			
-			
-			
+		}
+		
 		}
 	});
 
 	bus.listen("add-layer", function(event, portalLayer) {
-		var group	= $( "#" + groupCollapsePrefix + portalLayer.groupInfo.id );
-//		var group		= $( "." + groupCollapsePrefix + portalLayer.groupInfo.id );
 		
-		if (group.length == 0) {
-			
-			bus.send( "error", "Layer " + portalLayer.label + " references nonexistent group: " + portalLayer.groupInfo.id );
-			
+		var visible = true;
+		if( portalLayer.groupInfo.hasOwnProperty("parentGroupInfo") ){
+			visible = portalLayer.groupInfo.parentGroupInfo.visible;
 		} else {
-			var groupContainerBody	= group.find( '.panel-body' );
+			visible = portalLayer.groupInfo.visible;
+		}
+		
+		if( visible ){
 			
+			var group	= $( "#" + groupCollapsePrefix + portalLayer.groupInfo.id );
 			
-			
-			var row					= $( '<div class="row row-layer" />' );
-			row.attr( 'id' , layerRowPrefix + portalLayer.id );
-			groupContainerBody.append( row );
-
-			var settings				= $( '<div class="col-md-1 settings no-padding" />' );
-			row.append( settings );
-			
-			var layer				= $( '<div class="col-md-10 layer" />' );
-			row.append( layer );
-			
-			var dashboard			= $( '<div class="col-md-1 no-padding dashboard" />' );
-			row.append( dashboard );
-			
-			if ( portalLayer.isPlaceholder ){
-				
-				var divLabel	= $( '<div class="width100 layer-placeholder"/>' );
-				divLabel.html( portalLayer.label );
-				layer.append( divLabel );
-				
+			if (group.length == 0) {
+				bus.send( "error", "Layer " + portalLayer.label + " references nonexistent group: " + portalLayer.groupInfo.id );
 			} else {
-				//add settings button
-				var settingsBtn     = $( '<button class="btn btn-transparent"><i class="fa fa-sliders"></i></button>');
-				settings.append( settingsBtn );
-				settingsBtn.click(function(){
-					var toggle	= ! $( '#'+layerRowSettingsPrefix + portalLayer.id).is( ':visible' );
-					bus.send( "layer-toggle-settings" , [portalLayer.id, toggle] );
-					
-					settingsBtn.blur();
-				});
 				
-				// add layer button
-				var btnLayer 			= $( '<button class="btn btn-default"></button>' );
-				btnLayer.html( portalLayer.label );
-				btnLayer.click(function(e){
-					btnLayer.toggleClass( "active" );
-					bus.send("layer-visibility", [ portalLayer.id, btnLayer.hasClass("active") ]);
-					bus.send("layer-update-active-count" , [portalLayer.id ,  btnLayer.hasClass("active") , portalLayer.groupInfo] );
-
-					btnLayer.blur();
-				});
-				layer.append( btnLayer );
+				var groupContainerBody	= group.find( '.panel-body' );
 				
-				// add dashboard button
-				if( portalLayer.hasDashboard ){
-//					var dashboardBtn = $( '<button class="btn btn-transparent"><i class="fa fa-info-circle"></button>' );
-//					var dashboardBtn = $( '<button class="btn btn-transparent"><span class="fa-stack"><i class="fa fa-circle-thin fa-stack-2x"></i><i class="fa fa-tachometer fa-stack-1x"></i></span></button>' );
-					var dashboardBtn = $( '<button class="btn btn-transparent"><i class="fa fa-tachometer"></i></button>' );
-					dashboard.append( dashboardBtn );
+				var row					= $( '<div class="row row-layer" />' );
+				row.attr( 'id' , layerRowPrefix + portalLayer.id );
+				groupContainerBody.append( row );
+				
+				var settings				= $( '<div class="col-md-1 settings no-padding" />' );
+				row.append( settings );
+				
+				var layer				= $( '<div class="col-md-10 layer" />' );
+				row.append( layer );
+				
+				var dashboard			= $( '<div class="col-md-1 no-padding dashboard" />' );
+				row.append( dashboard );
+				
+				if ( portalLayer.isPlaceholder ){
 					
-					dashboardBtn.click(function(){
-						bus.send( "open-layer-dashboard-info" , portalLayer );
+					var divLabel	= $( '<div class="width100 layer-placeholder"/>' );
+					divLabel.html( portalLayer.label );
+					layer.append( divLabel );
+					
+				} else {
+					//add settings button
+					var settingsBtn     = $( '<button class="btn btn-transparent"><i class="fa fa-sliders"></i></button>');
+					settings.append( settingsBtn );
+					settingsBtn.click(function(){
+						var toggle	= ! $( '#'+layerRowSettingsPrefix + portalLayer.id).is( ':visible' );
+						bus.send( "layer-toggle-settings" , [portalLayer.id, toggle] );
 						
-						dashboardBtn.blur();
+						settingsBtn.blur();
 					});
 					
-				}
-				
-				// add settings row
-				var rowLayerSettings	= $( '<div class="row row-layers-settings" />' );
-				rowLayerSettings.attr( 'id' , layerRowSettingsPrefix + portalLayer.id );
-				groupContainerBody.append( rowLayerSettings );
-				
-				// add transparency settings row
-				var rowSettings = $( '<div class="row layer-transparency" />' );
-				rowLayerSettings.append( rowSettings );
-				
-				var colSettingsIcon = $( '<div class="col-md-offset-1 col-md-1 row-layer-settings-icon no-padding" />' );
-				colSettingsIcon.append( '<i class="fa fa-adjust"></i>' );
-				rowSettings.append( colSettingsIcon );
-				
-				var colSettingsOpacitySlider = $( '<div class="col-md-9 row-layer-settings-slider no-padding" />' );
-				rowSettings.append( colSettingsOpacitySlider );
-
-				colSettingsOpacitySlider.slider({
-					min : 0,
-					max : 100,
-					value : 100,
-					slide : function(event, ui) {
-						bus.send("transparency-slider-changed", [ portalLayer.id, ui.value / 100 ]);
+					// add layer button
+					var btnLayer 			= $( '<button class="btn btn-default"></button>' );
+					btnLayer.html( portalLayer.label );
+					btnLayer.click(function(e){
+						btnLayer.toggleClass( "active" );
+						bus.send("layer-visibility", [ portalLayer.id, btnLayer.hasClass("active") ]);
+						bus.send("layer-update-active-count" , [portalLayer.id ,  btnLayer.hasClass("active") , portalLayer.groupInfo] );
+						
+						btnLayer.blur();
+					});
+					layer.append( btnLayer );
+					
+					// add dashboard button
+					if( portalLayer.hasDashboard ){
+//					var dashboardBtn = $( '<button class="btn btn-transparent"><i class="fa fa-info-circle"></button>' );
+//					var dashboardBtn = $( '<button class="btn btn-transparent"><span class="fa-stack"><i class="fa fa-circle-thin fa-stack-2x"></i><i class="fa fa-tachometer fa-stack-1x"></i></span></button>' );
+						var dashboardBtn = $( '<button class="btn btn-transparent"><i class="fa fa-tachometer"></i></button>' );
+						dashboard.append( dashboardBtn );
+						
+						dashboardBtn.click(function(){
+							bus.send( "open-layer-dashboard-info" , portalLayer );
+							
+							dashboardBtn.blur();
+						});
+						
 					}
-				});
-	
-				
-				// after adding a layer, bus sends: layer-update-active-count , add-layer-timestamp
-				bus.send( "layer-update-active-count" , [portalLayer.id , portalLayer.active||false , portalLayer.groupInfo, true] );
-				bus.send( "add-layer-timestamp" , [portalLayer] );
-				
+					
+					// add settings row
+					var rowLayerSettings	= $( '<div class="row row-layers-settings" />' );
+					rowLayerSettings.attr( 'id' , layerRowSettingsPrefix + portalLayer.id );
+					groupContainerBody.append( rowLayerSettings );
+					
+					// add transparency settings row
+					var rowSettings = $( '<div class="row layer-transparency" />' );
+					rowLayerSettings.append( rowSettings );
+					
+					var colSettingsIcon = $( '<div class="col-md-offset-1 col-md-1 row-layer-settings-icon no-padding" />' );
+					colSettingsIcon.append( '<i class="fa fa-adjust"></i>' );
+					rowSettings.append( colSettingsIcon );
+					
+					var colSettingsOpacitySlider = $( '<div class="col-md-9 row-layer-settings-slider no-padding" />' );
+					rowSettings.append( colSettingsOpacitySlider );
+					
+					colSettingsOpacitySlider.slider({
+						min : 0,
+						max : 100,
+						value : 100,
+						slide : function(event, ui) {
+							bus.send("transparency-slider-changed", [ portalLayer.id, ui.value / 100 ]);
+						}
+					});
+					
+					
+					// after adding a layer, bus sends: layer-update-active-count , add-layer-timestamp
+					bus.send( "layer-update-active-count" , [portalLayer.id , portalLayer.active||false , portalLayer.groupInfo, true] );
+					bus.send( "add-layer-timestamp" , [portalLayer] );
+					
+				}
 			}
-			
+
 		}
 		
 		

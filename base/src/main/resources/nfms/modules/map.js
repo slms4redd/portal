@@ -34,6 +34,14 @@ define([ "message-bus", "layout", "openlayers" ], function(bus, layout) {
 	});
 	map.addControl(new OpenLayers.Control.Navigation());
 	map.addControl(new OpenLayers.Control.Scale());
+//	 var google_satellite = new OpenLayers.Layer.Google(
+//		        "Google Satellite", {
+//		            type: google.maps.MapTypeId.SATELLITE,
+//		            numZoomLevels: 20
+//
+//		        }
+//		    );
+//		map.addLayer( google_satellite ) ;
 
 	bus.listen("add-layer", function(event, layerInfo) {
 		var mapLayerArray = [];

@@ -1,6 +1,13 @@
 {
 	"wmsLayers" : [
 		{
+			"id" : "ne2",
+			"baseUrl" : "http://redd.vnforest.gov.vn/diss_geoserver/wms",
+			"wmsName" : "unredd:NE2_HR_LC_SR_W_DR",
+			"imageFormat" : "image/png8",
+			"visible" : false
+		}
+		, {
 			"id" : "cycle-osm",
 			"type" : "osm",
 			"wmsName" : "osm:cycle-osm",
@@ -89,7 +96,7 @@
 			"wmsName" : "unredd:Vietnam_Rivers_Lakes",
 			"imageFormat" : "image/png8",
 			"visible" : true
-		},
+		}
 		
 	],
 
@@ -149,19 +156,26 @@
 		},
 		{
 			"id" : "osm-layer",
-			"active" : true,
+			"active" : false,
 			"label" : "Open Cycle Map",
 			"layers" : [ "cycle-osm" ]
-		}, 
-		{
+		}
+		, {
 			"id" : "jica",
 			"active" : true,
-			"label" : "Jica",
+			"label" : "${jica}",
 			"layers" : [ "jica" ],
 			"feedback" : true,
 			"infoFile" : "jica_info.html",
 			"legendFile" : "jica_legend.html",
 			"inlineLegendUrl" : "http://demo1.geo-solutions.it/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:drc_boundary&TRANSPARENT=true"
+		}
+		, {
+			"id" : "ne2",
+			"active" : true,
+			"label" : "${natural_earth}",
+			"layers" : [ "ne2" ],
+			"feedback" : false
 		}
 	],
 
@@ -170,11 +184,12 @@
 			"id" : "base",
 			"label" : "${base_layers}",
 			"infoFile": "base_layers.html",
+			"visible" : false,
 			"items" : [
 				{
 					"id" : "innerbase",
 					"label" : "General purpose",
-					"items": [ "osm-layer" , "blue-marble" ]
+					"items": [ "ne2" , "osm-layer" , "blue-marble" ]
 				},
 				{
 					"id" : "os-layers",

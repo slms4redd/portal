@@ -58,7 +58,7 @@ function(bus, layout, urlParameters, map, toolbar, i18n, $) {
 	
 	var drawingTools = 
 		'<div class="form-group">'+
-	      '<label class="col-md-2 col-md-offset-1 control-label">Draw *</label>'+
+	      '<label class="col-md-2 col-md-offset-1 control-label">Draw</label>'+
 	      '<div class="col-md-8 olControlPortalToolbar" id="dr_tools">'+
 	      '</div>'+
 	    '</div>';
