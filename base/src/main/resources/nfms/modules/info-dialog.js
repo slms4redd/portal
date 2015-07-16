@@ -10,7 +10,16 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization" ], fu
 		});
 	});
 
-	bus.listen("info-features", function(event, features, x, y) {
+	bus.listen( "info-features", function(event, features, x, y) {
+	
+		console.log( event );
+		console.log( features );
+		console.log( x );
+		console.log( y );
+	
+	});
+	
+	bus.listen("info-features-orig", function(event, features, x, y) {
 		var i, infoPopup, epsg4326, epsg900913;
 
 		// re-project to Google projection

@@ -54,17 +54,21 @@
 }
 .row-layers-settings .row-layer-settings-slider {
 	margin-top: 8px;
+	text-align: center;
+	  margin-left: .4em;
 }
 
 
 
 .layer-placeholder {
-	padding: 10px 0px 5px 10px;
+	padding: 20px 0px 5px 10px;
 	font-size: 12px;
 }
 
 
 .row-layer-settings-icon {
-	opacity: 0.5;
+	opacity: 0.75;
 }
-
+.row-layer-settings-icon i {
+/* 	margin-left: -.1em; */
+}

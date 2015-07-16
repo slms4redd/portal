@@ -202,7 +202,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ], function($, b
 	});
 	
 	bus.listen( "open-layer-dashboard-info" , function( event, portalLayer ){
-		console.log( portalLayer );
+//		console.log( portalLayer );
 		
 		resetDashboard();
 		
@@ -222,6 +222,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ], function($, b
 				if( portalLayer.hasOwnProperty("legendLink") ){
 					$.ajax({
 						url			: portalLayer.legendLink ,
+						data		: {bust : (new Date()).getTime()},
 						dataType 	: "html" ,
 						success		: function(data){
 							legend.append( data );
@@ -240,6 +241,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ], function($, b
 		
 			$.ajax({
 				url			: portalLayer.infoLink ,
+				data		: {bust : (new Date()).getTime()},
 				dataType 	: "html" ,
 				success		: function(data){
 					info.append( data );

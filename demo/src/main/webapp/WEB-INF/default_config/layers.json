@@ -36,7 +36,7 @@
 		},
 		{
 			"id" : "commune",
-			"baseUrl" : "http://178.33.8.123/diss_geoserver/wms",
+			"baseUrl" : "http://redd.vnforest.gov.vn/diss_geoserver/wms",
 			"wmsName" : "unredd:commune",
 			"imageFormat" : "image/png8",
 			"visible" : true,
@@ -44,7 +44,7 @@
 		} ,
 		{
 			"id" : "district",
-			"baseUrl" : "http://178.33.8.123/diss_geoserver/wms",
+			"baseUrl" : "http://redd.vnforest.gov.vn/diss_geoserver/wms",
 			"wmsName" : "unredd:district",
 			"imageFormat" : "image/png8",
 			"visible" : true,
@@ -52,7 +52,7 @@
 		} ,
 		{
 			"id" : "province",
-			"baseUrl" : "http://178.33.8.123/diss_geoserver/wms",
+			"baseUrl" : "http://redd.vnforest.gov.vn/diss_geoserver/wms",
 			"wmsName" : "unredd:province",
 			"imageFormat" : "image/png8",
 			"visible" : true,
@@ -97,6 +97,24 @@
 			"imageFormat" : "image/png8",
 			"visible" : true
 		}
+		, {
+			"id" : "province_fcpf_cf",
+			"baseUrl" : "http://redd.vnforest.gov.vn/diss_geoserver/wms",
+			"wmsName" : "unredd:province_fcpf_cf",
+			"imageFormat" : "image/png8",
+			"visible" : true,
+			"queryable" : true,
+			"wmsParameters" : { "styles" : "province_fcpf_cf" }
+		}
+		, {
+			"id" : "province_prap",
+			"baseUrl" : "http://redd.vnforest.gov.vn/diss_geoserver/wms",
+			"wmsName" : "unredd:province",
+			"imageFormat" : "image/png8",
+			"visible" : true,
+			"queryable" : true,
+			"wmsParameters" : { "styles" : "province_prap" }
+		}
 		
 	],
 
@@ -128,7 +146,7 @@
 		{
 			"id" : "ecoregion",
 			"active" : false,
-			"label" : "${eco-region}",
+			"label" : "${eco_region}",
 			"layers" : [ "ecoregion" ]
 		}, {
 			"id" : "province",
@@ -167,8 +185,7 @@
 			"layers" : [ "jica" ],
 			"feedback" : true,
 			"infoFile" : "jica_info.html",
-			"legendFile" : "jica_legend.html",
-			"inlineLegendUrl" : "http://demo1.geo-solutions.it/diss_geoserver/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=unredd:drc_boundary&TRANSPARENT=true"
+			"legendFile" : "jica_legend.html"
 		}
 		, {
 			"id" : "ne2",
@@ -176,6 +193,26 @@
 			"label" : "${natural_earth}",
 			"layers" : [ "ne2" ],
 			"feedback" : false
+		}
+		, {
+			"id" : "province_fcpf_cf",
+			"active" : false,
+			"label" : "${province_fcpf_cf}",
+			"layers" : [ "province_fcpf_cf" ],
+			"feedback" : false,
+			"legendFile" : "fcpf_cf_legend.html"
+		}
+		, {
+			"id" : "province_prap",
+			"active" : false,
+			"label" : "${province_prap}",
+			"layers" : [ "province_prap" ],
+			"feedback" : false,
+			"legendFile" : "prap_legend.html"
+		}
+		, {
+			"id" : "others",
+			"label" : "${others}"
 		}
 	],
 
@@ -197,11 +234,18 @@
 					"items": [ "urban_areas" , "rivers_lakes" ]
 				}
 			]
-		}, {
+		}
+		, {
 			"id" : "admin",
 			"label" : "${admin_areas}",
 			"items" : [ "countryBoundaries", "ecoregion" , "province" , "district", "commune" ]
-		}, {
+		}
+		, {
+			"id" : "redd_registry",
+			"label" : "${redd_registry}",
+			"items" : [ "province_prap" ,"others" , "province_fcpf_cf"]
+		}
+		, {
 			"id" : "landcover",
 			"label" : "${land_cover_maps}",
 			"items" : ["jica" ]

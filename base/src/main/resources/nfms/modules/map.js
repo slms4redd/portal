@@ -32,16 +32,9 @@ define([ "message-bus", "layout", "openlayers" ], function(bus, layout) {
 		allOverlays : true,
 		controls : []
 	});
-	map.addControl(new OpenLayers.Control.Navigation());
-	map.addControl(new OpenLayers.Control.Scale());
-//	 var google_satellite = new OpenLayers.Layer.Google(
-//		        "Google Satellite", {
-//		            type: google.maps.MapTypeId.SATELLITE,
-//		            numZoomLevels: 20
-//
-//		        }
-//		    );
-//		map.addLayer( google_satellite ) ;
+	map.addControl( new OpenLayers.Control.Navigation() );
+	map.addControl( new OpenLayers.Control.Scale() );
+//	map.addControl( new OpenLayers.Control.PanZoomBar() );
 
 	bus.listen("add-layer", function(event, layerInfo) {
 		var mapLayerArray = [];
@@ -55,22 +48,30 @@ define([ "message-bus", "layout", "openlayers" ], function(bus, layout) {
 					protocol : new OpenLayers.Protocol.WFS({
 						version : "1.0.0",
 						url : wmsLayer.baseUrl,
-						featureType : wmsLayer.featureTypeName
+						featureType : wmsLayer.featureTypeName,
 					}),
 					projection : new OpenLayers.Projection("EPSG:4326")
 				});
 			} else {
-				layer = new OpenLayers.Layer.WMS(wmsLayer.id, wmsLayer.baseUrl, {
-					layers : wmsLayer.wmsName,
-					buffer : 0,
-					transitionEffect : "resize",
-					removeBackBufferDelay : 0,
-					isBaseLayer : false,
-					transparent : true,
-					format : wmsLayer.imageFormat || 'image/png'
-				}, {
-					noMagic : true
-				});
+				
+				var wmsParams = {
+						layers : wmsLayer.wmsName,
+						buffer : 0,
+						transitionEffect : "resize",
+						removeBackBufferDelay : 0,
+						isBaseLayer : false,
+						transparent : true,
+						format : wmsLayer.imageFormat || 'image/png'
+					};
+				for (var paramName in wmsLayer.wmsParameters) {
+			        if ( wmsLayer.wmsParameters.hasOwnProperty(paramName) ) {
+			            wmsParams[ paramName ] = wmsLayer.wmsParameters[ paramName ];
+			        }
+			    }
+				
+				var options = { noMagic : true };
+				
+				layer = new OpenLayers.Layer.WMS( wmsLayer.id,  wmsLayer.baseUrl, wmsParams, options );
 			}
 			layer.id = wmsLayer.id;
 			if (map !== null) {

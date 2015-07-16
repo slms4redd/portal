@@ -5,8 +5,10 @@ div.time-slider-container {
 }
 
 .time-slider-label {
-	padding: 0px 0px 0px 8px !important;
+	padding: 5px 0px 0px 20px !important;
 	font-size: 10px;
+/* 	text-align: right; */
+	
 }
 .time-slider-label span {
 	padding-left: 3px;

@@ -2,9 +2,6 @@ define([ "toolbar", "customization", "i18n", "module","drags" ], function(toolba
 	
 	
 	var config = module.config();
-	console.log( config );
-	
-	
 	
 	if( config.href ){
 		
@@ -30,6 +27,7 @@ define([ "toolbar", "customization", "i18n", "module","drags" ], function(toolba
 					// load tutorial into page
 					$.ajax({
 						url			: link ,
+						data		: {bust : (new Date()).getTime()},
 						dataType 	: "html" ,
 						success		: function(data){
 							tutorial.append( data );
@@ -87,8 +85,10 @@ define([ "toolbar", "customization", "i18n", "module","drags" ], function(toolba
 				// show tutorial popup
 				tutorial.fadeIn();
 				tutorial.addClass( 'opened' );
-			
+				
 			}
+			
+			btn.blur();
 		});
 	}
 

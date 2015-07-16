@@ -2,9 +2,6 @@ define([ "jquery", "layout", "i18n", "message-bus", "module" ], function($, layo
 
 	var config = module.config();
 
-	console.log( config );
-	
-	
 	var footer = $( '<div class="row footer" />' );
 	layout.container.append( footer );
 	

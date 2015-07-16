@@ -173,6 +173,18 @@ button.btn-collapse:hover {
 }
 
 /* Slider  */
+
+button.layer-time-btn,
+button.layer-time-btn:active,
+button.layer-time-btn:focus {
+	float: left;
+	width: 30%;
+	font-size: 10px;
+	padding: 5px 5px;
+	margin: 1px 1px;
+	text-align: center !important;
+}
+
 div.ui-slider  {
 	border-radius: 1px;
 	/* padding-top: 5px !important; */
@@ -187,7 +199,7 @@ div.ui-slider a.ui-slider-handle {
 	border-radius: 20px;
   cursor: pointer;
   /* color: rgba(50, 153, 187, 0.3); */
-  background: rgba(50, 153, 187, 0.7);
+  background: rgba(50, 153, 187, 0.95);
   width: 15px;
   height: 15px;
   position: absolute;
@@ -195,10 +207,32 @@ div.ui-slider a.ui-slider-handle {
   border: 1px solid rgba(50, 153, 187, 0.9);
 }
 div.ui-slider a.ui-slider-handle:hover {
-	background: rgba(50, 153, 187, 0.9);
+	background: rgba(50, 153, 187, 0.95);
 }
 div.ui-slider a.ui-slider-handle.ui-state-active {
-	background: rgba( 255,153,0 , 0.5 );
+	background: rgba( 255,153,0 , 0.95 );
+}
+div.ui-slider label {
+	font-size: 8px;
+	font-weight: 100;
+	position: absolute;
+	top: 210%;
+	color: rgba(233, 233, 233, 0.81);
+	margin-left: -1.5em;
+	margin-top: 0.3em;
+	letter-spacing: .05em;
+	cursor: pointer;
+}
+
+div.ui-slider div.marker {
+	position: absolute;
+	width: 7px;
+	height: 8px;
+	background: rgba(50, 153, 187, 0.8);
+	/* 	border: 1px solid rgba(50, 153, 187, 0.6); */
+	cursor: pointer;
+	top: -50%;
+	margin-left: -.35em;
 }
 
 /* nav bar */
@@ -208,13 +242,3 @@ div.nav.nav-tabs > li > a {
   	border-radius: 4px 4px 0 0;
 }
 
-/* OLD */
-.ui-front {
-	/* 
-	Apparently it is possible to put the dialogs on top
-	without messing with the z-index css property in jquery 1.10 but I
-	haven't been able to do it:
-	http://jqueryui.com/upgrade-guide/1.10/#removed-zindex-option
-	*/
-	z-index: 3000 !important;
-}

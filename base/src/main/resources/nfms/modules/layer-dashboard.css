@@ -98,7 +98,7 @@ div.dashboard-content-selector button i{
 .legend-box {
 	width: 24px;
 	height: 24px;
-	border: 1px solid rgba(233, 233, 233, 0.15);
+	border: 1px solid rgba(233, 233, 233, 0.4);
 }
 .legend-label {
 	font-size: 12px;
