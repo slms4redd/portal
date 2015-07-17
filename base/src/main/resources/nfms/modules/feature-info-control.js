@@ -2,16 +2,30 @@ define([ "map", "message-bus", "customization" ], function(map, bus, customizati
 
 	var layerIds = new Array();
 	var lastTimestamp = null;
-
+//	{
+//        url: UNREDD.wmsServers[0],
+//        title: 'Identify features by clicking',
+//        layers: UNREDD.queryableLayers,
+//        queryVisible: true,
+//        infoFormat: 'application/vnd.ogc.gml',
+//        hover: false,
+//        drillDown: true,
+//        maxFeatures: 5,
+//        handlerOptions: {
+//            "click": {
+//                'single': true,
+//                'double': false
+//            }
+//        },
 	var control = new OpenLayers.Control.WMSGetFeatureInfo({
 		url : customization["info.queryUrl"],
-		layerUrls : [ customization["info.layerUrl"] ],
+//		layerUrls : [ customization["info.layerUrl"] ],
 		title : 'Identify features by clicking',
 		queryVisible : true,
 		infoFormat : 'application/vnd.ogc.gml',
 		hover : false,
 		drillDown : true,
-//		maxFeatures : 5,
+		maxFeatures : 10,
 		handlerOptions : {
 			"click" : {
 				'single' : true,
@@ -31,11 +45,11 @@ define([ "map", "message-bus", "customization" ], function(map, bus, customizati
 					control.layers.push(layer);
 				}
 				
-				if (lastTimestamp != null) {
-					control.vendorParams = {
-						"time" : lastTimestamp.toISO8601String()
-					};
-				}
+//				if (lastTimestamp != null) {
+//					control.vendorParams = {
+//						"time" : lastTimestamp.toISO8601String()
+//					};
+//				}
 			}
 		},
 		formatOptions : {
@@ -43,7 +57,9 @@ define([ "map", "message-bus", "customization" ], function(map, bus, customizati
 			featureNS : 'http://www.openplans.org/unredd'
 		}
 	});
-
+	
+	control.vendorParams['buffer'] = 1;
+	
 	bus.send("set-default-exclusive-control", [ control ]);
 	bus.send("activate-default-exclusive-control");
 

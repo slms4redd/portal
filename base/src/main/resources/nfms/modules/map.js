@@ -68,6 +68,11 @@ define([ "message-bus", "layout", "openlayers" ], function(bus, layout) {
 			            wmsParams[ paramName ] = wmsLayer.wmsParameters[ paramName ];
 			        }
 			    }
+				for (var paramName in layerInfo.wmsParameters) {
+					if ( layerInfo.wmsParameters.hasOwnProperty(paramName) ) {
+						wmsParams[ paramName ] = layerInfo.wmsParameters[ paramName ];
+					}
+				}
 				
 				var options = { noMagic : true };
 				
