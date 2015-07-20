@@ -16,7 +16,7 @@ define([ "jquery", "message-bus", "layout", "customization", "i18n", "jquery-ui"
 	var container	= $( '<div class="col-md-12 col-sm-12 col-xs-12 layers-container no-padding open" id="group-accordion" role="tablist" aria-multiselectable="true"></div>' );
 	rowContainer.append( container );
 	
-	var dashboardCol = $( '<div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 col-xs-4 height100"></div>' );
+	var dashboardCol = $( '<div class="col-md-5 col-md-offset-4 col-sm-5 col-sm-offset-4 col-xs-4 height100"></div>' );
 	row.append( dashboardCol );
 	
 	$( window ).resize(function() {

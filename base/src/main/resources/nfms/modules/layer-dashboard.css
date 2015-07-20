@@ -62,21 +62,17 @@ div.dashboard-header ul.dropdown-menu {
 	border-radius: 3px;
 	top: 90%;
 }
+div.dashboard-header button.btn-collapse {
+/* 	padding: 6px 12px !important; */
+	position: absolute ;
+	left: 0px;
+  	top: -10px;
+}
 div.dashboard-header button {
 	padding: 6px 12px !important;
 }
 
-div.dashboard-header ul.dropdown-menu button, 
-div.dashboard-header ul.dropdown-menu button:focus {
-	border: none;
-	background: none;
-	text-align: left;
-/* 	background-color: rgba(40, 34, 34, 0.96); */
-}
 
-div.dashboard-header ul.dropdown-menu button:hover {
-	background-color: rgba(66, 66, 66, 0.4);
-}
 div.dashboard-content-selector button i{
   position: relative;
   left: -5%;

@@ -13,9 +13,10 @@ define([ "jquery", "message-bus", "customization", "module" ], function($, bus, 
 			wmsLayers, wmsLayer, i, j, layerInfoArray;
 
 		var groupInfo = {
-			"id" 		: group.id,
-			"name" 		: group.label,
-			"visible"	: ( group.visible === false ) ? false : true
+			"id" 				: group.id,
+			"name" 				: group.label,
+			"visible"			: ( group.visible === false ) ? false : true,
+			"mutuallyExclusive" : ( group.mutuallyExclusive === true ) ? true : false		
 		};
 		groups[group.id] = groupInfo;
 		

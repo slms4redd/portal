@@ -141,10 +141,7 @@
 			"feedback" : false,
 			"legendFile" : "prap_legend.html"
 		}
-		, {
-			"id" : "others",
-			"label" : "${others}"
-		}
+		
 	],
 
 	"groups" : [
@@ -154,6 +151,7 @@
 			"infoFile": "base_layers.html",
 			"visible" : false,
 			"items" : [ "ne2" ]
+			
 		}
 		, {
 			"id" : "admin",
@@ -163,7 +161,15 @@
 		, {
 			"id" : "redd_registry",
 			"label" : "${redd_registry}",
-			"items" : [ "province_prap" ,"others" , "province_fcpf_cf" ]
+			"items" : [
+				"province_prap" ,
+				{
+					"id" : "others",
+					"mutuallyExclusive" : true,
+					"label" : "${others}",
+					"items": [ "province_fcpf_cf" ]
+				}
+				]
 		}
 		, {
 			"id" : "landcover",

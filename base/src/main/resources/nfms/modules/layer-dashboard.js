@@ -9,11 +9,11 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ], function($, b
 	
 	layerListSelector.layersDashboardContainer.append( dashboard );
 		
-	var dashboardToggle = $( '<div class="col-md-1 no-padding dashboard-toggle"></div>' )
-	dashboard.append( dashboardToggle );
+	var dashboardToggle = $( '<div class="col-md-1 no-padding"></div>' )
+//	dashboard.append( dashboardToggle );
 	
 	var btnCollapse = $( '<button class="btn btn-collapse">' + iconClosed + '</button>' );
-	dashboardToggle.append( btnCollapse );
+//	dashboardToggle.append( btnCollapse );
 	
 	btnCollapse.click( function(e){
 		bus.send( "layers-dashboard-toggle-visibility" );
@@ -21,13 +21,16 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ], function($, b
 	});
 	
 	
-	var dashboardContainer	= $( '<div class="col-md-11 height100 dashboard-container"></div>' );
+	var dashboardContainer	= $( '<div class="col-md-12 height100 dashboard-container"></div>' );
 	dashboard.append( dashboardContainer );
 	
 	var rowHeader	= $( '<div class="row dashboard-header height10"></div>')
 	dashboardContainer.append( rowHeader );
 	var colHeader	= $( '<div class="col-md-12"></div>' );
+//	rowHeader.append( dashboardToggle );
 	rowHeader.append( colHeader );
+	
+	colHeader.append( btnCollapse );
 	
 	var btnGroup = $( '<div class="btn-group"><button type="button" class="btn layer-label">- Select Layer</button>'+
       '<button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">'+
@@ -47,7 +50,8 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ], function($, b
 	colHeader.append( layerLabel );
 //	layerLabel.hi
 	
-	dashboard.css( 'right' , '-' + (dashboard.width() - dashboardToggle.width() ) +'px' );
+	dashboard.css( 'right' , '-' + (dashboard.width() ) +'px' );
+//	dashboard.css( 'right' , '-' + (dashboard.width() - dashboardToggle.width() ) +'px' );
 	dashboard.addClass( 'closed' );
 	dashboard.animate( {'opacity':0.9}, 300 );
 	
@@ -171,7 +175,8 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ], function($, b
 		var icon = null;
 		if( dashboard.hasClass('opened') && !open){
 			dashboard.removeClass( 'opened' ).addClass( 'closed' );
-			dashboard.stop().animate( {'right': '-' + (dashboard.width() - dashboardToggle.width() ) +'px' }, 500 );
+//			dashboard.stop().animate( {'right': '-' + (dashboard.width() - dashboardToggle.width() ) +'px' }, 500 );
+			dashboard.stop().animate( {'right': '-' + (dashboard.width()) +'px' }, 500 );
 			
 			icon = iconClosed;
 		} else {

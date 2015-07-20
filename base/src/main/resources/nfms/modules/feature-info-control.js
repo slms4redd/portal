@@ -2,21 +2,7 @@ define([ "map", "message-bus", "customization" ], function(map, bus, customizati
 
 	var layerIds = new Array();
 	var lastTimestamp = null;
-//	{
-//        url: UNREDD.wmsServers[0],
-//        title: 'Identify features by clicking',
-//        layers: UNREDD.queryableLayers,
-//        queryVisible: true,
-//        infoFormat: 'application/vnd.ogc.gml',
-//        hover: false,
-//        drillDown: true,
-//        maxFeatures: 5,
-//        handlerOptions: {
-//            "click": {
-//                'single': true,
-//                'double': false
-//            }
-//        },
+
 	var control = new OpenLayers.Control.WMSGetFeatureInfo({
 		url : customization["info.queryUrl"],
 //		layerUrls : [ customization["info.layerUrl"] ],
@@ -70,7 +56,9 @@ define([ "map", "message-bus", "customization" ], function(map, bus, customizati
 			}
 		});
 	});
+	
 	bus.listen("time-slider.selection", function(event, timestamp) {
 		lastTimestamp = timestamp;
 	});
+	
 });
