@@ -181,7 +181,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ], function($, b
 			icon = iconClosed;
 		} else {
 			dashboard.removeClass( 'closed' ).addClass( 'opened' );
-			dashboard.stop().animate( {'right': 0 }, 500 );
+			dashboard.animate( {'right': 0 }, 500 );
 			
 			
 			icon = iconOpened;
@@ -199,7 +199,8 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ], function($, b
 	});
 	
 	$( window ).resize(function() {
-		var right = ( dashboard.hasClass( 'opened' ) ) ? "0" : "-"+(dashboard.width() - dashboardToggle.width() ) +"px";
+		var right = ( dashboard.hasClass( 'opened' ) ) ? "0" : "-"+(dashboard.width() ) +"px";
+//		var right = ( dashboard.hasClass( 'opened' ) ) ? "0" : "-"+(dashboard.width() - dashboardToggle.width() ) +"px";
 		dashboard.stop().animate( {'right': right }, 200 );
 //		if( dashboard.hasClass( 'opened' ) ) {
 //			container.stop().animate( {width: container.parent().width() }, 300 );

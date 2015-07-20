@@ -63,8 +63,8 @@
 			"wmsName" : "unredd:province",
 			"imageFormat" : "image/png8",
 			"visible" : true,
-			"queryable" : false,
-			"wmsParameters" : { "styles" : "province_prap" }
+			"queryable" : true,
+			"wmsParameters" : { "styles" : "province_cf" }
 		}
 		, {
 			"id" : "province_prap",
@@ -116,7 +116,8 @@
 			"layers" : [ "jica" ],
 			"feedback" : true,
 			"infoFile" : "jica_info.html",
-			"legendFile" : "jica_legend.html"
+			"legendFile" : "jica_legend.html",
+			"openDashboard" : true
 		}
 		, {
 			"id" : "ne2",
@@ -130,8 +131,7 @@
 			"active" : false,
 			"label" : "${province_fcpf_cf}",
 			"layers" : [ "province_fcpf_cf" ],
-			"feedback" : false,
-			"legendFile" : "fcpf_cf_legend.html"
+			"feedback" : false
 		}
 		, {
 			"id" : "province_prap",

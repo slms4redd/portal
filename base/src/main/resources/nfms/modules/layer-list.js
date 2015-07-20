@@ -11,7 +11,9 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 	var activeLayersCountMap		= {};
 	// map of active dropdown layers
 	var activeDropDownLayers		= {};
-
+	
+	
+	var defaultLayerOpenDashboard   = null;
 	
 	// OLD
 	var layerActions 	= new Array();
@@ -269,6 +271,10 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 								dashboardBtn.blur();
 							});
 							
+						
+							if( portalLayer.openDashboard === true ){
+								defaultLayerOpenDashboard = portalLayer;
+							}
 						}
 						
 					}
@@ -553,6 +559,13 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "f
 		
 	});
 	
+	bus.listen( "layers-loaded" , function(event) {
+		if( defaultLayerOpenDashboard ){
+			setTimeout( function(){
+				bus.send( "open-layer-dashboard-info" , defaultLayerOpenDashboard );
+			}, 500 );
+		}
+	});
 	
 //	bus.listen("time-slider.selection", function(event, date) {
 //		for (var i = 0; i < temporalLayers.length; i++) {

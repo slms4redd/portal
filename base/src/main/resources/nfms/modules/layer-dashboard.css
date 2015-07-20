@@ -65,8 +65,8 @@ div.dashboard-header ul.dropdown-menu {
 div.dashboard-header button.btn-collapse {
 /* 	padding: 6px 12px !important; */
 	position: absolute ;
-	left: 0px;
-  	top: -10px;
+	left: 5px;
+	top: -10px;
 }
 div.dashboard-header button {
 	padding: 6px 12px !important;
