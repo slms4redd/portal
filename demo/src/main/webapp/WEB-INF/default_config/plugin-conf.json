@@ -5,9 +5,6 @@
 			"show-flag" : true,
 			"show-logos" : true
 		},
-		"info-dialog" : {
-			"open-in-center" : center
-		},
 		"error-management" : {
 			"div-id" : null
 		}, footer : {

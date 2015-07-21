@@ -1,11 +1,13 @@
-define([ "jquery", "message-bus", "layer-list-selector", "i18n" ], function($, bus, layerListSelector, i18n) {
+define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization" ], function($, bus, layerListSelector, i18n, customization) {
 	
-	var iconOpened = '<span class="fa-stack"><i class="fa fa-circle-thin fa-stack-2x"></i><i class="fa fa-angle-double-right fa-stack-1x"></i></span>' ;
-	var iconClosed = '<span class="fa-stack"><i class="fa fa-circle-thin fa-stack-2x"></i><i class="fa fa-tachometer fa-stack-1x"></i></span>' ;
+//	var iconOpened = '<span class="fa-stack"><i class="fa fa-circle-thin fa-stack-2x"></i><i class="fa fa-angle-double-right fa-stack-1x"></i></span>' ;
+//	var iconClosed = '<span class="fa-stack"><i class="fa fa-circle-thin fa-stack-2x"></i><i class="fa fa-tachometer fa-stack-1x"></i></span>' ;
+	var iconOpened = '<i class="fa fa-angle-double-right"></i>' ;
+	var iconClosed = '<i class="fa fa-tachometer"></i>' ;
 
 	
 	var dashboard = $( '<div class="row dashboard height100"></div>' );
-	dashboard.css( 'opacity' , '0' );
+//	dashboard.css( 'opacity' , '0' );
 	
 	layerListSelector.layersDashboardContainer.append( dashboard );
 		
@@ -53,7 +55,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ], function($, b
 	dashboard.css( 'right' , '-' + (dashboard.width() ) +'px' );
 //	dashboard.css( 'right' , '-' + (dashboard.width() - dashboardToggle.width() ) +'px' );
 	dashboard.addClass( 'closed' );
-	dashboard.animate( {'opacity':0.9}, 300 );
+//	dashboard.animate( {'opacity':0.9}, 300 );
 	
 	
 	// add dashboard content
@@ -123,6 +125,8 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ], function($, b
 		btnLegend.prop( 'disabled' , true );
 		btnInfo.prop( 'disabled' , true );
 		btnStats.attr( 'disabled' , true );
+		
+		dashboardBtnBar.find( 'button' ).removeClass( 'active' );
 		
 		legend.empty();
 		info.empty();
@@ -207,6 +211,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ], function($, b
 //		}
 	});
 	
+	// click from layer list
 	bus.listen( "open-layer-dashboard-info" , function( event, portalLayer ){
 //		console.log( portalLayer );
 		
@@ -247,6 +252,66 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ], function($, b
 		
 			$.ajax({
 				url			: portalLayer.infoLink ,
+				data		: {bust : (new Date()).getTime()},
+				dataType 	: "html" ,
+				success		: function(data){
+					info.append( data );
+				}
+			
+			});
+			
+			if( !dashboardOpened ){
+				showInfo();
+				
+				dashboardOpened = true;
+			}
+		
+		}
+
+	});
+	
+	bus.listen( "open-dashboard-info-feature" , function( event, feature ){
+		//static/loc/" + customization.languageCode + "/html/" + group.infoFile
+		resetDashboard();
+//		console.log( feature );
+//		console.log( feature.attributes );
+		bus.send( "layers-dashboard-toggle-visibility" , true );
+		
+		layerLabel.html( feature.attributes.name );
+//		console.log( feature.attributes.name );
+		layerLabel.fadeIn();
+//		
+		var dashboardOpened = false;
+		
+//		// add legend
+//		$.each( portalLayer.wmsLayers, function( i , wmsLayer){
+			if( feature.attributes.hasOwnProperty("legend_file") ) {
+//	
+				btnLegend.prop( 'disabled' , false );
+				showLegend();
+				var url =  "static/loc/" + customization.languageCode + "/html/" + feature.attributes.legend_file;
+//				if( portalLayer.hasOwnProperty("legendLink") ){
+				$.ajax({
+					url			: url ,
+					data		: {bust : (new Date()).getTime()},
+					dataType 	: "html" ,
+					success		: function(data){
+						legend.append( data );
+					}
+				
+				});
+//				}
+//				
+				dashboardOpened = true;
+			}
+//		});
+//
+//		// open info
+		if ( feature.attributes.hasOwnProperty("info_file")  ) {
+			btnInfo.prop( 'disabled' , false );
+			var url =  "static/loc/" + customization.languageCode + "/html/" + feature.attributes.info_file;
+			$.ajax({
+				url			: url ,
 				data		: {bust : (new Date()).getTime()},
 				dataType 	: "html" ,
 				success		: function(data){

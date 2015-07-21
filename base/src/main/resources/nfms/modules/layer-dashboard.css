@@ -1,5 +1,5 @@
 div.dashboard {
-	opacity: 0.9;
+/* 	opacity: 0.9; */
 	z-index: 1100;
 	position: relative;
 	color: #E9E9E9;
@@ -34,6 +34,7 @@ div.layer-label {
 div.dashboard-container {
 	background-color: rgba(66, 66, 66, 0.85);
 	padding: 0 0 2% 0;
+	border: 1px solid rgba(22, 22, 22, 0.30);
 }
 
 div.dashboard-content {

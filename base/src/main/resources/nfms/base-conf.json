@@ -11,9 +11,7 @@
 	},
 	"requirejs" : {
 		"paths" : {
-			"jquery-ui" 		: "../jslib/jquery-ui-slider-1.11.4",
-			"jquery-ui-slider" 	: "../jslib/jquery-ui-1.10.4.custom",
-			"fancy-box" 		: "../jslib/jquery.fancybox.pack",
+			"jquery-ui-slider" 	: "../jslib/jquery-ui-slider-1.11.4",
 			"openlayers" 		: "../jslib/OpenLayers/OpenLayers.debug",
 			"mustache" 			: "../jslib/jquery.mustache"
 		},

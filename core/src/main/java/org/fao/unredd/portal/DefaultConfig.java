@@ -226,6 +226,11 @@ public class DefaultConfig implements Config {
 		if (value != null) {
 			return value;
 		} else {
+			Properties properties2 = getProperties();
+			Set<Object> keySet = properties2.keySet();
+			for (Object object : keySet) {
+				System.out.println("===== key: " + object + " === Value: " + properties2.getProperty(object.toString()));
+			}
 			throw new ConfigurationException("No \"" + propertyName + "\" property in configuration");
 		}
 	}

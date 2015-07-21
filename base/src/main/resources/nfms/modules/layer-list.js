@@ -1,4 +1,4 @@
-define([ "jquery", "message-bus", "layer-list-selector", "i18n", "jquery-ui", "fancy-box" , "bootstrap" ], function($, bus, layerListSelector, i18n) {
+define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], function($, bus, layerListSelector, i18n) {
 	
 	// common id prexif 
 	var groupHeadingPrefix			= "group-heading-";

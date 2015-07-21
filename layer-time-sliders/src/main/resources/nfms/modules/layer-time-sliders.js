@@ -1,4 +1,4 @@
-define([ "jquery" , "message-bus" , "map", "layer-list", "jquery-ui" ], function($, bus, map, layerList) {
+define([ "jquery" , "message-bus" , "map", "layer-list", "jquery-ui-slider" ], function($, bus, map, layerList) {
 //    var aLayers=[];
     var aTimestampsLayers={};
     var layerInfoWithTime={};

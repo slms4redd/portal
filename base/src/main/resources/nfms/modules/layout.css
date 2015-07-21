@@ -145,16 +145,51 @@ a.btn-default.active:hover {
 	border: 1px solid transparent;
 }
 
+/* externa link a class */
+a.ext-link ,
+a.ext-link:focus {
+  color: #E9E9E9;
+  font-size: 12px;
+  background-color: rgba(50, 153, 187, 0.4);
+  border-radius: 2px;
+  /* border: 1px solid transparent; */
+  font-weight: 100 !important;
+  /* width: 100%; */
+  /* border-bottom: 1px solid rgba(50, 153, 187, 0.7); */
+  padding: 6px 10px;
+  text-decoration: none;
+  letter-spacing: .02em;
+}
+a.ext-link:hover {
+	color: #E9E9E9;
+  	font-size: 12px;
+	text-decoration: none;
+	background-color: rgba(50, 153, 187, 0.9);
+	-webkit-transition: background-color 0.3s ease-in-out;
+	-moz-transition: background-color 0.3s ease-in-out;
+	-o-transition: background-color 0.3s ease-in-out;
+	transition: background-color 0.3s ease-in-out;
+}
 /* collapsable button  */
 button.btn-collapse {
+
+	/* 	background-color: transparent; */
+	/* 	padding: 2px 10px;  */
+	/* 	font-size: 12px; */
+	/*   	opacity: 0.8; */
+	/*   	color: rgba(233, 233, 233, 0.90); */
 	background-color: transparent;
-	padding: 2px 10px; 
-	font-size: 12px;
-  	opacity: 0.8;
-  	color: rgba(233, 233, 233, 0.90);
-}
+	/* padding: 2px 10px; */
+	font-size: 16px;
+	opacity: 0.9;
+	color: rgba(233, 233, 233, 0.90);}
 button.btn-collapse:hover {
 	color: rgba(50, 153, 187, 0.99);
+	
+	-webkit-transition: color 0.4s ease-in-out;
+	-moz-transition: color 0.4s ease-in-out;
+	-o-transition: color 0.4s ease-in-out;
+	transition: color 0.4s ease-in-out;
 }
 
 
@@ -167,11 +202,15 @@ button.btn-collapse:hover {
 	background-color: rgba(40, 34, 34, 0.7);
 	font-size: 12px;
 	text-align: left;
+	
+	border-radius: 0px;
 }
 .btn-group button:hover,
 .btn-group button:focus {
 	color: #E9E9E9;
 	font-size: 12px;
+	
+	border-radius: 0px;
 }
 
 .btn-group > .btn + .dropdown-toggle {
@@ -220,7 +259,6 @@ ul.dropdown-menu button:hover {
 /*   left: -5%; */
 /* } */
 
-/* Slider  */
 
 button.layer-time-btn,
 button.layer-time-btn:active,
@@ -233,55 +271,7 @@ button.layer-time-btn:focus {
 	text-align: center !important;
 }
 
-div.ui-slider  {
-	border-radius: 1px;
-	/* padding-top: 5px !important; */
-	border: 1px solid rgba(50, 153, 187, 0.3);
-	background: none;
-	background-color: rgba(50, 153, 187, 0.3);
-	height: 6px;
-	margin-top: 4px;
-}
 
-div.ui-slider a.ui-slider-handle {
-	border-radius: 20px;
-  cursor: pointer;
-  /* color: rgba(50, 153, 187, 0.3); */
-  background: rgba(50, 153, 187, 0.95);
-  width: 15px;
-  height: 15px;
-  position: absolute;
-  top: -5px;
-  border: 1px solid rgba(50, 153, 187, 0.9);
-}
-div.ui-slider a.ui-slider-handle:hover {
-	background: rgba(50, 153, 187, 0.95);
-}
-div.ui-slider a.ui-slider-handle.ui-state-active {
-	background: rgba( 255,153,0 , 0.95 );
-}
-div.ui-slider label {
-	font-size: 8px;
-	font-weight: 100;
-	position: absolute;
-	top: 210%;
-	color: rgba(233, 233, 233, 0.81);
-	margin-left: -1.5em;
-	margin-top: 0.3em;
-	letter-spacing: .05em;
-	cursor: pointer;
-}
-
-div.ui-slider div.marker {
-	position: absolute;
-	width: 7px;
-	height: 8px;
-	background: rgba(50, 153, 187, 0.8);
-	/* 	border: 1px solid rgba(50, 153, 187, 0.6); */
-	cursor: pointer;
-	top: -50%;
-	margin-left: -.35em;
-}
 
 /* nav bar */
 div.nav.nav-tabs > li > a {
@@ -290,3 +280,25 @@ div.nav.nav-tabs > li > a {
   	border-radius: 4px 4px 0 0;
 }
 
+
+/* modal lock  */
+.modal-lock {
+	z-index: 9000 !important;
+}
+.modal-backdrop.in {
+  filter: alpha(opacity=50);
+  opacity: .5 !important;
+}
+.modal-lock .modal-dialog {
+	width: 20%;
+	top: 40%;
+	position: absolute;
+	left: 40%;
+}
+.modal-lock .progress {
+	height: 10px;
+  	border-radius: 0px;
+}
+.modal-lock .progress-bar-info {
+  background-color: rgba(50, 153, 187, 0.7);
+}
