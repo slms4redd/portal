@@ -13,7 +13,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 	var activeDropDownLayers		= {};
 	
 	
-	var defaultLayerOpenDashboard   = null;
+	var defaultLayersOpenDashboard   = new Array();
 	
 	// OLD
 	var layerActions 	= new Array();
@@ -43,12 +43,6 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 	
 	bus.listen("add-group", function(event, groupInfo) {
 		
-		// OLD 
-		var divTitle, tblLayerGroup, parentId, tblParentLayerGroup, divContent;
-		divTitle = $("<div/>").html(groupInfo.name).disableSelection();
-		
-		tblLayerGroup = $("<table/>");
-		tblLayerGroup.attr("id", "group-content-table-" + groupInfo.id);
 		
 		// TODO
 //		if (groupInfo.hasOwnProperty("infoLink")) {
@@ -125,7 +119,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 					});
 					btnGroup.find( 'button.none' ).prop( 'disabled' , true );
 					
-					var dashboard			= $( '<div class="col-md-1 no-padding dashboard" />' );
+					var dashboard			= $( '<div class="col-md-1 no-padding dashboard-btn" />' );
 					row.append( dashboard );
 					var dashboardBtn = $( '<button class="btn btn-transparent"><i class="fa fa-tachometer"></i></button>' );
 					dashboard.append( dashboardBtn );
@@ -167,6 +161,12 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 				content.attr( 'id' , collapseId );
 				content.attr( 'aria-labelledby' , headingId );
 				panel.append( content );
+				
+				if( groupInfo.open ){
+					setTimeout( function(){
+						content.collapse( {parent : '#group-accordion'} , 'show' );
+					}, 500 );
+				}
 				
 				var panelBody = $( '<div class="panel-body group-panel-body" />' );
 				content.append( panelBody );
@@ -228,7 +228,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 					var layer				= $( '<div class="col-md-10 layer" />' );
 					row.append( layer );
 					
-					var dashboard			= $( '<div class="col-md-1 no-padding dashboard" />' );
+					var dashboard			= $( '<div class="col-md-1 no-padding dashboard-btn" />' );
 					row.append( dashboard );
 					
 					if ( portalLayer.isPlaceholder ){
@@ -270,11 +270,6 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 								
 								dashboardBtn.blur();
 							});
-							
-						
-							if( portalLayer.openDashboard === true ){
-								defaultLayerOpenDashboard = portalLayer;
-							}
 						}
 						
 					}
@@ -314,6 +309,10 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 					bus.send( "layer-update-active-count" , [portalLayer.id , portalLayer.active||false , portalLayer.groupInfo, true] );
 					bus.send( "add-layer-timestamp" , [portalLayer] );
 					
+					
+					if( portalLayer.openDashboard ){
+						defaultLayersOpenDashboard.push( portalLayer ); 
+					}
 				}
 				
 				
@@ -433,7 +432,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 		var btn = row.find( '.layer button' );
 		// enable/disable setting button
 		var settingsBtn		= $( '#' + layerRowPrefix + layerId).find( '.settings button' );
-		var dashboardBtn	= $( '#' + layerRowPrefix + layerId).find( '.dashboard button' );
+		var dashboardBtn	= $( '#' + layerRowPrefix + layerId).find( '.dashboard-btn button' );
 
 		if( visible ){
 			btn.addClass( "active" );
@@ -478,7 +477,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 		activeDropDownLayers[ group.id ] = null;
 		
 		row.find( 'div.settings button' ).hide();
-		row.find( 'div.dashboard button' ).hide();
+		row.find( 'div.dashboard-btn button' ).hide();
 		btnLabel.removeClass( 'active' );
 		btnDropdown.removeClass( 'active' );
 		
@@ -496,7 +495,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 			
 			row.find( 'div.settings button' ).fadeIn( 200 );
 			if( layer.hasDashboard ){
-				row.find( 'div.dashboard button' ).fadeIn( 200 );
+				row.find( 'div.dashboard-btn button' ).fadeIn( 200 );
 			}
 		} else {
 			btnLabel.html( i18n['none'] );
@@ -557,12 +556,17 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 			span.animate( {opacity: "1"}, 200);
 		});
 		
+		bus.send( "group-active-layers-changed" , [groupId , count] );
 	});
 	
 	bus.listen( "layers-loaded" , function(event) {
-		if( defaultLayerOpenDashboard ){
+		if( defaultLayersOpenDashboard.length > 0 ){
 			setTimeout( function(){
-				bus.send( "open-layer-dashboard-info" , defaultLayerOpenDashboard );
+			
+				$.each( defaultLayersOpenDashboard , function(i, layer){
+					bus.send( "open-layer-dashboard-info" , layer );
+				});
+
 			}, 500 );
 		}
 	});

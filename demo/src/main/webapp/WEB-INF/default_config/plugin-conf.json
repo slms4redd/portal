@@ -11,6 +11,8 @@
 			"logo" : "static/img/logo.png" 
 		}, tutorial : {
 			"href" : "tutorial.html"
+		}, layer-dashboard : {
+			"open" 	: true
 		}
 	}
 }

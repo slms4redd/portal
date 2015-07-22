@@ -1,39 +1,41 @@
 div.dashboard {
-/* 	opacity: 0.9; */
 	z-index: 1100;
 	position: relative;
 	color: #E9E9E9;
 	overflow: hidden;
-	/* 	width: 90px; */
-	/* 	position: fixed; */
-	/* 	right: 0px; */
-	/* 	height: 60px !important; */
 }
 
-div.dashboard-toggle {
-	background-color: rgba(66, 66, 66, 0.85);
-/* 	border-left: 1px solid rgba(22, 22, 22, 0.25); */
-/* 	border-top: 1px solid rgba(22, 22, 22, 0.25); */
-/* 	border-bottom: 1px solid rgba(22, 22, 22, 0.25); */
-/* 	border-radius: 3px; */
-	height: 60px;
-	padding-top: 12px !important;
+div.dashboard button.btn-collapse {
+	position: absolute;	
+	left: 0px;
+}
+
+.dashboard-content-selector {
+	padding: 30px 50px 20px 50px;
 	text-align: center;
 }
 
-div.dashboard-header {
-	padding: 15px 10px;
-	text-align: center;
-	height: 60px;
-}
+/* div.dashboard-toggle { */
+/* 	background-color: rgba(66, 66, 66, 0.85); */
+/* 	height: 60px; */
+/* 	padding-top: 12px !important; */
+/* 	text-align: center; */
+/* } */
+
+/* div.dashboard-header { */
+/* 	padding: 15px 10px; */
+/* 	text-align: center; */
+/* 	height: 60px; */
+/* } */
 
 div.layer-label {
-	font-size: 16px;
+	font-size: 15px;
+	text-align: center;
 }
 
 div.dashboard-container {
 	background-color: rgba(66, 66, 66, 0.85);
-	padding: 0 0 2% 0;
+/* 	padding: 0 0 2% 0; */
 	border: 1px solid rgba(22, 22, 22, 0.30);
 }
 
@@ -43,9 +45,9 @@ div.dashboard-content {
 	max-height: 85%;
 }
 
-div.dashboard-content div.col-md-12 {
-	padding: 3% 8%;	
-}
+/* div.dashboard-content div.col-md-12 { */
+/* 	padding: 3% 8%;	 */
+/* } */
 
 button.layer-label {
 	pointer-events: none;
@@ -53,9 +55,6 @@ button.layer-label {
 	min-width: 200px;
 }
 
-.dashboard-content-selector {
-	padding: 0px 50px;
-}
 
 div.dashboard-header ul.dropdown-menu {
 	min-width: 200px;
@@ -85,6 +84,43 @@ div.dashboard-content-selector button i{
 	height: 100%;
 }
 
+
+div.row-toggle button.btn-transparent ,
+div.row-toggle button.btn-transparent:focus {
+	color : #E9E9E9;
+	font-size: 13px;
+	border: none;
+}
+div.row-toggle button.btn-transparent:hover {
+	border: none;
+	color : rgb(50, 153, 187);
+	font-size: 13px;
+	
+	-webkit-transition: color 0.3s ease-in-out;
+	-moz-transition: color 0.3s ease-in-out;
+	-o-transition: color 0.3s ease-in-out;
+	transition: color 0.3s ease-in-out;
+}
+div.row-toggle.closed {
+	
+}
+div.row-toggle.opened { 
+	
+}
+div.row-toggle-content {
+	padding: 10px 5px 15px 25px;
+}
+div.row-toggle-content.closed {
+	
+}
+div.row-toggle-content.opened {
+}
+
+
+div.row-dashbaord-padded {
+  padding: 5px;
+}
+
 /* ###### */
 /* Legend Style */
 /* ###### */
@@ -100,4 +136,10 @@ div.dashboard-content-selector button i{
 .legend-label {
 	font-size: 12px;
   	padding: 4px 5px;
+}
+.legend-line  {
+	width: 100%;
+	height: 0.25em;
+/* 	border: 1px solid rgba(233, 233, 233, 0.4); */
+	margin-top: .7em;
 }

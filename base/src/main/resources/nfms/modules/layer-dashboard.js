@@ -1,5 +1,8 @@
-define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization" ], function($, bus, layerListSelector, i18n, customization) {
+define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization" ,"module","jquery-color" ], function($, bus, layerListSelector, i18n, customization , module ) {
 	
+	
+	
+	var config = module.config();
 //	var iconOpened = '<span class="fa-stack"><i class="fa fa-circle-thin fa-stack-2x"></i><i class="fa fa-angle-double-right fa-stack-1x"></i></span>' ;
 //	var iconClosed = '<span class="fa-stack"><i class="fa fa-circle-thin fa-stack-2x"></i><i class="fa fa-tachometer fa-stack-1x"></i></span>' ;
 	var iconOpened = '<i class="fa fa-angle-double-right"></i>' ;
@@ -7,11 +10,10 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 
 	
 	var dashboard = $( '<div class="row dashboard height100"></div>' );
-//	dashboard.css( 'opacity' , '0' );
 	
 	layerListSelector.layersDashboardContainer.append( dashboard );
 		
-	var dashboardToggle = $( '<div class="col-md-1 no-padding"></div>' )
+//	var dashboardToggle = $( '<div class="col-md-1 no-padding"></div>' )
 //	dashboard.append( dashboardToggle );
 	
 	var btnCollapse = $( '<button class="btn btn-collapse">' + iconClosed + '</button>' );
@@ -22,18 +24,21 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 		btnCollapse.blur();
 	});
 	
-	
 	var dashboardContainer	= $( '<div class="col-md-12 height100 dashboard-container"></div>' );
 	dashboard.append( dashboardContainer );
 	
 	var rowHeader	= $( '<div class="row dashboard-header height10"></div>')
-	dashboardContainer.append( rowHeader );
+//	dashboardContainer.append( rowHeader );
 	var colHeader	= $( '<div class="col-md-12"></div>' );
 //	rowHeader.append( dashboardToggle );
 	rowHeader.append( colHeader );
 	
 	colHeader.append( btnCollapse );
 	
+//	var dashboardToggle = $( '<div class="dashboard-toggle"></div>' );
+//	dashboardToggle.append( btnCollapse );
+//	colHeader.append( dashboardToggle );
+//	
 	var btnGroup = $( '<div class="btn-group"><button type="button" class="btn layer-label">- Select Layer</button>'+
       '<button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">'+
        '<span class="caret"></span>'+
@@ -63,6 +68,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 	dashboardContainer.append( dashboardBtnBar );
 	var dashboardBtnBarCol	= $( '<div class="col-md-12 heigth100"></div>' );
 	dashboardBtnBar.append( dashboardBtnBarCol );
+	dashboardBtnBarCol.append( btnCollapse );
 	
 	var divNav = $( '<div class="width100 height100 dashboard-content-selector"></div>' );
 	dashboardBtnBarCol.append( divNav );
@@ -104,16 +110,29 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 	legend.hide();
 	dashboardContent.append( legend );
 	
+	var legendLayers = $( '<div class="dashboard-layers width100 height100"></div>')
+	var legendFeatures = $( '<div class="dashboard-features width100 height100"></div>')
+	legend.append( legendLayers );
+	legend.append( legendFeatures );
+	
 	var info = $( '<div class="dashboard-content-item info"></div>' );
 	info.hide();
 	dashboardContent.append( info );
+	var infoLayers = $( '<div class="dashboard-layers width100 height100"></div>')
+	var infoFeatures = $( '<div class="dashboard-features width100 height100"></div>')
+	info.append( infoLayers );
+	info.append( infoFeatures );
+
 	
 	var stats = $( '<div class="dashboard-content-item stats"></div>' );
 	stats.hide();
 	dashboardContent.append( stats );
+	var statsLayers = $( '<div class="dashboard-layers width100 height100"></div>')
+	var statsFeatures = $( '<div class="dashboard-features width100 height100"></div>')
+	stats.append( statsLayers );
+	stats.append( statsFeatures );
 	
-	
-	
+	// reset the dashboard to its origianl state ( for layer from the left menu )
 	var resetDashboard = function(){
 		
 		btnGroup.find( 'ul' ).empty();
@@ -122,56 +141,189 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 		layerLabel.html( '' );
 		layerLabel.hide();
 		
-		btnLegend.prop( 'disabled' , true );
-		btnInfo.prop( 'disabled' , true );
+		btnLegend.prop( 'disabled' , false );
+		btnInfo.prop( 'disabled' , false );
 		btnStats.attr( 'disabled' , true );
 		
 		dashboardBtnBar.find( 'button' ).removeClass( 'active' );
 		
-		legend.empty();
-		info.empty();
-		stats.empty();
+		$( '.dashboard-features' ).hide();
+		$( '.dashboard-layers' ).show();
+//		legend.empty();
+//		info.empty();
+//		stats.empty();
 		
 	};
 	
 	var showLegend = function(){
-		legend.hide();
-		info.hide();
-		stats.hide();
+		if( !legend.is(":visible") ){
+			info.hide();
+			stats.hide();
+			legend.fadeIn( 350 );
+		}
 		
 		dashboardBtnBar.find( 'button' ).removeClass( 'active' );
 		btnLegend.addClass( 'active' );
 		
-		legend.fadeIn( 350 );
 	};
 	
 	var showInfo = function(){
-		legend.hide();
-		info.hide();
-		stats.hide();
 		
 		dashboardBtnBar.find( 'button' ).removeClass( 'active' );
 		btnInfo.addClass( 'active' );
 		
-		info.fadeIn( 350 );
+		if( !info.is(":visible") ){
+			legend.hide();
+			stats.hide();
+			info.fadeIn( 350 );
+		}
+
 	};
 	
 	var showStats = function(){
-		legend.hide();
-		info.hide();
-		stats.hide();
-		
 		dashboardBtnBar.find( 'button' ).removeClass( 'active' );
 		btnStats.addClass( 'active' );
 		
 		stats.fadeIn( 350 );
+		if( !stats.is(":visible") ){
+			legend.hide();
+			info.hide();
+			stats.fadeIn( 350 );
+		}
+		
 	};
 	
 	resetDashboard();
+	showLegend();
 	
+	
+	var addDashboardItem = function( id , label , classPrefix , container , content , show ){
+		
+		var rowToggle = $( '<div class="row row-toggle closed"></div>' );
+		rowToggle.addClass( classPrefix + '-toggle' );
+		rowToggle.addClass( classPrefix + '-toggle-' +  id );
+		
+		var colToggleBtn	= $( '<div class="col-md-12 toggle-btn"></div>' );
+		var btn 			= $( '<button class="btn btn-transparent"><i class="fa fa-caret-right"></i>&nbsp;' +label+'</button>' );
+		
+		colToggleBtn.append( btn );
+		rowToggle.append( colToggleBtn );
+		
+		var row = $( '<div class="row row-toggle-content closed"></div>' );
+		row.addClass( classPrefix + '-layer' );
+		row.hide();
+		row.addClass( classPrefix + '-layer-' +  id );
+		var col	= $( '<div class="col-md-12"></div>' );
+		row.append( col );
+		col.append( content );
+		
+		container.append( rowToggle );
+		if( !show ){
+			rowToggle.hide();
+		}
+		container.append( row );
+		
+		btn.click( function(){
+			var elem = $( '.' + classPrefix + '-layer-' +  id );
+			toggleDashboardItem( classPrefix , id , !elem.is( ':visible' ) );
+		});
+	};
+	
+	var toggleDashboardItem = function( classPrefix , id , show ){
+		var toggle = $( '.' + classPrefix + '-toggle-' +  id );
+		var btnToggle = toggle.find( 'div.toggle-btn button' );
+		var elem = $( '.' + classPrefix + '-layer-' +  id );
+		if( show ){
+			elem.slideDown( 200 );
+			btnToggle.find( 'i').removeClass().addClass('fa fa-caret-down');
+			toggle.removeClass( 'closed' ).addClass( 'opened' );
+		} else {
+			elem.slideUp( 200 );
+			btnToggle.find( 'i').removeClass().addClass('fa fa-caret-right');
+			toggle.removeClass( 'opened' ).addClass( 'closed' );
+		}
+	};
+	
+	bus.listen("add-group", function(event, groupInfo) {
+		// add legend
+		if( groupInfo.hasOwnProperty("legendLink") ){
+				$.ajax({
+					url			: groupInfo.legendLink ,
+					data		: {bust : (new Date()).getTime()},
+					dataType 	: "html" ,
+					success		: function(data){
+						addDashboardItem( groupInfo.id, groupInfo.name , 'legend', legendLayers , data , true );
+					}
+				});
+		}
+		
+		// add info
+		if (groupInfo.hasOwnProperty("infoLink") ) {
+			$.ajax({
+				url			: groupInfo.infoLink ,
+				data		: {bust : (new Date()).getTime()},
+				dataType 	: "html" ,
+				success		: function(data){
+					addDashboardItem( groupInfo.id, groupInfo.name , 'info', infoLayers , data , true );
+				}
+			});
+		}
+		
+	});
+	
+	bus.listen( "group-active-layers-changed" , function(event , groupId , count){
+		var show = ( count > 0 ) ? true : false;
+		toggleDashboardElement( groupId , show );
+	});
+	
+	bus.listen("add-layer", function(event, portalLayer) {
+		
+		// add legend
+		$.each( portalLayer.wmsLayers, function( i , wmsLayer){
+			if( wmsLayer.hasOwnProperty("legend") || portalLayer.hasOwnProperty("legendLink") ){
+				if( portalLayer.hasOwnProperty("legendLink") ){
+					$.ajax({
+						url			: portalLayer.legendLink ,
+						data		: {bust : (new Date()).getTime()},
+						dataType 	: "html" ,
+						success		: function(data){
+							addDashboardItem( portalLayer.id, portalLayer.label , 'legend', legendLayers , data , portalLayer.active);
+						}
+					});
+				}
+			}
+		});
+		
+		// add info
+		if (portalLayer.hasOwnProperty("infoLink") ) {
+			$.ajax({
+				url			: portalLayer.infoLink ,
+				data		: {bust : (new Date()).getTime()},
+				dataType 	: "html" ,
+				success		: function(data){
+					addDashboardItem( portalLayer.id, portalLayer.label , 'info', infoLayers , data , portalLayer.active );
+				}
+			});
+		}
+	});
+	
+	var toggleDashboardElement = function( id , show ){
+		if( show === true ){
+			$( '.legend-toggle-' + id ).fadeIn( 200 );
+			$( '.info-toggle-' + id ).fadeIn( 200 );
+		} else {
+			// close dashboard item for the given layer
+			$( '.legend-layer-' + id ).fadeOut( 300 );
+			$( '.legend-toggle-' + id ).fadeOut( 300 );
+			$( '.legend-toggle-' + id ).find( 'button i' ).removeClass().addClass('fa fa-caret-right');
+			$( '.info-layer-' + id ).fadeOut( 300 );
+			$( '.info-toggle-' + id ).fadeOut( 300 );
+			$( '.info-toggle-' + id ).find( 'button i' ).removeClass().addClass('fa fa-caret-right');
+		}
+	};
 	
 	bus.listen("layer-visibility", function(event, layerId, visible) {
-		
+		toggleDashboardElement( layerId, visible );
 	});
 	
 	
@@ -206,75 +358,91 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 		var right = ( dashboard.hasClass( 'opened' ) ) ? "0" : "-"+(dashboard.width() ) +"px";
 //		var right = ( dashboard.hasClass( 'opened' ) ) ? "0" : "-"+(dashboard.width() - dashboardToggle.width() ) +"px";
 		dashboard.stop().animate( {'right': right }, 200 );
-//		if( dashboard.hasClass( 'opened' ) ) {
-//			container.stop().animate( {width: container.parent().width() }, 300 );
-//		}
 	});
 	
 	// click from layer list
 	bus.listen( "open-layer-dashboard-info" , function( event, portalLayer ){
-//		console.log( portalLayer );
+		
+		event.preventDefault();
 		
 		resetDashboard();
 		
+		var legendItem = $( '.legend-toggle-' + portalLayer.id );
+		var infoItem = $( '.info-toggle-' + portalLayer.id );
+		var targetItem = null; 
+		if( legendItem.length ){
+			showLegend();
+			targetItem = $( '.legend-layer-' + portalLayer.id );;
+		} else if( infoItem.length ){
+			showInfo();
+			targetItem = $( '.info-layer-' + portalLayer.id );;
+		}
+		
+		toggleDashboardItem( 'legend' , portalLayer.id , true );
+		toggleDashboardItem( 'info' , portalLayer.id , true );
+
+		setTimeout( function(){
+//			console.log( "top-position" +  $( targetItem ).position().top );
+			var scrollTop = 0;
+			if(  $( targetItem ).position().top < 40 ){
+				scrollTop = 0; 
+			} else {
+				scrollTop = $( targetItem ).position().top - dashboardContentRow.position().top;
+				scrollTop = Math.abs( scrollTop );				
+			}
+			
+//			console.log( scrollTop );
+//			if( scrollTop > 0 ){
+				dashboardContentRow.animate(
+						{ scrollTop: scrollTop }
+						, 200 
+						, function(){
+							highlightItem( portalLayer.id , targetItem );
+						}
+					);			
+//			} else {
+//				highlightItem( portalLayer.id , targetItem );
+//			}
+			
+		}, 250);
+
 		bus.send( "layers-dashboard-toggle-visibility" , true );
 		
-		layerLabel.html( portalLayer.label );
-		layerLabel.fadeIn();
-		
-		var dashboardOpened = false;
-		// add legend
-		$.each( portalLayer.wmsLayers, function( i , wmsLayer){
-			if( wmsLayer.hasOwnProperty("legend") || portalLayer.hasOwnProperty("legendLink") ){
-	
-				btnLegend.prop( 'disabled' , false );
-				showLegend();
-				
-				if( portalLayer.hasOwnProperty("legendLink") ){
-					$.ajax({
-						url			: portalLayer.legendLink ,
-						data		: {bust : (new Date()).getTime()},
-						dataType 	: "html" ,
-						success		: function(data){
-							legend.append( data );
-						}
-					
-					});
-				}
-				
-				dashboardOpened = true;
-			}
-		});
-
-		// open info
-		if (portalLayer.hasOwnProperty("infoLink") ) {
-			btnInfo.prop( 'disabled' , false );
-		
-			$.ajax({
-				url			: portalLayer.infoLink ,
-				data		: {bust : (new Date()).getTime()},
-				dataType 	: "html" ,
-				success		: function(data){
-					info.append( data );
-				}
-			
-			});
-			
-			if( !dashboardOpened ){
-				showInfo();
-				
-				dashboardOpened = true;
-			}
-		
-		}
-
 	});
 	
+	var highlightItem = function( id , targetItem ){
+		var legendItem = $( '.legend-toggle-' + id );
+		var infoItem = $( '.info-toggle-' + id );
+
+		var items = $( legendItem , infoItem ) ;
+		var color = $.Color( "rgba(251, 252, 166, 0.10)" );
+		items.animate(
+				{ 'backgroundColor': color }
+				, 200 
+				, function(){
+					items.animate(
+						{ 'backgroundColor': "transparent" }
+						, 400 )
+		});
+		targetItem.animate(
+				{ 'backgroundColor': color }
+				, 200 
+				, function(){
+					targetItem.animate(
+						{ 'backgroundColor': "transparent" }
+						, 400 )
+		});
+	};
+	
 	bus.listen( "open-dashboard-info-feature" , function( event, feature ){
-		//static/loc/" + customization.languageCode + "/html/" + group.infoFile
-		resetDashboard();
-//		console.log( feature );
-//		console.log( feature.attributes );
+		// init ui for features
+		$( '.dashboard-layers' ).hide();
+		$( '.dashboard-features' ).show();
+		$( '.dashboard-features' ).empty();
+		btnLegend.prop( 'disabled' , true );
+		btnInfo.prop( 'disabled' , true );
+		btnStats.prop( 'disabled' , true );
+
 		bus.send( "layers-dashboard-toggle-visibility" , true );
 		
 		layerLabel.html( feature.attributes.name );
@@ -296,7 +464,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 					data		: {bust : (new Date()).getTime()},
 					dataType 	: "html" ,
 					success		: function(data){
-						legend.append( data );
+						legendFeatures.append( data );
 					}
 				
 				});
@@ -315,7 +483,8 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 				data		: {bust : (new Date()).getTime()},
 				dataType 	: "html" ,
 				success		: function(data){
-					info.append( data );
+					infoFeatures.append( layerLabel );
+					infoFeatures.append( data );
 				}
 			
 			});

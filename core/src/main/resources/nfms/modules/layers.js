@@ -16,12 +16,16 @@ define([ "jquery", "message-bus", "customization", "module" ], function($, bus, 
 			"id" 				: group.id,
 			"name" 				: group.label,
 			"visible"			: ( group.visible === false ) ? false : true,
-			"mutuallyExclusive" : ( group.mutuallyExclusive === true ) ? true : false		
+			"mutuallyExclusive" : ( group.mutuallyExclusive === true ) ? true : false,
+			"open"				: ( group.open === true ) ? true : false
 		};
 		groups[group.id] = groupInfo;
 		
 		if ( group.hasOwnProperty("infoFile") ){
 			groupInfo.infoLink = "static/loc/" + customization.languageCode + "/html/" + group.infoFile;
+		}
+		if ( group.hasOwnProperty("legendFile") ){
+			groupInfo.legendLink = "static/loc/" + customization.languageCode + "/html/" + group.legendFile;
 		}
 
 		if ( parentId !== null ){
@@ -101,6 +105,13 @@ define([ "jquery", "message-bus", "customization", "module" ], function($, bus, 
 				bus.send("add-layer", portalLayer);
 				bus.send("layer-visibility", [ portalLayer.id, portalLayer.active || false ]);
 			}
+			
+//			if( groupInfo.open ){
+//				setTimeout( function(){
+//					$( '#group-collapse-' +  groupInfo.id ).collapse( 'show' );
+//				}, 800 );
+//			}
+			
 		}
 	};
 

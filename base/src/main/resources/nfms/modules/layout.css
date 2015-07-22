@@ -98,6 +98,7 @@ option {
 	background-color: transparent;
 	color: #E9E9E9;
 }
+.btn-transparent:hover ,
 .btn-transparent.active {
 	color : rgb(50, 153, 187);
 }

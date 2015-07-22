@@ -2,7 +2,7 @@
 	position	: fixed;
 	z-index: 1001;
 	float: right;
-  	bottom: 60px;
+  	bottom: 40px;
   	right: 0px;
 }
 .zoom-bar button.btn-default {

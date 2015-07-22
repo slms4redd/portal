@@ -17,6 +17,15 @@
 			"visible": true,
 			"queryable" : false
 		},
+		
+		{
+			"id" : "country",
+			"baseUrl" : "http://redd.vnforest.gov.vn/diss_geoserver/wms",
+			"wmsName" : "unredd:country",
+			"imageFormat" : "image/png8",
+			"visible" : true,
+			"queryable" : false
+		},
 		{
 			"id" : "commune",
 			"baseUrl" : "http://redd.vnforest.gov.vn/diss_geoserver/wms",
@@ -44,19 +53,11 @@
 		{
 			"id" : "ecoregion",
 			"baseUrl" : "http://redd.vnforest.gov.vn/diss_geoserver/wms",
-			"wmsName" : "unredd:ecoregions",
+			"wmsName" : "unredd:ecoregion",
 			"imageFormat" : "image/png8",
 			"visible" : true,
 			"queryable" : false
-		} ,
-		{
-			"id" : "country",
-			"baseUrl" : "http://redd.vnforest.gov.vn/diss_geoserver/wms",
-			"wmsName" : "unredd:country",
-			"imageFormat" : "image/png8",
-			"visible" : true,
-			"queryable" : false
-		}
+		} 
 		, {
 			"id" : "province_fcpf_cf",
 			"baseUrl" : "http://redd.vnforest.gov.vn/diss_geoserver/wms",
@@ -148,7 +149,6 @@
 		{
 			"id" : "base",
 			"label" : "${base_layers}",
-			"infoFile": "base_layers.html",
 			"visible" : false,
 			"items" : [ "ne2" ]
 			
@@ -156,7 +156,8 @@
 		, {
 			"id" : "admin",
 			"label" : "${admin_areas}",
-			"items" : [ "country" , "ecoregion" , "province" , "district", "commune" ]
+			"items" : [ "country" , "ecoregion" , "province" , "district", "commune" ],
+			"legendFile" : "admin.html"
 		}
 		, {
 			"id" : "redd_registry",
@@ -174,7 +175,8 @@
 		, {
 			"id" : "landcover",
 			"label" : "${land_cover_maps}",
-			"items" : ["jica" ]
+			"items" : ["jica" ],
+			"open"	: true
 		}
 	]
 }

@@ -65,4 +65,5 @@ define([ "jquery" ], function($) {
                 }
             });
     };
+    
 });
