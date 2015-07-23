@@ -17,15 +17,6 @@
 			"visible": true,
 			"queryable" : false
 		},
-		
-		{
-			"id" : "country",
-			"baseUrl" : "http://redd.vnforest.gov.vn/diss_geoserver/wms",
-			"wmsName" : "unredd:country",
-			"imageFormat" : "image/png8",
-			"visible" : true,
-			"queryable" : false
-		},
 		{
 			"id" : "commune",
 			"baseUrl" : "http://redd.vnforest.gov.vn/diss_geoserver/wms",
@@ -58,6 +49,14 @@
 			"visible" : true,
 			"queryable" : false
 		} 
+		, {
+			"id" : "country",
+			"baseUrl" : "http://redd.vnforest.gov.vn/diss_geoserver/wms",
+			"wmsName" : "unredd:country",
+			"imageFormat" : "image/png8",
+			"visible" : true,
+			"queryable" : false
+		}
 		, {
 			"id" : "province_fcpf_cf",
 			"baseUrl" : "http://redd.vnforest.gov.vn/diss_geoserver/wms",
@@ -170,7 +169,7 @@
 					"label" : "${others}",
 					"items": [ "province_fcpf_cf" ]
 				}
-				]
+			]
 		}
 		, {
 			"id" : "landcover",

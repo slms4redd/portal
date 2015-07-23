@@ -17,15 +17,18 @@ define([ "jquery", "message-bus", "customization", "module" ], function($, bus, 
 			"name" 				: group.label,
 			"visible"			: ( group.visible === false ) ? false : true,
 			"mutuallyExclusive" : ( group.mutuallyExclusive === true ) ? true : false,
-			"open"				: ( group.open === true ) ? true : false
+			"open"				: ( group.open === true ) ? true : false,
+			"hasDashboard"		: false
 		};
 		groups[group.id] = groupInfo;
 		
 		if ( group.hasOwnProperty("infoFile") ){
 			groupInfo.infoLink = "static/loc/" + customization.languageCode + "/html/" + group.infoFile;
+			groupInfo.hasDashboard = true;
 		}
 		if ( group.hasOwnProperty("legendFile") ){
 			groupInfo.legendLink = "static/loc/" + customization.languageCode + "/html/" + group.legendFile;
+			groupInfo.hasDashboard = true;
 		}
 
 		if ( parentId !== null ){

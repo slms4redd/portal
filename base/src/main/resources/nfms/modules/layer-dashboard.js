@@ -1,4 +1,4 @@
-define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization" ,"module","jquery-color" ], function($, bus, layerListSelector, i18n, customization , module ) {
+define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization" ,"module", "i18nUtils","jquery-color","jquery-easing" ], function($, bus, layerListSelector, i18n, customization , module ) {
 	
 	
 	
@@ -16,7 +16,8 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 //	var dashboardToggle = $( '<div class="col-md-1 no-padding"></div>' )
 //	dashboard.append( dashboardToggle );
 	
-	var btnCollapse = $( '<button class="btn btn-collapse">' + iconClosed + '</button>' );
+//	var btnCollapse = $( '<button class="btn btn-collapse">' + iconClosed + '</button>' );
+	var btnCollapse = $( '<button class="btn btn-collapse">' + iconOpened + '</button>' );
 //	dashboardToggle.append( btnCollapse );
 	
 	btnCollapse.click( function(e){
@@ -234,11 +235,11 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 		var btnToggle = toggle.find( 'div.toggle-btn button' );
 		var elem = $( '.' + classPrefix + '-layer-' +  id );
 		if( show ){
-			elem.slideDown( 200 );
+			elem.slideDown( 400 );
 			btnToggle.find( 'i').removeClass().addClass('fa fa-caret-down');
 			toggle.removeClass( 'closed' ).addClass( 'opened' );
 		} else {
-			elem.slideUp( 200 );
+			elem.slideUp( 400 );
 			btnToggle.find( 'i').removeClass().addClass('fa fa-caret-right');
 			toggle.removeClass( 'opened' ).addClass( 'closed' );
 		}
@@ -269,11 +270,6 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 			});
 		}
 		
-	});
-	
-	bus.listen( "group-active-layers-changed" , function(event , groupId , count){
-		var show = ( count > 0 ) ? true : false;
-		toggleDashboardElement( groupId , show );
 	});
 	
 	bus.listen("add-layer", function(event, portalLayer) {
@@ -322,36 +318,41 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 		}
 	};
 	
+	bus.listen( "group-active-layers-changed" , function(event , groupId , count){
+		var show = ( count > 0 ) ? true : false;
+		toggleDashboardElement( groupId , show );
+	});
+	
 	bus.listen("layer-visibility", function(event, layerId, visible) {
 		toggleDashboardElement( layerId, visible );
 	});
 	
 	
 	bus.listen( "layers-dashboard-toggle-visibility" , function(event , open){
-		var icon = null;
+//		var icon = null;
 		if( dashboard.hasClass('opened') && !open){
 			dashboard.removeClass( 'opened' ).addClass( 'closed' );
 //			dashboard.stop().animate( {'right': '-' + (dashboard.width() - dashboardToggle.width() ) +'px' }, 500 );
-			dashboard.stop().animate( {'right': '-' + (dashboard.width()) +'px' }, 500 );
+			dashboard.stop().animate( {'right': '-' + (dashboard.width()) +'px' }, 700 ,'easeOutQuad');
 			
-			icon = iconClosed;
+//			icon = iconClosed;
 		} else {
 			dashboard.removeClass( 'closed' ).addClass( 'opened' );
-			dashboard.animate( {'right': 0 }, 500 );
+			dashboard.animate( {'right': 0 }, 700 ,'easeInOutQuad');
 			
 			
-			icon = iconOpened;
+//			icon = iconOpened;
 		}
 		
-		icon = $( icon );
-		icon.hide();
-		setTimeout( function(){
-			btnCollapse.empty();
-			btnCollapse.append( icon );
-			btnCollapse.blur();
-			
-			icon.fadeIn();
-		}, 300 );
+//		icon = $( icon );
+//		icon.hide();
+//		setTimeout( function(){
+//			btnCollapse.empty();
+//			btnCollapse.append( icon );
+//			btnCollapse.blur();
+//			
+//			icon.fadeIn();
+//		}, 300 );
 	});
 	
 	$( window ).resize(function() {
@@ -361,25 +362,25 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 	});
 	
 	// click from layer list
-	bus.listen( "open-layer-dashboard-info" , function( event, portalLayer ){
+	bus.listen( "open-layer-dashboard" , function( event, id ){
 		
 		event.preventDefault();
 		
 		resetDashboard();
 		
-		var legendItem = $( '.legend-toggle-' + portalLayer.id );
-		var infoItem = $( '.info-toggle-' + portalLayer.id );
+		var legendItem = $( '.legend-toggle-' + id );
+		var infoItem = $( '.info-toggle-' + id );
 		var targetItem = null; 
 		if( legendItem.length ){
 			showLegend();
-			targetItem = $( '.legend-layer-' + portalLayer.id );;
+			targetItem = $( '.legend-layer-' + id );;
 		} else if( infoItem.length ){
 			showInfo();
-			targetItem = $( '.info-layer-' + portalLayer.id );;
+			targetItem = $( '.info-layer-' + id );;
 		}
 		
-		toggleDashboardItem( 'legend' , portalLayer.id , true );
-		toggleDashboardItem( 'info' , portalLayer.id , true );
+		toggleDashboardItem( 'legend' , id , true );
+		toggleDashboardItem( 'info' , id , true );
 
 		setTimeout( function(){
 //			console.log( "top-position" +  $( targetItem ).position().top );
@@ -396,12 +397,13 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 				dashboardContentRow.animate(
 						{ scrollTop: scrollTop }
 						, 200 
+						,'easeInOutQuad'
 						, function(){
-							highlightItem( portalLayer.id , targetItem );
+							highlightItem( id , targetItem );
 						}
 					);			
 //			} else {
-//				highlightItem( portalLayer.id , targetItem );
+//				highlightItem( id , targetItem );
 //			}
 			
 		}, 250);
@@ -415,22 +417,23 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 		var infoItem = $( '.info-toggle-' + id );
 
 		var items = $( legendItem , infoItem ) ;
-		var color = $.Color( "rgba(251, 252, 166, 0.10)" );
+		var color = $.Color( "rgba(50, 153, 187, 0.2)" );
+//		var color = $.Color( "rgba(251, 252, 166, 0.10)" );
 		items.animate(
 				{ 'backgroundColor': color }
-				, 200 
+				, 300 
 				, function(){
 					items.animate(
 						{ 'backgroundColor': "transparent" }
-						, 400 )
+						, 2000 )
 		});
 		targetItem.animate(
 				{ 'backgroundColor': color }
-				, 200 
+				, 300 
 				, function(){
 					targetItem.animate(
 						{ 'backgroundColor': "transparent" }
-						, 400 )
+						, 2000 )
 		});
 	};
 	

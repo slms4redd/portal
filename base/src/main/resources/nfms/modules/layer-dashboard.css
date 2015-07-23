@@ -3,6 +3,8 @@ div.dashboard {
 	position: relative;
 	color: #E9E9E9;
 	overflow: hidden;
+	line-height: 1.5em;
+	letter-spacing: 0.02em;
 }
 
 div.dashboard button.btn-collapse {
@@ -31,6 +33,7 @@ div.dashboard button.btn-collapse {
 div.layer-label {
 	font-size: 15px;
 	text-align: center;
+	font-weight: bold;
 }
 
 div.dashboard-container {
@@ -118,9 +121,20 @@ div.row-toggle-content.opened {
 
 
 div.row-dashbaord-padded {
-  padding: 5px;
+ 	padding: 5px;
+	font-size: 13px;
 }
-
+div.info-table {
+	border: 1px solid rgba(233, 233, 233, 0.45);
+    margin: 1.5em 1em 0em 1em !important;
+    padding-top: 20px;
+	padding-bottom: 20px;
+}
+div.info-table div.title {
+/* 	padding-top: 10px; */
+	padding: 0px 25px 10px 25px;
+	text-align: center;
+}
 /* ###### */
 /* Legend Style */
 /* ###### */
@@ -135,7 +149,7 @@ div.row-dashbaord-padded {
 }
 .legend-label {
 	font-size: 12px;
-  	padding: 4px 5px;
+  	padding: 2px 2px;
 }
 .legend-line  {
 	width: 100%;

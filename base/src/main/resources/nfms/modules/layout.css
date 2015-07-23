@@ -126,6 +126,11 @@ a.btn-default:hover {
 	text-decoration: none;
 	background-color: rgba(40, 34, 34, 0.95);
 	border: 1px solid transparent;
+	
+	-webkit-transition: background-color 0.3s ease-in-out;
+	-moz-transition: background-color 0.3s ease-in-out;
+	-o-transition: background-color 0.3s ease-in-out;
+	transition: background-color 0.3s ease-in-out;
 }
 
 button.btn-default.active ,
@@ -144,6 +149,11 @@ a.btn-default.active:hover {
 	text-decoration: none;
 	background-color: rgba(50, 153, 187, 0.95);
 	border: 1px solid transparent;
+	
+	-webkit-transition: background-color 0.3s ease-in-out;
+	-moz-transition: background-color 0.3s ease-in-out;
+	-o-transition: background-color 0.3s ease-in-out;
+	transition: background-color 0.3s ease-in-out;
 }
 
 /* externa link a class */
@@ -302,4 +312,28 @@ div.nav.nav-tabs > li > a {
 }
 .modal-lock .progress-bar-info {
   background-color: rgba(50, 153, 187, 0.7);
+}
+.bold {
+	font-weight: bold;
+}
+.line-height2{
+	line-height: 2em;
+}
+/*  table css style */
+table.table {
+	 border-collapse: collapse;
+	 margin-bottom: 0px !important;
+}
+table.table > thead > tr > th {
+	border-bottom: 1px solid rgba(233, 233, 233, 0.20);
+	background-color: rgba(50, 153, 187, 0.15);
+	font-weight: 100;
+}
+table.table > tbody > tr > td {
+	border-color: 	rgba(233, 233, 233, 0.20);
+	background-color: rgba(233, 233, 233, 0.10);
+	padding-left: 15px;	
+}
+td.indent {
+	text-indent: 3em;	
 }

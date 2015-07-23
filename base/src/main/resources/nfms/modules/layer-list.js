@@ -145,8 +145,8 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 				
 				var rowHeading = $( '<div class="row"/>' );
 				heading.append( rowHeading );
-				var h4 		= $( '<div class="col-md-10 col-md-offset-1 panel-title no-padding" />' );
-				rowHeading.append( h4 );
+				var colBtn 		= $( '<div class="col-md-10 col-md-offset-1 panel-title no-padding" />' );
+				rowHeading.append( colBtn );
 	
 				var collapseId 	= groupCollapsePrefix + groupInfo.id;
 				var btn			= $( '<button class="btn btn-default" data-toggle="collapse" data-parent="#group-accordion" aria-expanded="true" />' );
@@ -155,7 +155,22 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 				btn.append( '<i class="fa fa-caret-right" style="padding: 0 5px 3px 0; font-size:10px;opacity: 0.5;"></i>' );
 				btn.append( groupInfo.name );
 				btn.append( '<span class="badge">0</span>' );
-				h4.append( btn );
+				colBtn.append( btn );
+				
+				if( groupInfo.hasDashboard ){
+						var colDashbaord 		= $( '<div class="col-md-1 dashboard-btn no-padding" />' );
+						rowHeading.append( colDashbaord );
+					
+						var dashboardBtn = $( '<button class="btn btn-transparent"><i class="fa fa-tachometer"></i></button>' );
+						dashboardBtn.addClass( 'dashboard-group-btn-' + groupInfo.id );
+						colDashbaord.append( dashboardBtn );
+						
+						dashboardBtn.click(function(){
+							bus.send( "open-layer-dashboard" , groupInfo.id );
+							
+							dashboardBtn.blur();
+						});
+				}
 				
 				var content	= $( '<div class="panel-collapse collapse" role="tabpanel" />' );
 				content.attr( 'id' , collapseId );
@@ -174,7 +189,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 			
 		}
 	});
-
+	
 	bus.listen("add-layer", function(event, portalLayer) {
 		
 		var visible 			= true;
@@ -266,7 +281,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 							dashboard.append( dashboardBtn );
 							
 							dashboardBtn.click(function(){
-								bus.send( "open-layer-dashboard-info" , portalLayer );
+								bus.send( "open-layer-dashboard" , portalLayer.id );
 								
 								dashboardBtn.blur();
 							});
@@ -321,110 +336,6 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 
 		}
 		
-		
-		//OLD
-//		var tblLayerGroup, trLayer, tdLegend, tdVisibility, divCheckbox, tdName, tdInfo, aLink, inlineLegend;
-//		tblLayerGroup = $( "#group-content-table-" + portalLayer.groupInfo.id );
-//		if ( tblLayerGroup.length == 0 ){
-////			bus.send("error", "Layer " + portalLayer.label + " references nonexistent group: " + portalLayer.groupInfo.id);
-//		} else {
-//			trLayer = $("<tr/>").attr("id", "layer-row-" + portalLayer.id).addClass("layer_row");
-//
-//			tdLegend = $("<td/>").addClass("layer_legend");
-//
-//			if (portalLayer.hasOwnProperty("inlineLegendUrl")) {
-//				// context has an inline legend
-//				// tdLegend = $('<td
-//				// style="width:20px">');
-//				// inlineLegend = $('<img
-//				// class="inline-legend" src="' +
-//				// UNREDD.wmsServers[0] +
-//				// contextConf.inlineLegendUrl + '">');
-//				inlineLegend = $('<img class="inline-legend" src="' + portalLayer.inlineLegendUrl + '">');
-//				tdLegend.append(inlineLegend);
-//			} else {
-//				var wmsLayersWithLegend = portalLayer.wmsLayers.filter(function(layer) {
-//					return layer.hasOwnProperty("legend");
-//				});
-//				var wmsLayerWithLegend = wmsLayersWithLegend[0];
-//
-//				if (wmsLayerWithLegend) {
-//					inlineLegend = $("<td/>");
-//					inlineLegend.addClass("inline-legend-button");
-//
-//					if (portalLayer.active) {
-//						inlineLegend.addClass("visible");
-//					}
-//
-//					bus.listen("layer-visibility", function(event, layerId, visibility) {
-//						if (layerId != portalLayer.id) {
-//							return;
-//						}
-//
-//						if (visibility) {
-//							inlineLegend.addClass("visible");
-//						} else {
-//							inlineLegend.removeClass("visible");
-//						}
-//					});
-//
-//					inlineLegend.click(function() {
-//						if ($("#" + portalLayer.id + "_visibility_checkbox").hasClass("checked")) {
-//							bus.send("open-legend", wmsLayerWithLegend.id);
-//						}
-//					});
-//
-//					tdLegend.append(inlineLegend);
-//				}
-//			}
-//			trLayer.append(tdLegend);
-//
-//			tdVisibility = $("<td/>").css("width", "16px");
-//			divCheckbox = $("<div/>").attr("id", portalLayer.id + "_visibility_checkbox").addClass("layer_visibility");
-//			if (portalLayer.active) {
-//				divCheckbox.addClass("checked");
-//			}
-//			divCheckbox.mousedown(function() {
-//				divCheckbox.addClass("mousedown");
-//			}).mouseup(function() {
-//				divCheckbox.removeClass("mousedown");
-//			}).mouseenter(function() {
-//				divCheckbox.addClass("in");
-//			}).mouseleave(function() {
-//				divCheckbox.removeClass("in");
-//			}).click(function() {
-//				divCheckbox.toggleClass("checked");
-//				bus.send("layer-visibility", [ portalLayer.id, divCheckbox.hasClass("checked") ]);
-//			});
-//
-//			if (!portalLayer.isPlaceholder) {
-//				tdVisibility.append(divCheckbox);
-//			}
-//
-//			trLayer.append(tdVisibility);
-//
-//			tdName = $("<td/>").addClass("layer_name");
-//			tdName.html(portalLayer.label);
-//			trLayer.append(tdName);
-//
-//			for (var i = 0; i < layerActions.length; i++) {
-//				var layerAction = layerActions[i];
-//				var element = layerAction(portalLayer);
-//				tdAction = $("<td/>").addClass("layer_action").appendTo(trLayer);
-//				if (element != null) {
-//					tdAction.append(element);
-//				}
-//			}
-//
-//			$.each(portalLayer.wmsLayers, function(index, wmsLayer) {
-//				if (wmsLayer.hasOwnProperty("timestamps")) {
-//					temporalLayers.push(wmsLayer);
-//				}
-//			});
-//
-//			tblLayerGroup.append(trLayer);
-//			divLayers.accordion("refresh");
-//		}
 	});
 
 	bus.listen("layer-visibility", function(event, layerId, visible) {
@@ -516,7 +427,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 	bus.listen( "layer-dropdown-dashboard-click" , function( event, group ){
 		var activeLayer = activeDropDownLayers[ group.id ];
 		if( activeLayer ){
-			bus.send( "open-layer-dashboard-info" , activeLayer );
+			bus.send( "open-layer-dashboard" , activeLayer.id );
 		}
 	});
 	
@@ -559,12 +470,18 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 		bus.send( "group-active-layers-changed" , [groupId , count] );
 	});
 	
+	bus.listen( "group-active-layers-changed" , function(event , groupId , count){
+		var disabled = ( count > 0 ) ? false : true;
+		var dashboardBtn = $( '.dashboard-group-btn-' + groupId );
+		dashboardBtn.prop( 'disabled' , disabled );
+	});
+	
 	bus.listen( "layers-loaded" , function(event) {
 		if( defaultLayersOpenDashboard.length > 0 ){
 			setTimeout( function(){
 			
 				$.each( defaultLayersOpenDashboard , function(i, layer){
-					bus.send( "open-layer-dashboard-info" , layer );
+					bus.send( "open-layer-dashboard" , layer.id );
 				});
 
 			}, 500 );
