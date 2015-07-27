@@ -239,7 +239,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 			btnToggle.find( 'i').removeClass().addClass('fa fa-caret-down');
 			toggle.removeClass( 'closed' ).addClass( 'opened' );
 		} else {
-			elem.slideUp( 400 );
+			elem.stop().slideUp( 400 );
 			btnToggle.find( 'i').removeClass().addClass('fa fa-caret-right');
 			toggle.removeClass( 'opened' ).addClass( 'closed' );
 		}

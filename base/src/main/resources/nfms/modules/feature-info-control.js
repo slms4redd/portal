@@ -23,7 +23,7 @@ define([ "map", "message-bus", "customization"  ], function(map, bus, customizat
 		},
 		eventListeners : {
 			getfeatureinfo : function(evt) {
-				UI.unlock();
+				
 				if (evt.features) {
 					
 					bus.send("info-features", [ evt.features, evt.xy.x, evt.xy.y ]);

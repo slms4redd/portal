@@ -47,7 +47,8 @@
 			"wmsName" : "unredd:ecoregion",
 			"imageFormat" : "image/png8",
 			"visible" : true,
-			"queryable" : false
+			"queryable" : false,
+			"wmsOptions" : { "singleTileaaaaa": true, "ratioaaa": 1}
 		} 
 		, {
 			"id" : "country",
@@ -87,7 +88,7 @@
 		}, 
 		{
 			"id" : "ecoregion",
-			"active" : false,
+			"active" : true,
 			"label" : "${eco_region}",
 			"layers" : [ "ecoregion" ]
 		}

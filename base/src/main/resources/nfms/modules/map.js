@@ -61,7 +61,9 @@ define([ "message-bus", "layout", "openlayers" ], function(bus, layout) {
 						removeBackBufferDelay : 0,
 						isBaseLayer : false,
 						transparent : true,
-						format : wmsLayer.imageFormat || 'image/png'
+						format : wmsLayer.imageFormat || 'image/png',
+//						tilesorigin: map.maxExtent.left + ',' + map.maxExtent.bottom
+						singleTile: true
 					};
 				for (var paramName in wmsLayer.wmsParameters) {
 			        if ( wmsLayer.wmsParameters.hasOwnProperty(paramName) ) {
@@ -75,14 +77,20 @@ define([ "message-bus", "layout", "openlayers" ], function(bus, layout) {
 				}
 				
 				var options = { noMagic : true };
+				for (var optionName in wmsLayer.wmsOptions) {
+					if ( wmsLayer.wmsOptions.hasOwnProperty(optionName) ) {
+						options[ optionName ] = wmsLayer.wmsOptions[ optionName ];
+					}
+				}
 				
 				layer = new OpenLayers.Layer.WMS( wmsLayer.id,  wmsLayer.baseUrl, wmsParams, options );
 			}
 			layer.id = wmsLayer.id;
 			if (map !== null) {
 				map.addLayer(layer);
-				map.setLayerIndex(layer, wmsLayer.zIndex);
-				console.log( "layer " + layer.id, "index "+ wmsLayer.zIndex);
+//				map.setLayerIndex(layer, wmsLayer.zIndex);
+				layer.setZIndex(wmsLayer.zIndex);
+//				console.log( "layer " + layer.id, "index "+ wmsLayer.zIndex);
 			}
 			mapLayerArray.push(wmsLayer);
 		});

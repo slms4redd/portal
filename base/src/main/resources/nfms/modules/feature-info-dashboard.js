@@ -1,5 +1,8 @@
 define([ "module", "jquery", "message-bus", "map", "i18n", "customization" ], function(module, $, bus, map, i18n, customization) {
 
+	var infoQueryUrl = customization['info.queryUrl'] ;
+	console.log( infoQueryUrl );
+	
 	var wmsNamePortalLayerName = {};
 
 	bus.listen("add-layer", function(event, layerInfo) {
@@ -10,7 +13,7 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization" ], fu
 		});
 	});
 
-	var hasDashboard 	= function(feature) {
+	var hasDashboard 	= function(feature , functionCallback) {
 		var hasDashboard = false;
 		if (feature.attributes.hasOwnProperty("legend_file") && StringUtils.isNotBlank(feature.attributes.legend_file)) {
 			hasDashboard = true;
@@ -19,31 +22,96 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization" ], fu
 			hasDashboard = true;
 		}
 		
-		return hasDashboard;
+//		$.ajax({
+//			url			: infoQueryUrl ,
+//			type		: "POST" ,
+//			data		: {bust : (new Date()).getTime()},
+//			dataType 	: "xml" ,
+////			dataType 	: "jsonp" ,
+//			success		: function(data){
+//				console.log( data );
+//			}
+//		
+//		});		
+		
+		functionCallback( hasDashboard );
 	}; 
 	
-	var parseFeatures 	= function( eventFeatures ){
-		var features 	= new Array();
-		var featureIds 	= new Array();
-		$.each( eventFeatures , function(i, feature){
-			if( featureIds.indexOf(feature.fid) < 0 && hasDashboard(feature) ){
-				featureIds.push( feature.fid );
-				features.push( feature );
+	var next = function(){
+		
+	}
+	var checkHasDashbaord 	= function( eventFeatures , features , featureIds , i , functionCallback) {
+		var feature = null;
+		for ( j = i; j < eventFeatures.length; j++) { 
+			feature = eventFeatures[ j ];
+			if( featureIds.indexOf(feature.fid) < 0 ){
+				i = ( j + 1 );
+				break;
 			}
-		});
-		return features;
-	};
-	
-	bus.listen( "info-features", function(event, eventFeatures, x, y) {
-		var features = parseFeatures( eventFeatures );
-		console.log( features );
-	
-		if( features.length == 1 ){ 
-			bus.send( "open-dashboard-info-feature" , features[0] );
-		} else {
-			console.log( "TO-DO" );
 		}
 		
+		
+		var hasDashboard = false;
+		if (feature.attributes.hasOwnProperty("legend_file") && StringUtils.isNotBlank(feature.attributes.legend_file)) {
+			hasDashboard = true;
+		}
+		if (feature.attributes.hasOwnProperty("info_file") && StringUtils.isNotBlank(feature.attributes.info_file) ) {
+			hasDashboard = true;
+		}
+		if( hasDashboard){
+			featureIds.push( feature.fid );
+			features.push( feature );
+		}
+		
+		$.ajax({
+			headers: { 
+		        "Accept" : "application/json; charset=utf-8",
+		        "Content-Type": "application/json; charset=utf-8"
+		    },
+		    accepts		:{json:"application/json"},
+			url			: infoQueryUrl ,
+			type		: "POST" ,
+			data		: {bust : (new Date()).getTime()},
+//			dataType 	: "xml" ,
+			dataType 	: "jsonp" ,
+			beforeSend	: function( xhr ){
+				xhr.setRequestHeader('Accept', 'application/json');
+				xhr.overrideMimeType( "text/plain" );
+			}, 
+			success		: function(data){
+				console.log( data );
+			}
+		
+		});		
+		if( i == eventFeatures.length ){
+			functionCallback();
+		} else {
+			checkHasDashbaord( eventFeatures , features , featureIds , i , functionCallback );
+		}
+	}
+	
+	
+	bus.listen( "info-features", function(event, eventFeatures, x, y) {
+//		bus.send("parse-info-features" , [eventFeatures]);
+		if( eventFeatures && eventFeatures.length > 0 ){
+			
+			var features 	= new Array();
+			var featureIds 	= new Array();
+			checkHasDashbaord( eventFeatures , features , featureIds , 0 , function(){
+				UI.unlock();
+				console.log( features );
+				
+				if( features.length == 1 ){ 
+					bus.send( "open-dashboard-info-feature" , features[0] );
+				} else {
+					console.log( "TO-DO" );
+				}
+			} );
+		} else {
+			UI.unlock();
+		}
+		
+	
 	});
 	
 	
