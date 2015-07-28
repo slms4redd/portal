@@ -35,7 +35,7 @@
 		} ,
 		{
 			"id" : "province",
-			"baseUrl" : "http://redd.vnforest.gov.vn/diss_geoserver/wms",
+			"baseUrl" : "http://redd.vnforest.gov.vn/diss_geoserver/wfs",
 			"wmsName" : "unredd:province",
 			"imageFormat" : "image/png8",
 			"visible" : true,

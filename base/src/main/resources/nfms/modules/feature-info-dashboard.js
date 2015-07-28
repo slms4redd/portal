@@ -1,6 +1,10 @@
 define([ "module", "jquery", "message-bus", "map", "i18n", "customization" ], function(module, $, bus, map, i18n, customization) {
 
-	var infoQueryUrl = customization['info.queryUrl'] ;
+	var infoUrl = customization['info.queryUrl'] ;
+//	var infoUrl = "http://178.33.8.123/diss_geostore/rest/resources";
+	
+	var infoQueryUrl = "proxy?url=" + infoUrl;
+//	var infoQueryUrl = "proxy?url=" + encodeURIComponent( infoUrl );
 	console.log( infoQueryUrl );
 	
 	var wmsNamePortalLayerName = {};
@@ -37,9 +41,7 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization" ], fu
 		functionCallback( hasDashboard );
 	}; 
 	
-	var next = function(){
-		
-	}
+
 	var checkHasDashbaord 	= function( eventFeatures , features , featureIds , i , functionCallback) {
 		var feature = null;
 		for ( j = i; j < eventFeatures.length; j++) { 
@@ -63,20 +65,34 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization" ], fu
 			features.push( feature );
 		}
 		
+		
+		
+		var data = 
+		    '<OR>'+
+		    '<AND>'+
+		        '<ATTRIBUTE><name>zone_type</name><operator>EQUAL_TO</operator><type>STRING</type><value>country</value></ATTRIBUTE>'+
+		        '<ATTRIBUTE><name>zone_name</name><operator>EQUAL_TO</operator><type>STRING</type><value>vietnam</value></ATTRIBUTE>'+
+		        '<ATTRIBUTE><name>period</name><operator>EQUAL_TO</operator><type>STRING</type><value>2005-2015</value></ATTRIBUTE>'+
+		    '</AND>'+
+		    '<AND>'+
+		        '<ATTRIBUTE><name>zone_type</name><operator>EQUAL_TO</operator><type>STRING</type><value>province</value></ATTRIBUTE>'+
+		        '<ATTRIBUTE><name>zone_name</name><operator>EQUAL_TO</operator><type>STRING</type><value>Nghe An</value></ATTRIBUTE>'+
+		        '<ATTRIBUTE><name>period</name><operator>EQUAL_TO</operator><type>STRING</type><value>2005-2015</value></ATTRIBUTE>'+
+		    '</AND>'+
+		    '</OR>';
+		
+		
 		$.ajax({
-			headers: { 
-		        "Accept" : "application/json; charset=utf-8",
-		        "Content-Type": "application/json; charset=utf-8"
-		    },
-		    accepts		:{json:"application/json"},
+//			url			: "proxy?url=http://178.33.8.123/diss_geostore/rest/data/70" ,
 			url			: infoQueryUrl ,
 			type		: "POST" ,
-			data		: {bust : (new Date()).getTime()},
-//			dataType 	: "xml" ,
-			dataType 	: "jsonp" ,
+//			type		: "GET" ,
+//			data		: {bust : (new Date()).getTime()},
+			data		: data,
+			dataType 	: "json" ,
+			contentType: "text/xml",
 			beforeSend	: function( xhr ){
 				xhr.setRequestHeader('Accept', 'application/json');
-				xhr.overrideMimeType( "text/plain" );
 			}, 
 			success		: function(data){
 				console.log( data );
@@ -92,7 +108,6 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization" ], fu
 	
 	
 	bus.listen( "info-features", function(event, eventFeatures, x, y) {
-//		bus.send("parse-info-features" , [eventFeatures]);
 		if( eventFeatures && eventFeatures.length > 0 ){
 			
 			var features 	= new Array();

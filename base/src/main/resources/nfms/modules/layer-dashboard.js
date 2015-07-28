@@ -13,49 +13,53 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 	
 	layerListSelector.layersDashboardContainer.append( dashboard );
 		
-//	var dashboardToggle = $( '<div class="col-md-1 no-padding"></div>' )
-//	dashboard.append( dashboardToggle );
+	var dashboardToggle = $( '<div class="col-md-1 dashboard-toggle no-padding "></div>' )
+	dashboard.append( dashboardToggle );
 	
 //	var btnCollapse = $( '<button class="btn btn-collapse">' + iconClosed + '</button>' );
+	var dashboardToggleBtn = $( '<div class="dashboard-toggle-btn"></div>' )
+	dashboardToggle.append( dashboardToggleBtn );
 	var btnCollapse = $( '<button class="btn btn-collapse">' + iconOpened + '</button>' );
-//	dashboardToggle.append( btnCollapse );
+	dashboardToggleBtn.append( btnCollapse );
+	var dashboardToggleEmptyCol = $( '<div class="dashboard-toggle-empty-col"></div>' )
+	dashboardToggle.append( dashboardToggleEmptyCol );
 	
 	btnCollapse.click( function(e){
 		bus.send( "layers-dashboard-toggle-visibility" );
 		btnCollapse.blur();
 	});
 	
-	var dashboardContainer	= $( '<div class="col-md-12 height100 dashboard-container"></div>' );
+	var dashboardContainer	= $( '<div class="col-md-11 height100 dashboard-container"></div>' );
 	dashboard.append( dashboardContainer );
 	
-	var rowHeader	= $( '<div class="row dashboard-header height10"></div>')
+//	var rowHeader	= $( '<div class="row dashboard-header height10"></div>')
 //	dashboardContainer.append( rowHeader );
-	var colHeader	= $( '<div class="col-md-12"></div>' );
+//	var colHeader	= $( '<div class="col-md-12"></div>' );
 //	rowHeader.append( dashboardToggle );
-	rowHeader.append( colHeader );
+//	rowHeader.append( colHeader );
 	
-	colHeader.append( btnCollapse );
+//	colHeader.append( btnCollapse );
 	
 //	var dashboardToggle = $( '<div class="dashboard-toggle"></div>' );
 //	dashboardToggle.append( btnCollapse );
 //	colHeader.append( dashboardToggle );
 //	
-	var btnGroup = $( '<div class="btn-group"><button type="button" class="btn layer-label">- Select Layer</button>'+
-      '<button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">'+
-       '<span class="caret"></span>'+
-//        '<span class="sr-only">Toggle Dropdown</span>'+
-      '</button>'+
-      '<ul class="dropdown-menu" role="menu">'+
-//        '<li><button class="btn btn-default">layer 1</button></li>'+
-//        '<li><button class="btn btn-default">layer 2</button></li>'+
-        '</ul>'+
-    '</div>' );
+//	var btnGroup = $( '<div class="btn-group"><button type="button" class="btn layer-label">- Select Layer</button>'+
+//      '<button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">'+
+//       '<span class="caret"></span>'+
+////        '<span class="sr-only">Toggle Dropdown</span>'+
+//      '</button>'+
+//      '<ul class="dropdown-menu" role="menu">'+
+////        '<li><button class="btn btn-default">layer 1</button></li>'+
+////        '<li><button class="btn btn-default">layer 2</button></li>'+
+//        '</ul>'+
+//    '</div>' );
 
-	colHeader.append( btnGroup );
-	btnGroup.hide();
+//	colHeader.append( btnGroup );
+//	btnGroup.hide();
 	
 	var layerLabel = $( '<div class="layer-label"></div>' );
-	colHeader.append( layerLabel );
+//	colHeader.append( layerLabel );
 //	layerLabel.hi
 	
 	dashboard.css( 'right' , '-' + (dashboard.width() ) +'px' );
@@ -69,7 +73,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 	dashboardContainer.append( dashboardBtnBar );
 	var dashboardBtnBarCol	= $( '<div class="col-md-12 heigth100"></div>' );
 	dashboardBtnBar.append( dashboardBtnBarCol );
-	dashboardBtnBarCol.append( btnCollapse );
+//	dashboardBtnBarCol.append( btnCollapse );
 	
 	var divNav = $( '<div class="width100 height100 dashboard-content-selector"></div>' );
 	dashboardBtnBarCol.append( divNav );
@@ -136,8 +140,8 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 	// reset the dashboard to its origianl state ( for layer from the left menu )
 	var resetDashboard = function(){
 		
-		btnGroup.find( 'ul' ).empty();
-		btnGroup.hide();
+//		btnGroup.find( 'ul' ).empty();
+//		btnGroup.hide();
 		
 		layerLabel.html( '' );
 		layerLabel.hide();
@@ -329,35 +333,35 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 	
 	
 	bus.listen( "layers-dashboard-toggle-visibility" , function(event , open){
-//		var icon = null;
+		var icon = null;
 		if( dashboard.hasClass('opened') && !open){
 			dashboard.removeClass( 'opened' ).addClass( 'closed' );
-//			dashboard.stop().animate( {'right': '-' + (dashboard.width() - dashboardToggle.width() ) +'px' }, 500 );
-			dashboard.stop().animate( {'right': '-' + (dashboard.width()) +'px' }, 700 ,'easeOutQuad');
+			dashboard.stop().animate( {'right': '-' + (dashboard.width() - dashboardToggle.width() + 1 ) +'px' }, 500 );
+//			dashboard.stop().animate( {'right': '-' + (dashboard.width()) +'px' }, 700 ,'easeOutQuad');
 			
-//			icon = iconClosed;
+			icon = iconClosed;
 		} else {
 			dashboard.removeClass( 'closed' ).addClass( 'opened' );
 			dashboard.animate( {'right': 0 }, 700 ,'easeInOutQuad');
 			
 			
-//			icon = iconOpened;
+			icon = iconOpened;
 		}
 		
-//		icon = $( icon );
-//		icon.hide();
-//		setTimeout( function(){
-//			btnCollapse.empty();
-//			btnCollapse.append( icon );
-//			btnCollapse.blur();
-//			
-//			icon.fadeIn();
-//		}, 300 );
+		icon = $( icon );
+		icon.hide();
+		setTimeout( function(){
+			btnCollapse.empty();
+			btnCollapse.append( icon );
+			btnCollapse.blur();
+			
+			icon.fadeIn();
+		}, 300 );
 	});
 	
 	$( window ).resize(function() {
-		var right = ( dashboard.hasClass( 'opened' ) ) ? "0" : "-"+(dashboard.width() ) +"px";
-//		var right = ( dashboard.hasClass( 'opened' ) ) ? "0" : "-"+(dashboard.width() - dashboardToggle.width() ) +"px";
+//		var right = ( dashboard.hasClass( 'opened' ) ) ? "0" : "-"+(dashboard.width() ) +"px";
+		var right = ( dashboard.hasClass( 'opened' ) ) ? "0" : "-"+(dashboard.width() - dashboardToggle.width() + 1) +"px";
 		dashboard.stop().animate( {'right': right }, 200 );
 	});
 	
