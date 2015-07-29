@@ -115,10 +115,11 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 	legend.hide();
 	dashboardContent.append( legend );
 	
-	var legendLayers = $( '<div class="dashboard-layers width100 height100"></div>')
-	var legendFeatures = $( '<div class="dashboard-features width100 height100"></div>')
+	var legendLayers = $( '<div class="width100 height100"></div>')
+//	var legendLayers = $( '<div class="dashboard-layers width100 height100"></div>')
+//	var legendFeatures = $( '<div class="dashboard-features width100 height100"></div>')
 	legend.append( legendLayers );
-	legend.append( legendFeatures );
+//	legend.append( legendFeatures );
 	
 	var info = $( '<div class="dashboard-content-item info"></div>' );
 	info.hide();
@@ -441,47 +442,46 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 		});
 	};
 	
+	
+	var addFeatureInfo = function( id , label , data ){
+		addDashboardItem( id, label , 'info', infoFeatures , data , true );
+	};
+	
 	bus.listen( "open-dashboard-info-feature" , function( event, feature ){
 		// init ui for features
 		$( '.dashboard-layers' ).hide();
 		$( '.dashboard-features' ).show();
 		$( '.dashboard-features' ).empty();
-		btnLegend.prop( 'disabled' , true );
+//		btnLegend.prop( 'disabled' , true );
 		btnInfo.prop( 'disabled' , true );
 		btnStats.prop( 'disabled' , true );
 
 		bus.send( "layers-dashboard-toggle-visibility" , true );
 		
-		layerLabel.html( feature.attributes.name );
+//		layerLabel.html( feature.attributes.name );
 //		console.log( feature.attributes.name );
-		layerLabel.fadeIn();
+//		layerLabel.fadeIn();
 //		
 		var dashboardOpened = false;
 		
 //		// add legend
-//		$.each( portalLayer.wmsLayers, function( i , wmsLayer){
-			if( feature.attributes.hasOwnProperty("legend_file") ) {
-//	
-				btnLegend.prop( 'disabled' , false );
-				showLegend();
-				var url =  "static/loc/" + customization.languageCode + "/html/" + feature.attributes.legend_file;
-//				if( portalLayer.hasOwnProperty("legendLink") ){
-				$.ajax({
-					url			: url ,
-					data		: {bust : (new Date()).getTime()},
-					dataType 	: "html" ,
-					success		: function(data){
-						legendFeatures.append( data );
-					}
-				
-				});
+//		if( feature.attributes.hasOwnProperty("legend_file") ) {
+//			btnLegend.prop( 'disabled' , false );
+//			showLegend();
+//			var url =  "static/loc/" + customization.languageCode + "/html/" + feature.attributes.legend_file;
+//			$.ajax({
+//				url			: url ,
+//				data		: {bust : (new Date()).getTime()},
+//				dataType 	: "html" ,
+//				success		: function(data){
+//					legendFeatures.append( data );
 //				}
-//				
-				dashboardOpened = true;
-			}
-//		});
-//
-//		// open info
+//			
+//			});
+//			dashboardOpened = true;
+//		}
+		
+		// open info
 		if ( feature.attributes.hasOwnProperty("info_file")  ) {
 			btnInfo.prop( 'disabled' , false );
 			var url =  "static/loc/" + customization.languageCode + "/html/" + feature.attributes.info_file;
@@ -490,8 +490,12 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 				data		: {bust : (new Date()).getTime()},
 				dataType 	: "html" ,
 				success		: function(data){
-					infoFeatures.append( layerLabel );
-					infoFeatures.append( data );
+//					infoFeatures.append( layerLabel );
+//					infoFeatures.append( data );
+					var fId = feature.fid.replace( '.' , '-' );
+//					addDashboardItem( fId, feature.attributes.name , 'info', infoFeatures , data , true );
+					addFeatureInfo(fId, feature.attributes.name , data );
+					toggleDashboardItem( 'info' , fId , true );
 				}
 			
 			});
@@ -503,7 +507,77 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 			}
 		
 		}
+		
+		// add stats
+		var fakeData = [
+		                { "Resource": {
+					      "Attributes": {
+					        "attribute": [
+					          {
+					            "type": "STRING",
+					            "name": "zone_type",
+					            "value": "ecoregion"
+					          },
+					          {
+					            "type": "STRING",
+					            "name": "zone_name",
+					            "value": "ecoregion_north"
+					          },
+					          {
+					            "type": "INTEGER",
+					            "name": "start_period",
+					            "value": "2000"
+					          },
+					          {
+					            "type": "INTEGER",
+					            "name": "end_period",
+					            "value": "2015"
+					          },
+					          {
+					            "type": "STRING",
+					            "name": "stats_type",
+					            "value": "lucm"
+					          },
+					          {
+					            "type": "STRING",
+					            "name": "period",
+					            "value": "2000-2015"
+					          },
+					          {
+					            "type": "NUMBER",
+					            "name": "version",
+					            "value": "1.0"
+					          },
+					          {
+					            "type": "DATE",
+					            "name": "last_update",
+					            "value": "2015-06-30T14:44:39.262+0000"
+					          }
+					        ]
+					      },
+					      "category": {
+					        "id": "4",
+					        "name": "StatsData"
+					      },
+					      "store": {
+					        "data": [
+					            [2323,3232,23232,2323,2323],
+					            [2323,3232,23232,2323,2323],
+					            [2323,335,23232,2323,223],
+					            [2323,3232,23232,2323,2323],
+					            [23,3232,23452,2389,2323],
+					            ]
+					      },
+					      "creation": "2015-06-30T15:06:21.492+00:00",
+					      "description": "description of this resource",
+					      "id": "49",
+					      "name": "resource"
+					    }
+				}];
 
+		feature.attributes['ResourceList'] = fakeData;
+		bus.send( "add-feature-stats" , feature );
+	
 	});
 	
 });

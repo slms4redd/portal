@@ -23,70 +23,19 @@ define([ "message-bus", "layout", "openlayers" ], function(bus, layout) {
 	};
 
 	OpenLayers.ProxyHost = "proxy?url=";
+	
 	var mapId = layout.map.attr("id"); 
-//	var mapOptions =
-//	   {
-//	   .
-//	   .
-//	   .
-//	   eventListeners:
-//	      {
-//	      featureover: function(e)
-//	         {
-//	         e.feature.renderIntent = "temporary";
-//	         e.feature.layer.drawFeature(e.feature);
-//	         },
-//	      featureout: function(e)
-//	         {
-//	         e.feature.renderIntent = "default";
-//	         e.feature.layer.drawFeature(e.feature);
-//	         },
-//	      featureclick: function(e)
-//	         {
-//	         e.feature.renderIntent = "select";
-//	         e.feature.layer.drawFeature(e.feature);
-//	         }
-//	      }
-//	   };
 	map = new OpenLayers.Map( mapId , {
 		theme : null,
 		projection : new OpenLayers.Projection("EPSG:900913"),
 		displayProjection : new OpenLayers.Projection("EPSG:4326"),
 		units : "m",
 		allOverlays : true,
-		controls : [],
-		eventListeners:
-	      {
-	      featureover: function(e)
-	         {
-	         e.feature.renderIntent = "temporary";
-	         e.feature.layer.drawFeature(e.feature);
-	         console.log( e.feature );
-	         },
-	      featureout: function(e)
-	         {
-	         e.feature.renderIntent = "default";
-	         e.feature.layer.drawFeature(e.feature);
-	         console.log( e.feature );
-	         },
-	      featureclick: function(e)
-	         {
-	         e.feature.renderIntent = "select";
-	         e.feature.layer.drawFeature(e.feature);
-	         console.log( e.feature );
-	         }
-	      }
+		controls : []
 	});
 	map.addControl( new OpenLayers.Control.Navigation() );
 	map.addControl( new OpenLayers.Control.Scale() );
 //	map.addControl( new OpenLayers.Control.PanZoomBar() );
-	
-//	$('#' + mapId).on('mouseover', function() {
-//        document.body.style.cursor = 'pointer';
-//    });
-//	$('#' + mapId).on('mouseout', function() {
-//        document.body.style.cursor = 'default';
-//    });
 	
 	bus.listen("add-layer", function(event, layerInfo) {
 		var mapLayerArray = [];
@@ -143,7 +92,6 @@ define([ "message-bus", "layout", "openlayers" ], function(bus, layout) {
 				map.addLayer(layer);
 //				map.setLayerIndex(layer, wmsLayer.zIndex);
 				layer.setZIndex(wmsLayer.zIndex);
-//				console.log( "layer " + layer.id, "index "+ wmsLayer.zIndex);
 			}
 			mapLayerArray.push(wmsLayer);
 		});
