@@ -88,7 +88,7 @@
 		}, 
 		{
 			"id" : "ecoregion",
-			"active" : true,
+			"active" : false,
 			"label" : "${eco_region}",
 			"layers" : [ "ecoregion" ]
 		}
@@ -118,7 +118,8 @@
 			"feedback" : true,
 			"infoFile" : "jica_info.html",
 			"legendFile" : "jica_legend.html",
-			"openDashboard" : true
+			"openDashboard" : true,
+			"showTimeSlider" : false
 		}
 		, {
 			"id" : "ne2",
@@ -157,17 +158,20 @@
 			"id" : "admin",
 			"label" : "${admin_areas}",
 			"items" : [ "country" , "ecoregion" , "province" , "district", "commune" ],
-			"legendFile" : "admin.html"
+			"legendFile" : "admin.html",
+			"open"	: true ,
+			"helpMsg": "click_province"
 		}
 		, {
 			"id" : "redd_registry",
 			"label" : "${redd_registry}",
+			"helpMsg": "click_province",
 			"items" : [
 				"province_prap" ,
 				{
 					"id" : "others",
 					"mutuallyExclusive" : true,
-					"label" : "${others}",
+					"label" : "${other_initiatives}",
 					"items": [ "province_fcpf_cf" ]
 				}
 			]

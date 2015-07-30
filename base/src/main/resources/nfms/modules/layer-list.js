@@ -149,7 +149,10 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 				rowHeading.append( colBtn );
 	
 				var collapseId 	= groupCollapsePrefix + groupInfo.id;
-				var btn			= $( '<button class="btn btn-default" data-toggle="collapse" data-parent="#group-accordion" aria-expanded="true" />' );
+				var btn			= $( '<button class="btn btn-default" data-toggle="collapse" aria-expanded="true" />' );
+//				if( groupInfo.independent === false ){
+//						btn.attr( 'data-parent' , '#group-accordion' );
+//				}
 				btn.attr( 'href' , "#" + collapseId );
 				btn.attr( 'aria-controls' , collapseId );
 				btn.append( '<i class="fa fa-caret-right" style="padding: 0 5px 3px 0; font-size:10px;opacity: 0.5;"></i>' );
@@ -161,7 +164,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 						var colDashbaord 		= $( '<div class="col-md-1 dashboard-btn no-padding" />' );
 						rowHeading.append( colDashbaord );
 					
-						var dashboardBtn = $( '<button class="btn btn-transparent"><i class="fa fa-tachometer"></i></button>' );
+						var dashboardBtn = $( '<button class="btn btn-transparent"><i class="fa fa-arrow-circle-right"></i></button>' );
 						dashboardBtn.addClass( 'dashboard-group-btn-' + groupInfo.id );
 						colDashbaord.append( dashboardBtn );
 						
@@ -179,7 +182,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 				
 				if( groupInfo.open ){
 					setTimeout( function(){
-						content.collapse( {parent : '#group-accordion'} , 'show' );
+						content.collapse(  'show' );
 					}, 500 );
 				}
 				
@@ -277,7 +280,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 						
 						// add dashboard button
 						if( portalLayer.hasDashboard ){
-							var dashboardBtn = $( '<button class="btn btn-transparent"><i class="fa fa-tachometer"></i></button>' );
+							var dashboardBtn = $( '<button class="btn btn-transparent"><i class="fa fa-arrow-circle-right"></i></button>' );
 							dashboard.append( dashboardBtn );
 							
 							dashboardBtn.click(function(){

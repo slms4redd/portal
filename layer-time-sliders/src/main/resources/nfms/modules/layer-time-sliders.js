@@ -1,13 +1,11 @@
 define([ "jquery" , "message-bus" , "map", "layer-list", "jquery-ui-slider" ], function($, bus, map, layerList) {
-//    var aLayers=[];
-    var aTimestampsLayers={};
+
+	var aTimestampsLayers={};
     var layerInfoWithTime={};
-//	var divTimeSliders = $("<div/>").attr("id", "layerTimeSliders").addClass("layer_container_panel");
-//	layerListSelector.registerLayerPanel("layer_slider_selector", "Temporal", divTimeSliders);
 	
 	bus.listen("add-layer-timestamp", function( event, layerInfo ){
 		if( !layerInfo.isPlaceholder ){
-//			console.log( layerList.layerRowPrefix );
+		
 			var timestamps = getTimestamps( layerInfo );
 		
 			if (timestamps.length > 0) {
@@ -25,23 +23,27 @@ define([ "jquery" , "message-bus" , "map", "layer-list", "jquery-ui-slider" ], f
 				
 				var layerBadgeTimestamp = $( '<span class="layer-badge-timestamp-text" />' );
 				layerBadgeTimestamp.html( timestamps[timestamps.length - 1].getFullYear() );
-//				layerBadgeTimestamp.html( timestamps[timestamps.length - 1].getLocalizedDate() );
 				div.append( layerBadgeTimestamp );
 			
 			
 				// add time-slider row
 				var row = $( '<div class="row layer-time-slider" />' );
+				
 				layerRowSettings.append( row );
 				
 				var colIcon = $( '<div class="col-md-offset-1 col-md-1 row-layer-settings-icon no-padding" />' );
 				colIcon.append( '<i class="fa fa-calendar"></i>' );
 				row.append( colIcon );
-				
-//				var colSlider = $( '<div class="col-md-9 row-layer-settings-slider no-padding no-margin" style="padding-left: 5% !important;" />' );
+
 				var colSlider = $( '<div class="col-md-9 row-layer-settings-slider no-padding"  />' );
 				colSlider.addClass( 'layer-time-slider-'+layerInfo.id );
 				row.append( colSlider );
-
+				
+				if( layerInfo.showTimeSlider === false ){
+					colSlider.hide();
+					colIcon.hide();
+					row.addClass( 'no-padding' );
+				}
 				
 //				$.each(timestamps,function( i, timestamp ){
 //					var btn = $( '<button class="btn btn-default layer-time-btn"></button>' );

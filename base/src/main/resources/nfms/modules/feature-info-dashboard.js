@@ -5,7 +5,6 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization" ], fu
 	
 	var infoQueryUrl = "proxy?url=" + infoUrl;
 //	var infoQueryUrl = "proxy?url=" + encodeURIComponent( infoUrl );
-	console.log( infoQueryUrl );
 	
 	var wmsNamePortalLayerName = {};
 
@@ -95,7 +94,7 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization" ], fu
 				xhr.setRequestHeader('Accept', 'application/json');
 			}, 
 			success		: function(data){
-				console.log( data );
+//				console.log( data );
 			}
 		
 		});		
@@ -114,7 +113,7 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization" ], fu
 			var featureIds 	= new Array();
 			checkHasDashbaord( eventFeatures , features , featureIds , 0 , function(){
 				UI.unlock();
-				console.log( features );
+//				console.log( features );
 				
 				if( features.length == 1 ){ 
 					bus.send( "open-dashboard-info-feature" , features[0] );

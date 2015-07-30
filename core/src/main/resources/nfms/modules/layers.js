@@ -1,4 +1,4 @@
-define([ "jquery", "message-bus", "customization", "module" ], function($, bus, customization, module) {
+define([ "jquery", "message-bus", "customization", "module" , "i18n" ], function($, bus, customization, module, i18n) {
 	
 	var groups = [];
 	
@@ -115,6 +115,17 @@ define([ "jquery", "message-bus", "customization", "module" ], function($, bus, 
 //				}, 800 );
 //			}
 			
+		}
+		
+		console.log( group );
+		if( group.helpMsg ){
+			var groupDiv 	= $( "#group-collapse-" + group.id );
+			var panel 		= groupDiv.find( '.panel-body:first-child' );
+			var row 		= $( '<div class="row row-group-help-msg">' );
+			panel.append( row );
+			var col 		= $( '<div class="col-md-10 col-md-offset-1">' ) ;
+			row.append( col );
+			col.html( i18n[ group.helpMsg ] );
 		}
 	};
 

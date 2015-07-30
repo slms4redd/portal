@@ -15,7 +15,8 @@ define([ "jquery", "message-bus", "layout", "customization", "i18n", "bootstrap"
 	row.append( col );
 	var rowContainer = $( '<div class="row height100" style="  overflow: hidden;"></div>' );
 	col.append( rowContainer );
-	var container	= $( '<div class="col-md-12 col-sm-12 col-xs-12 layers-container no-padding open" id="group-accordion" role="tablist" aria-multiselectable="true"></div>' );
+	var container	= $( '<div class="col-md-12 col-sm-12 col-xs-12 layers-container no-padding open" role="tablist" aria-multiselectable="true"></div>' );
+//	var container	= $( '<div class="col-md-12 col-sm-12 col-xs-12 layers-container no-padding open" id="group-accordion" role="tablist" aria-multiselectable="true"></div>' );
 	rowContainer.append( container );
 	
 	var dashboardCol = $( '<div class="col-md-5 col-md-offset-4 col-sm-5 col-sm-offset-4 col-xs-4 height100"></div>' );

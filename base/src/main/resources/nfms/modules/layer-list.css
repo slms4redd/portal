@@ -9,6 +9,7 @@ div.dashboard-btn button.btn-transparent {
 	padding: 20% 20%;
   	position: relative;
   	right: 25%;
+  	font-size: 14px;
 }
 div.panel-heading div.dashboard-btn button.btn-transparent {
   	right: 1%;
@@ -68,4 +69,10 @@ div.settings button.btn-transparent {
 }
 .row-layer-settings-icon i {
 /* 	margin-left: -.1em; */
+}
+
+.row-group-help-msg {
+    font-size: 12px;
+    font-style: italic;
+    padding: 15px 0px 0px 0px;
 }

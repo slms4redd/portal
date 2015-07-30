@@ -190,7 +190,6 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 		dashboardBtnBar.find( 'button' ).removeClass( 'active' );
 		btnStats.addClass( 'active' );
 		
-		stats.fadeIn( 350 );
 		if( !stats.is(":visible") ){
 			legend.hide();
 			info.hide();
@@ -210,14 +209,13 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 		rowToggle.addClass( classPrefix + '-toggle-' +  id );
 		
 		var colToggleBtn	= $( '<div class="col-md-12 toggle-btn"></div>' );
-		var btn 			= $( '<button class="btn btn-transparent"><i class="fa fa-caret-right"></i>&nbsp;' +label+'</button>' );
+		var btn 			= $( '<button class="btn btn-transparent"><i class="fa fa-caret-down"></i>&nbsp;' +label+'</button>' );
 		
 		colToggleBtn.append( btn );
 		rowToggle.append( colToggleBtn );
 		
-		var row = $( '<div class="row row-toggle-content closed"></div>' );
+		var row = $( '<div class="row row-toggle-content opened"></div>' );
 		row.addClass( classPrefix + '-layer' );
-		row.hide();
 		row.addClass( classPrefix + '-layer-' +  id );
 		var col	= $( '<div class="col-md-12"></div>' );
 		row.append( col );
@@ -226,6 +224,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 		container.append( rowToggle );
 		if( !show ){
 			rowToggle.hide();
+			row.hide();
 		}
 		container.append( row );
 		
@@ -312,6 +311,8 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 		if( show === true ){
 			$( '.legend-toggle-' + id ).fadeIn( 200 );
 			$( '.info-toggle-' + id ).fadeIn( 200 );
+			toggleDashboardItem('legend', id , show );
+			toggleDashboardItem('info', id , show );
 		} else {
 			// close dashboard item for the given layer
 			$( '.legend-layer-' + id ).fadeOut( 300 );
@@ -444,7 +445,13 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 	
 	
 	var addFeatureInfo = function( id , label , data ){
+		btnInfo.prop( 'disabled' , false );
 		addDashboardItem( id, label , 'info', infoFeatures , data , true );
+	};
+	
+	var addFeatureStats = function( id , label , data ){
+		btnStats.prop( 'disabled' , false );
+		addDashboardItem( id, label , 'stats', statsFeatures , data , true );
 	};
 	
 	bus.listen( "open-dashboard-info-feature" , function( event, feature ){
@@ -483,7 +490,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 		
 		// open info
 		if ( feature.attributes.hasOwnProperty("info_file")  ) {
-			btnInfo.prop( 'disabled' , false );
+			
 			var url =  "static/loc/" + customization.languageCode + "/html/" + feature.attributes.info_file;
 			$.ajax({
 				url			: url ,
@@ -509,75 +516,174 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 		}
 		
 		// add stats
-		var fakeData = [
-		                { "Resource": {
-					      "Attributes": {
-					        "attribute": [
-					          {
-					            "type": "STRING",
-					            "name": "zone_type",
-					            "value": "ecoregion"
-					          },
-					          {
-					            "type": "STRING",
-					            "name": "zone_name",
-					            "value": "ecoregion_north"
-					          },
-					          {
-					            "type": "INTEGER",
-					            "name": "start_period",
-					            "value": "2000"
-					          },
-					          {
-					            "type": "INTEGER",
-					            "name": "end_period",
-					            "value": "2015"
-					          },
-					          {
-					            "type": "STRING",
-					            "name": "stats_type",
-					            "value": "lucm"
-					          },
-					          {
-					            "type": "STRING",
-					            "name": "period",
-					            "value": "2000-2015"
-					          },
-					          {
-					            "type": "NUMBER",
-					            "name": "version",
-					            "value": "1.0"
-					          },
-					          {
-					            "type": "DATE",
-					            "name": "last_update",
-					            "value": "2015-06-30T14:44:39.262+0000"
-					          }
-					        ]
+		var fakeData = {
+				  "ResourceList": {
+					    "Resource": [
+					      {
+					        
+										      "Attributes": {
+										        "attribute": [
+										          {
+										            "type": "STRING",
+										            "name": "zone_type",
+										            "value": "ecoregion"
+										          },
+										          {
+										            "type": "STRING",
+										            "name": "zone_name",
+										            "value": "ecoregion_north"
+										          },
+										          {
+										            "type": "INTEGER",
+										            "name": "start_period",
+										            "value": "2000"
+										          },
+										          {
+										            "type": "INTEGER",
+										            "name": "end_period",
+										            "value": "2015"
+										          },
+										          {
+										            "type": "STRING",
+										            "name": "stats_type",
+										            "value": "lucm"
+										          },
+										          {
+										            "type": "STRING",
+										            "name": "period",
+										            "value": "2000-2015"
+										          },
+										          {
+										            "type": "NUMBER",
+										            "name": "version",
+										            "value": "1.0"
+										          },
+										          {
+										            "type": "DATE",
+										            "name": "last_update",
+										            "value": "2015-06-30T14:44:39.262+0000"
+										          }
+										        ]
+										      },
+										      "category": {
+										        "id": "4",
+										        "name": "StatsData"
+										      },
+										      "store": {
+										        "data": [
+										            [32,645,654,32,645,654,32,645,654,32,645,654,32,645,654,654],
+					[432,654,65,432,654,65,432,654,65,432,654,65,432,654,65,65],
+					[43214,64,6534,43214,64,6534,43214,64,6534,43214,64,6534,43214,64,6534,6534],
+					[342,76,35,342,76,35,342,76,35,342,76,35,342,76,35,35],
+					[432,63,53,432,63,53,432,63,53,432,63,53,432,63,53,53],
+					[432,5463,65,432,5463,65,432,5463,65,432,5463,65,432,5463,65,65],
+					[432,546,6543,432,546,6543,432,546,6543,432,546,6543,432,546,6543,6543],
+					[432,456,653,432,456,653,432,456,653,432,456,653,432,456,653,653],
+					[46,456,65,46,456,65,46,456,65,46,456,65,46,456,65,65],
+					[76,4356,65,76,4356,65,76,4356,65,76,4356,65,76,4356,65,65],
+					[5436,3546,653,5436,3546,653,5436,3546,653,5436,3546,653,5436,3546,653,653],
+					[654,34,65,654,34,65,654,34,65,654,34,65,654,34,65,65],
+					[342,345,6543,342,345,6543,342,345,6543,342,345,6543,342,345,6543,6543],
+					[6543,65,643,6543,65,643,6543,65,643,6543,65,643,6543,65,643,643],
+					[65,3456,6543,65,3456,6543,65,3456,6543,65,3456,6543,65,3456,6543,6543],
+					[6543,653,6543,6543,653,6543,6543,653,6543,6543,653,6543,6543,653,6543,6543]
+										            ]
+										      },
+										      "creation": "2015-06-30T15:06:21.492+00:00",
+										      "description": "description of this resource",
+										      "id": "49",
+										      "name": "resource"
+										    
 					      },
-					      "category": {
-					        "id": "4",
-					        "name": "StatsData"
-					      },
-					      "store": {
-					        "data": [
-					            [2323,3232,23232,2323,2323],
-					            [2323,3232,23232,2323,2323],
-					            [2323,335,23232,2323,223],
-					            [2323,3232,23232,2323,2323],
-					            [23,3232,23452,2389,2323],
-					            ]
-					      },
-					      "creation": "2015-06-30T15:06:21.492+00:00",
-					      "description": "description of this resource",
-					      "id": "49",
-					      "name": "resource"
-					    }
-				}];
+					      {
+					        
+					        
+											      "Attributes": {
+												        "attribute": [
+												          {
+												            "type": "STRING",
+												            "name": "zone_type",
+												            "value": "ecoregion"
+												          },
+												          {
+												            "type": "STRING",
+												            "name": "zone_name",
+												            "value": "ecoregion_north"
+												          },
+												          {
+												            "type": "INTEGER",
+												            "name": "start_period",
+												            "value": "1990"
+												          },
+												          {
+												            "type": "INTEGER",
+												            "name": "end_period",
+												            "value": "2010"
+												          },
+												          {
+												            "type": "STRING",
+												            "name": "stats_type",
+												            "value": "lucm"
+												          },
+												          {
+												            "type": "STRING",
+												            "name": "period",
+												            "value": "2000-2015"
+												          },
+												          {
+												            "type": "NUMBER",
+												            "name": "version",
+												            "value": "1.0"
+												          },
+												          {
+												            "type": "DATE",
+												            "name": "last_update",
+												            "value": "2015-06-30T14:44:39.262+0000"
+												          }
+												        ]
+												      },
+												      "category": {
+												        "id": "4",
+												        "name": "StatsData"
+												      },
+												      "store": {
+												        "data": [
+												            [32,645,654,32,645,654,32,645,654,32,645,654,32,645,654,654],
+					[432,654,65,432,654,65,432,654,65,432,654,65,432,654,65,65],
+					[43214,64,6534,43214,64,6534,43214,64,6534,43214,64,6534,43214,64,6534,6534],
+					[342,76,35,342,76,35,342,76,35,342,76,35,342,76,35,35],
+					[432,63,53,432,63,53,432,63,53,432,63,53,432,63,53,53],
+					[432,5463,65,432,5463,65,432,5463,65,432,5463,65,432,5463,65,65],
+					[432,546,6543,432,546,6543,432,546,6543,432,546,6543,432,546,6543,6543],
+					[432,456,653,432,456,653,432,456,653,432,456,653,432,456,653,653],
+					[46,456,65,46,456,65,46,456,65,46,456,65,46,456,65,65],
+					[76,4356,65,76,4356,65,76,4356,65,76,4356,65,76,4356,65,65],
+					[5436,3546,653,5436,3546,653,5436,3546,653,5436,3546,653,5436,3546,653,653],
+					[654,34,65,654,34,65,654,34,65,654,34,65,654,34,65,65],
+					[342,345,6543,342,345,6543,342,345,6543,342,345,6543,342,345,6543,6543],
+					[6543,65,643,6543,65,643,6543,65,643,6543,65,643,6543,65,643,643],
+					[65,3456,6543,65,3456,6543,65,3456,6543,65,3456,6543,65,3456,6543,6543],
+					[6543,653,6543,6543,653,6543,6543,653,6543,6543,653,6543,6543,653,6543,6543]
+												     ] },
+												      "creation": "2015-06-30T15:06:21.492+00:00",
+												      "description": "description of this resource",
+												      "id": "50",
+												      "name": "resource"
+												    
+					        
+					      }
+					    ]
+					  }
+					};
 
-		feature.attributes['ResourceList'] = fakeData;
+		feature.attributes['ResourceList'] = fakeData.ResourceList;
 		bus.send( "add-feature-stats" , feature );
 	
 	});
+	
+	return {
+		addFeatureStats 	: addFeatureStats ,
+		toggleDashboardItem : toggleDashboardItem
+	}
 	
 });

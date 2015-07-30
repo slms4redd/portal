@@ -33,6 +33,10 @@ define([ "message-bus", "layout", "openlayers" ], function(bus, layout) {
 		allOverlays : true,
 		controls : []
 	});
+//	map.events.register('zoomend', map, function() {
+//		  var zoomInfo = 'Zoom level=' + map.getZoom() + '/' + (map.numZoomLevels + 1);
+//		  console.log( zoomInfo );
+//		});
 	map.addControl( new OpenLayers.Control.Navigation() );
 	map.addControl( new OpenLayers.Control.Scale() );
 //	map.addControl( new OpenLayers.Control.PanZoomBar() );
