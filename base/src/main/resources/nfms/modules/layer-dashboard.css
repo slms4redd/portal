@@ -107,13 +107,14 @@ div.dashboard-content-selector button i{
 }
 
 
-div.row-toggle button.btn-transparent ,
-div.row-toggle button.btn-transparent:focus {
+div.dashboard button.btn-transparent ,
+div.dashboard button.btn-transparent:focus {
 	color : #E9E9E9;
 	font-size: 13px;
 	border: none;
+	text-align: left;
 }
-div.row-toggle button.btn-transparent:hover {
+div.dashboard button.btn-transparent:hover {
 	border: none;
 	color : rgb(50, 153, 187);
 	font-size: 13px;
@@ -146,13 +147,13 @@ div.row-dashbaord-padded {
 div.info-table {
 	border: 1px solid rgba(233, 233, 233, 0.45);
     margin: 1.5em 1em 0em 1em !important;
-    padding-top: 20px;
-	padding-bottom: 20px;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 div.info-table div.title {
 /* 	padding-top: 10px; */
-	padding: 0px 25px 10px 25px;
-	text-align: center;
+/* 	padding: 0px 25px 10px 25px; */
+/* 	text-align: center; */
 }
 /* ###### */
 /* Legend Style */

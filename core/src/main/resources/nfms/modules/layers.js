@@ -109,15 +109,8 @@ define([ "jquery", "message-bus", "customization", "module" , "i18n" ], function
 				bus.send("layer-visibility", [ portalLayer.id, portalLayer.active || false ]);
 			}
 			
-//			if( groupInfo.open ){
-//				setTimeout( function(){
-//					$( '#group-collapse-' +  groupInfo.id ).collapse( 'show' );
-//				}, 800 );
-//			}
-			
 		}
 		
-		console.log( group );
 		if( group.helpMsg ){
 			var groupDiv 	= $( "#group-collapse-" + group.id );
 			var panel 		= groupDiv.find( '.panel-body:first-child' );

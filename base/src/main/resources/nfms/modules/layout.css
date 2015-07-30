@@ -90,6 +90,9 @@ option {
 }
 
 /* Common button styles */
+button.btn {
+	white-space: normal;
+}
 
 /* button transparent */
 .btn-transparent,

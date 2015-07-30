@@ -29,10 +29,11 @@
 
 <div class="row row-dashbaord-padded info-table">
 	<div class="col-md-12 title" >
-		<span class="province_deforestation_drivers bold"></span>
+<!-- 		<span class="province_deforestation_drivers bold"></span> -->
+		<button class="btn btn-transparent btn-collapsable province_deforestation_drivers" data-target="table1"><i class="fa fa-caret-right"></i>&nbsp;</button>		
 	</div>
 
-	<div class="col-md-12">
+	<div class="col-md-12 collapsable table1">
 		<div class="table-responsive">
 			<table class="table">
 				<thead>
@@ -103,10 +104,11 @@
 
 <div class="row row-dashbaord-padded info-table">
 	<div class="col-md-12 title" >
-		<span class="main_interventions bold"></span>
+<!-- 		<span class="main_interventions bold"></span> -->
+		<button class="btn btn-transparent btn-collapsable main_interventions" data-target="table2"><i class="fa fa-caret-right"></i>&nbsp;</button>
 	</div>
 
-	<div class="col-md-12">
+	<div class="col-md-12 collapsable table2">
 		<div class="table-responsive">
 			<table class="table">
 				<thead>
@@ -176,10 +178,11 @@
 
 <div class="row row-dashbaord-padded info-table">
 	<div class="col-md-12 title" >
-		<span class="list_districs_redd_agreements bold"></span>
+<!-- 		<span class="list_districs_redd_agreements bold"></span> -->
+		<button class="btn btn-transparent btn-collapsable list_districs_redd_agreements" data-target="table3"><i class="fa fa-caret-right"></i>&nbsp;</button>
 	</div>
 
-	<div class="col-md-12">
+	<div class="col-md-12 collapsable table3">
 		<div class="table-responsive">
 			<table class="table">
 				<thead>
@@ -224,30 +227,46 @@
 
 <script type="text/javascript">
 // 		console.log( i18nUtils.message('others') );
-		$( '.province_approved_msg1' ).html( i18nUtils.message('province_approved_msg1') );
-		$( '.province_name' ).html( i18nUtils.message('province_dien_bien') );
-		$( '.province' ).html( i18nUtils.message('province') );
-		$( '.province_approved_msg2' ).html( i18nUtils.message('province_approved_msg2') );
-		$( '.province_deforestation_drivers' ).html( i18nUtils.message('province_deforestation_drivers') );
+		$( '.province_approved_msg1' ).append( i18nUtils.message('province_approved_msg1') );
+		$( '.province_name' ).append( i18nUtils.message('province_dien_bien') );
+		$( '.province' ).append( i18nUtils.message('province') );
+		$( '.province_approved_msg2' ).append( i18nUtils.message('province_approved_msg2') );
+		$( '.province_deforestation_drivers' ).append( i18nUtils.message('province_deforestation_drivers') );
 		
-		$( '.identified' ).html( i18nUtils.message('identified') );
-		$( '.agriculture_expansion_non_subsistence' ).html( i18nUtils.message('agriculture_expansion_non_subsistence') );
-		$( '.coffee' ).html( i18nUtils.message('coffee') );
-		$( '.rubber' ).html( i18nUtils.message('rubber') );
-		$( '.acacia' ).html( i18nUtils.message('acacia') );
-		$( '.tea' ).html( i18nUtils.message('tea') );
-		$( '.cashew' ).html( i18nUtils.message('cashew') );
-		$( '.other' ).html( i18nUtils.message('other') );
-		$( '.agriculture_expansion_subsistence' ).html( i18nUtils.message('agriculture_expansion_subsistence') );
-		$( '.infrastructure_development' ).html( i18nUtils.message('infrastructure_development') );
-		$( '.hydropower' ).html( i18nUtils.message('hydropower') );
-		$( '.transportation_infrastructure' ).html( i18nUtils.message('transportation_infrastructure') );
-		$( '.urban_expansion' ).html( i18nUtils.message('urban_expansion') );
+		$( '.identified' ).append( i18nUtils.message('identified') );
+		$( '.agriculture_expansion_non_subsistence' ).append( i18nUtils.message('agriculture_expansion_non_subsistence') );
+		$( '.coffee' ).append( i18nUtils.message('coffee') );
+		$( '.rubber' ).append( i18nUtils.message('rubber') );
+		$( '.acacia' ).append( i18nUtils.message('acacia') );
+		$( '.tea' ).append( i18nUtils.message('tea') );
+		$( '.cashew' ).append( i18nUtils.message('cashew') );
+		$( '.other' ).append( i18nUtils.message('other') );
+		$( '.agriculture_expansion_subsistence' ).append( i18nUtils.message('agriculture_expansion_subsistence') );
+		$( '.infrastructure_development' ).append( i18nUtils.message('infrastructure_development') );
+		$( '.hydropower' ).append( i18nUtils.message('hydropower') );
+		$( '.transportation_infrastructure' ).append( i18nUtils.message('transportation_infrastructure') );
+		$( '.urban_expansion' ).append( i18nUtils.message('urban_expansion') );
 
-		$( '.main_interventions' ).html( i18nUtils.message('main_interventions') );
-		$( '.districts_for_implementation' ).html( i18nUtils.message('districts_for_implementation') );
+		$( '.main_interventions' ).append( i18nUtils.message('main_interventions') );
+		$( '.districts_for_implementation' ).append( i18nUtils.message('districts_for_implementation') );
 
-		$( '.list_districs_redd_agreements' ).html( i18nUtils.message('list_districs_redd_agreements') );
-		$( '.districts_in' ).html( i18nUtils.message('districts_in') );
-		$( '.province_with_siraps' ).html( i18nUtils.message('province_with_siraps') );
+		$( '.list_districs_redd_agreements' ).append( i18nUtils.message('list_districs_redd_agreements') );
+		$( '.districts_in' ).append( i18nUtils.message('districts_in') );
+		$( '.province_with_siraps' ).append( i18nUtils.message('province_with_siraps') );
+		
+		
+		
+		$( '.collapsable' ).hide();
+		$( '.btn-collapsable' ).click(function(){
+			var btn = $( this );
+			var target = $( '.' + btn.attr( 'data-target' ) );
+			if( target.is(':visible') ){
+				target.slideUp();
+				btn.find( 'i' ).removeClass().addClass( 'fa fa-caret-right' );
+			} else {
+				target.slideDown();
+				btn.find( 'i' ).removeClass().addClass( 'fa fa-caret-down' );
+			}
+		});
+		
 </script>

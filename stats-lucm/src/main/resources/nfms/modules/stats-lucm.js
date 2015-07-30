@@ -84,9 +84,12 @@ define([ "jquery" , "message-bus" , "i18n", "layer-dashboard" ], function($, bus
 					var rowData = data[ r ];
 					var tr = $( '<tr></tr>' );
 					tBody.append( tr );
+					
+					// first column is the class
 					var tdClass = $( '<td class="data-class"></td>' );
 					tdClass.html( (r+1) );
 					tr.append( tdClass );
+					
 					for( var c = 0 ; c < rowData.length ; c++ ){
 						var value = rowData[ c ];
 //						console.log( "row " + r + " - col " + c + " value " + value );
@@ -94,6 +97,7 @@ define([ "jquery" , "message-bus" , "i18n", "layer-dashboard" ], function($, bus
 						var td = $( '<td></td>' );
 						td.html( value );
 						tr.append( td );
+						td.addClass( (r+1) + '-' + (c+1) );
 					}
 				}
 				
@@ -106,6 +110,9 @@ define([ "jquery" , "message-bus" , "i18n", "layer-dashboard" ], function($, bus
 					th.html( (r+1) );
 					trHead.append( th );
 				}
+				
+				//give table celles a style
+ 				styleTableCells( table );
 			}
 			
 			// add years buttons
@@ -176,7 +183,53 @@ define([ "jquery" , "message-bus" , "i18n", "layer-dashboard" ], function($, bus
 	});
 	
 
-	
+	var styleTableCells = function( table ){
+		//'rgba(50,40,20,0.5)' 
+		table
+			.find( 'td:not(.data-class)' )
+			.css( 'background-color' , function(){
+				var cssClasses = $( this ).get( 0 ).className.split( '-' );
+				var row = parseInt( cssClasses[ 0 ] );
+				var col = parseInt( cssClasses[ 1 ] );
+				console.log( row + '   '  + col ); 
+				if( row <= 10 && col == 11 ){
+//					return 'rgba( 220 , 72 , 72 ,0.5)';
+//					return 'rgba( 224 , 13 , 38 ,0.5)';
+					return 'rgba( 213 , 59 , 53 ,0.5)';
+				} else if( row >=12 && col <= 10 ){
+					// reforestation
+					return 'rgba( 119 , 227 , 160 ,0.5)';
+				} else if( row >= 12 && col == 11 ){
+					// reforestation of plantation 
+					return 'rgba( 202 , 204 , 0 ,0.5)';
+				} else if ( row <= 11 && col >=12 ){
+					return 'rgba( 213 , 9 , 33 ,0.5)';
+				} 
+				
+				else if( col >= 12 && row >= 12 ){
+					return 'rgba(50,40,20,0.5)';
+				} else if( row == col ){
+					return 'rgba( 255 , 255 , 255 ,0.5)';
+				}
+				
+				
+				
+				//randon values
+				else if(  row <= 4 && col <= 4){
+					//degradation
+					return 'rgba( 240 , 133 , 39 ,0.5)';
+				} else if( row >= 4 && col <= 7 ) {
+					//restoration
+					return 'rgba( 119 , 227 , 39 ,0.5)';
+				} else if( col >= 8 ){
+					//degradation
+					return 'rgba( 240 , 133 , 39 ,0.5)';
+				} else {
+					//restoration
+					return 'rgba( 119 , 227 , 39 ,0.5)';
+				}
+			} );
+	};
 
 	var parseResources = function(feature) {
 		var resources = new Array();
