@@ -537,8 +537,11 @@ define([ "jquery" , "message-bus" , "i18n", "layer-dashboard" ,"highcharts" , "j
 	        tooltip: {
 	            formatter: function () {
 	                return '<b>' + this.x + '</b><br/>' +
-	                    this.series.name + ': ' + this.y + '<br/>' +
-	                    'Total: ' + this.point.stackTotal;
+	                    this.series.name + ': ' + this.y 
+//	                    + '<br/>' 
+//	                    +
+//	                    'Total: ' + this.point.stackTotal
+	                    ;
 	            }
 	        },
 
