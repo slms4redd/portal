@@ -73,6 +73,7 @@ div.settings button.btn-transparent {
 
 .row-group-help-msg {
     font-size: 12px;
-    font-style: italic;
+/*     font-style: italic; */
     padding: 15px 0px 0px 0px;
+    text-transform: uppercase;
 }
