@@ -82,7 +82,8 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 	
 	var liLegend = $( '<li></li>' );
 	ul.append( liLegend );
-	var btnLegend = $( '<button class="btn btn-default"><i class="fa fa-th-list"></i> Legend</button>' );
+	var btnLegend = $( '<button class="btn btn-default"><i class="fa fa-th-list"></i> </button>' );
+	btnLegend.append( i18n['legend_button'] );
 	btnLegend.click( function(){
 		showLegend();
 	});
@@ -90,7 +91,12 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 	
 	var liInfo = $( '<li></li>' );
 	ul.append( liInfo );
-	var btnInfo = $( '<button class="btn btn-default"><i class="fa fa-info-circle"></i> Info</button>' );
+	var btnInfo = $( '<button class="btn btn-default"><i class="fa fa-info-circle"></i> </button>' );
+	if( config.infoButtonMsg ){
+		btnInfo.append( i18n[config.infoButtonMsg] );
+	} else {
+		btnInfo.append( i18n['info_button'] );
+	}
 	btnInfo.click( function(){
 		showInfo();
 	});
@@ -98,7 +104,8 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 
 	var liStats = $( '<li></li>' );
 	ul.append( liStats );
-	var btnStats = $( '<button class="btn btn-default"><i class="fa fa-pie-chart"></i> Stats</button>' );
+	var btnStats = $( '<button class="btn btn-default"><i class="fa fa-pie-chart"></i> </button>' );
+	btnStats.append( i18n['stats_button'] );
 	btnStats.click( function(){
 		showStats();
 	});

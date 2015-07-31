@@ -116,7 +116,6 @@
 			"label" : "${jica}",
 			"layers" : [ "jica" ],
 			"feedback" : true,
-			"infoFile" : "jica_info.html",
 			"legendFile" : "jica_legend.html",
 			"openDashboard" : true,
 			"showTimeSlider" : false

@@ -12,7 +12,8 @@
 		}, tutorial : {
 			"href" : "tutorial.html"
 		}, layer-dashboard : {
-			"open" 	: true
+			"open" 	: true,
+			"infoButtonMsg" : "info_redd_profile_button"
 		}
 	}
 }
