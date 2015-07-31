@@ -1,4 +1,4 @@
-define([ "jquery" , "message-bus" , "i18n", "layer-dashboard" ], function($, bus, i18n, layerDashbaord ) {
+define([ "jquery" , "message-bus" , "i18n", "layer-dashboard" ,"highcharts" , "jquery.actual.min"], function($, bus, i18n, layerDashbaord ,highcharts) {
 	
 	var startYears 			= new Array();
 	var endYears 			= new Array();
@@ -14,16 +14,24 @@ define([ "jquery" , "message-bus" , "i18n", "layer-dashboard" ], function($, bus
 		currentEndYear 		= null;
 		
 		if( resources.length > 0 ){
+			
 			var container = $( '<div class="width100 height100 lucm"></div>' );
-			var rowHeader = $( '<div class="row"></div>' );
+			
+			
+			var rowHeader = $( '<div class="row row-dashbaord-padded info-table"></div>' );
 			container.append( rowHeader );
-			var colHeader = $( '<div class="col-md-12"></div>' );
+			var colHeader = $( '<div class="col-md-12 title"></div>' );
 			rowHeader.append(  colHeader );
-			colHeader.html( i18n['forest_cover_change_matrix'] );
+			var toggleButton = $( '<button class="btn btn-transparent btn-toggle-item" data-target="lucm-table"><i class="fa fa-caret-right"></i>&nbsp;</button>' );
+			toggleButton.append( i18n['forest_cover_change_matrix'] );
+			colHeader.append( toggleButton );
+			
+			var colCollapsableMatrix = $( '<div class="col-md-12 lucm-table">' );
+			rowHeader.append(  colCollapsableMatrix );
 			
 			
 			var rowStartYear = $( '<div class="row"></div>' );
-			container.append( rowStartYear );
+			colCollapsableMatrix.append( rowStartYear );
 			var colStartYearLabel = $( '<div class="col-md-4"></div>' );
 			rowStartYear.append( colStartYearLabel );
 			colStartYearLabel.html( i18n['initial_year'] );
@@ -31,7 +39,7 @@ define([ "jquery" , "message-bus" , "i18n", "layer-dashboard" ], function($, bus
 			rowStartYear.append( colStartYearBtns );
 			
 			var rowEndYear = $( '<div class="row"></div>' );
-			container.append( rowEndYear );
+			colCollapsableMatrix.append( rowEndYear );
 			var colEndYearLabel = $( '<div class="col-md-4"></div>' );
 			rowEndYear.append( colEndYearLabel );
 			colEndYearLabel.html( i18n['end_year'] );
@@ -66,7 +74,7 @@ define([ "jquery" , "message-bus" , "i18n", "layer-dashboard" ], function($, bus
 				var rowMatrix = $( '<div class="row row-matrix"></div>' );
 				rowMatrix.addClass( startYear + '-' + endYear );
 				rowMatrix.hide();
-				container.append( rowMatrix );
+				colCollapsableMatrix.append( rowMatrix );
 				var colMatrix = $( '<div class="col-md-12 table-responsive no-padding"></div>' );
 				rowMatrix.append( colMatrix );
 				
@@ -145,10 +153,6 @@ define([ "jquery" , "message-bus" , "i18n", "layer-dashboard" ], function($, bus
 			}
 			
 			
-			// add element to dashboard
-			var fId = feature.fid.replace( '.' , '-' );
-			layerDashbaord.addFeatureStats( fId, feature.attributes.name , container );
-			layerDashbaord.toggleDashboardItem( 'stats' , fId , true );
 
 			
 			
@@ -156,7 +160,7 @@ define([ "jquery" , "message-bus" , "i18n", "layer-dashboard" ], function($, bus
 			var toggleLUCM = function(){
 //				console.log( currentStartYear +'   ' + currentEndYear);
 				if( currentStartYear && currentEndYear){
-					container.find( '.row-matrix' ).hide();
+					colCollapsableMatrix.find( '.row-matrix' ).hide();
 					var matrix = container.find( '.row-matrix.'+currentStartYear+'-'+currentEndYear);
 					matrix.fadeIn();
 				}
@@ -164,20 +168,83 @@ define([ "jquery" , "message-bus" , "i18n", "layer-dashboard" ], function($, bus
 			
 			var changeStartYear = function( year ){
 				currentStartYear = year;
-				container.find( '.start-period-btns button' ).removeClass( 'active' );
-				container.find( '.start-period-btns button.' +year ).addClass( 'active' );
+				colCollapsableMatrix.find( '.start-period-btns button' ).removeClass( 'active' );
+				colCollapsableMatrix.find( '.start-period-btns button.' +year ).addClass( 'active' );
 				toggleLUCM();
 			};
 			
 			var changeEndYear = function( year ){
 				currentEndYear = year;
-				container.find( '.end-period-btns button' ).removeClass( 'active' );
-				container.find( '.end-period-btns button.' +year ).addClass( 'active' );
+				colCollapsableMatrix.find( '.end-period-btns button' ).removeClass( 'active' );
+				colCollapsableMatrix.find( '.end-period-btns button.' +year ).addClass( 'active' );
 				toggleLUCM();
 			};
 			
 			changeStartYear( startYears[0] );
 			changeEndYear( endYears[0] );
+			
+			
+			
+			// add chart containers
+			
+			// change of forest area
+			var rowForestArea = $( '<div class="row row-dashbaord-padded info-table"></div>' );
+			container.append( rowForestArea );
+			var colFAHeader = $( '<div class="col-md-12 title"></div>' );
+			rowForestArea.append(  colFAHeader );
+			var toggleButtonFA = $( '<button class="btn btn-transparent btn-toggle-item" data-target="lucm-fa-chart"><i class="fa fa-caret-right"></i>&nbsp;</button>' );
+			toggleButtonFA.append( i18n['change_forest_area'] );
+			colFAHeader.append( toggleButtonFA );
+			
+			var colCollapsableFA = $( '<div class="col-md-12 lucm-fa-chart">' );
+			rowForestArea.append(  colCollapsableFA );
+			
+			
+			//area of land cover change
+			var rowLCHeader = $( '<div class="row row-dashbaord-padded info-table"></div>' );
+			container.append( rowLCHeader );
+			var colLCHeader = $( '<div class="col-md-12 title"></div>' );
+			rowLCHeader.append(  colLCHeader );
+			var toggleButtonLC = $( '<button class="btn btn-transparent btn-toggle-item" data-target="lucm-lc-chart"><i class="fa fa-caret-right"></i>&nbsp;</button>' );
+			toggleButtonLC.append( i18n['area_land_cover_change'] );
+			colLCHeader.append( toggleButtonLC );
+			
+			var colCollapsableLC = $( '<div class="col-md-12 lucm-lc-chart">' );
+			rowLCHeader.append(  colCollapsableLC );
+			
+			
+			// add element to dashboard
+			var fId = feature.fid.replace( '.' , '-' );
+			layerDashbaord.addFeatureStats( fId, feature.attributes.name , container );
+			layerDashbaord.toggleDashboardItem( 'stats' , fId , true );
+			
+			
+			// add charts
+			createForestAreaChangeChart( colCollapsableFA , null );
+			createLandCoverChangeChart( colCollapsableLC , null );
+			
+			// bind events
+			
+//			$( '.collapsable' ).hide();
+			$( '.btn-toggle-item' ).each( function(i,b){
+				var btn = $( b );
+				var target = $( '.' + btn.attr( 'data-target' ) );
+//				setTimeout( function(){ target.hide(); } , 300 );
+				target.hide();
+			});
+			$( '.btn-toggle-item' ).click(function(){
+				var btn = $( this );
+				var target = $( '.' + btn.attr( 'data-target' ) );
+				if( target.is(':visible') ){
+					target.slideUp();
+					btn.find( 'i' ).removeClass().addClass( 'fa fa-caret-right' );
+				} else {
+					target.slideDown();
+					btn.find( 'i' ).removeClass().addClass( 'fa fa-caret-down' );
+					// resize highcharts width
+//					$(window).trigger('resize');
+				}
+			});
 		}
 		
 	});
@@ -191,7 +258,7 @@ define([ "jquery" , "message-bus" , "i18n", "layer-dashboard" ], function($, bus
 				var cssClasses = $( this ).get( 0 ).className.split( '-' );
 				var row = parseInt( cssClasses[ 0 ] );
 				var col = parseInt( cssClasses[ 1 ] );
-				console.log( row + '   '  + col ); 
+//				console.log( row + '   '  + col ); 
 				if( row <= 10 && col == 11 ){
 //					return 'rgba( 220 , 72 , 72 ,0.5)';
 //					return 'rgba( 224 , 13 , 38 ,0.5)';
@@ -255,4 +322,277 @@ define([ "jquery" , "message-bus" , "i18n", "layer-dashboard" ], function($, bus
 		}
 	};
 	
+	var createForestAreaChangeChart = function( container , data ){
+		container.css('height','550px');
+		
+		container.highcharts({
+	        chart: {
+	            type: 'column',
+	            width : container.actual('width'),
+	            backgroundColor : 'none',
+	            style: {
+	                fontFamily: 'Roboto',
+	                color: "#E9E9E9"
+	            }
+	        },
+	        plotBorderColor : 'rgba(233, 233, 233, 0.3)',
+	        credits: {
+	            enabled: false
+	        } ,
+	        title: {
+	            text: '',
+	            margin: 0
+	        },
+	        xAxis: {
+	            categories: ['1990', '1995', '2000', '2005', '2010'],
+	            labels: { 
+	            	style: {
+	            		fontFamily: 'Roboto',
+	            		color: "#E9E9E9"
+	            	}
+	            },
+	            gridLineColor : 'rgba(233, 233, 233, 0.25)',
+	            lineColor : 'rgba(233, 233, 233, 0.25)',
+	            minorGridLineColor : 'rgba(233, 233, 233, 0.25)',
+	            minorTickColor : 'rgba(233, 233, 233, 0.25)',
+	            tickColor : 'rgba(233, 233, 233, 0.25)'
+	        },
+	        yAxis: {
+	            min: 0,
+	            title: {
+	            	text: '',
+		            margin: 0
+	            },
+	            stackLabels: {
+	                enabled: false,
+	                style: {
+	            		fontFamily: 'Roboto',
+	            		color: "#E9E9E9"
+	            	}
+	            },
+	            labels: { 
+	            	style: {
+	            		fontFamily: 'Roboto',
+	            		color: "#E9E9E9"
+	            	}
+	            },
+	            gridLineColor : 'rgba(233, 233, 233, 0.25)',
+	            lineColor : 'rgba(233, 233, 233, 0.25)',
+	            minorGridLineColor : 'rgba(233, 233, 233, 0.25)',
+	            minorTickColor : 'rgba(233, 233, 233, 0.25)',
+	            tickColor : 'rgba(233, 233, 233, 0.25)'
+	        },
+	        legend: {
+	        	backgroundColor: 'rgba(66, 66, 66, 0.85)',
+	            style : {
+	            },
+	            padding: 15,
+	            itemStyle : {
+	            	fontFamily: 'Roboto',
+	            	color : "#E9E9E9",
+	            	fontWeight: 100
+	            },
+	            itemHoverStyle: {
+	            	color: 'rgba(50, 153, 187, 0.7)'
+	            },
+	            itemHiddenStyle: {
+	            	color: 'rgba(40, 34, 34, 0.7)'
+	            },
+	            layout: 'vertical'
+//	            itemDistance: 120
+	        },
+	        tooltip: {
+	            formatter: function () {
+	                return '<b>' + this.x + '</b><br/>' +
+	                    this.series.name + ': ' + this.y + '<br/>' +
+	                    'Total: ' + this.point.stackTotal;
+	            }
+	        },
+	        plotOptions: {
+	            column: {
+//	            	color: '#E9E9E9',
+	                stacking: 'normal',
+	                borderColor : 'rgba(233, 233, 233, 0.20)',
+	                dataLabels: {
+	                    enabled: true,
+	                    color: '#E9E9E9',
+	                    style: {
+	                        textShadow: '0 0 2px rgba(66, 66, 66, 0.2)',
+	                        fontWeight: 100
+	                    }
+	                }
+	            }
+	        },
+//	        colors: ['#8ded40','#7fd836','#30702b','#4f6b4d','#2b5a45','#7b9c46','#6e8c3e','#02491e','#036c2d','#137a6d','#2b6559','#cacc00' ],
+	        colors: ['rgba(141, 237, 64, 0.5)','rgba(127, 216, 54, 0.5)','rgba(48, 112, 43, 0.5)','rgba(79, 107, 77, 0.5)','rgba(43, 90, 69, 0.5)','rgba(123, 156, 70, 0.5)'
+	                 ,'rgba(110, 140, 62, 0.5)','rgba(2, 73, 30, 0.5)','rgba(3, 108, 45, 0.5)','rgba(19, 122, 109, 0.5)','rgba(43, 101, 89, 0.5)','rgba(202, 204, 0, 0.5)' ],
+	        series: [
+		        {
+		            name: i18n['evergreen_broadleaves_rich'],
+		            data: [5, 3, 4, 7, 2]
+		        }, {
+		            name:  i18n['evergreen_broadleaves_medium'],
+		            data: [2, 2, 3, 2, 1]
+		        }, {
+		            name:  i18n['evergreen_broadleaves_poor'],
+		            data: [3, 4, 4, 2, 5]
+		        },
+		        {
+		        	name: i18n['evergreen_broadleaves_regrowth'],
+		        	data: [5, 3, 4, 7, 2]
+		        }, {
+		        	name:  i18n['deciduous_forest'],
+		        	data: [2, 2, 3, 2, 1]
+		        }, {
+		        	name:  i18n['bamboo_forest'],
+		        	data: [3, 4, 4, 2, 5]
+		        },
+		        {
+		        	name: i18n['mixed_wood_bamboo_forests'],
+		        	data: [5, 3, 4, 7, 2]
+		        }, {
+		        	name:  i18n['coniferous_forests'],
+		        	data: [2, 2, 3, 2, 1]
+		        }, {
+		        	name:  i18n['mixed_broadleaves_and_coniferous_forests'],
+		        	data: [3, 4, 4, 2, 5]
+		        },
+		        {
+		        	name: i18n['mangrove_forests'],
+		        	data: [5, 3, 4, 7, 2]
+		        }, {
+		        	name:  i18n['lime_stone_forests'],
+		        	data: [2, 2, 3, 2, 1]
+		        }, {
+		        	name:  i18n['plantation_forest'],
+		        	data: [3, 4, 4, 2, 5]
+		        },
+	        
+	        ]
+	    });
+	};
+	
+	var createLandCoverChangeChart = function( container , data ){
+		container.css('height','400px');
+	
+		container.highcharts({
+
+			chart: {
+	            type: 'column',
+	            width : container.actual('width'),
+	            backgroundColor : 'none',
+	            style: {
+	                fontFamily: 'Roboto',
+	                color: "#E9E9E9"
+	            }
+	        },
+	        plotBorderColor : 'rgba(233, 233, 233, 0.3)',
+	        credits: {
+	            enabled: false
+	        } ,
+	        title: {
+	            text: '',
+	            margin: 0
+	        },
+	        xAxis: {
+	        	categories: [ '90~95', '95~00', '00~05', '05~10' ],
+	            labels: { 
+	            	style: {
+	            		fontFamily: 'Roboto',
+	            		color: "#E9E9E9"
+	            	}
+	            },
+	            gridLineColor : 'rgba(233, 233, 233, 0.25)',
+	            lineColor : 'rgba(233, 233, 233, 0.25)',
+	            minorGridLineColor : 'rgba(233, 233, 233, 0.25)',
+	            minorTickColor : 'rgba(233, 233, 233, 0.25)',
+	            tickColor : 'rgba(233, 233, 233, 0.25)'
+	        },
+	        yAxis: {
+	            min: 0,
+	            title: {
+	            	text: '',
+		            margin: 0
+	            },
+	            stackLabels: {
+	                enabled: false,
+	                style: {
+	            		fontFamily: 'Roboto',
+	            		color: "#E9E9E9"
+	            	}
+	            },
+	            labels: { 
+	            	style: {
+	            		fontFamily: 'Roboto',
+	            		color: "#E9E9E9"
+	            	}
+	            },
+	            gridLineColor : 'rgba(233, 233, 233, 0.25)',
+	            lineColor : 'rgba(233, 233, 233, 0.25)',
+	            minorGridLineColor : 'rgba(233, 233, 233, 0.25)',
+	            minorTickColor : 'rgba(233, 233, 233, 0.25)',
+	            tickColor : 'rgba(233, 233, 233, 0.25)'
+	        },
+
+	        tooltip: {
+	            formatter: function () {
+	                return '<b>' + this.x + '</b><br/>' +
+	                    this.series.name + ': ' + this.y + '<br/>' +
+	                    'Total: ' + this.point.stackTotal;
+	            }
+	        },
+
+	        plotOptions: {
+		        column: {
+	//            	color: '#E9E9E9',
+	                stacking: 'normal',
+	                borderColor : 'rgba(233, 233, 233, 0.20)',
+	                dataLabels: {
+	                    enabled: true,
+	                    color: '#E9E9E9',
+	                    style: {
+	                        textShadow: '0 0 2px rgba(66, 66, 66, 0.2)',
+	                        fontWeight: 100
+	                    }
+	                }
+	            }
+	        },
+	        legend: {
+	        	backgroundColor: 'rgba(66, 66, 66, 0.85)',
+	            padding: 15,
+	            itemStyle : {
+	            	fontFamily: 'Roboto',
+	            	color : "#E9E9E9",
+	            	fontWeight: 100
+	            },
+	            itemHoverStyle: {
+	            	color: 'rgba(50, 153, 187, 0.7)'
+	            },
+	            itemHiddenStyle: {
+	            	color: 'rgba(40, 34, 34, 0.7)'
+	            },
+	            itemDistance: 40
+	        },
+	        colors:[ 'rgba(213, 9, 33, 0.5)' ,'rgba(119, 227, 39, 0.5)','rgba(119, 227, 160, 0.5)','rgba(50, 40, 20, 0.4)'],
+	        
+	        series: [{
+	            name: 'D',
+	            data: [40, 50, 90, 10],
+	            stack: '1'
+	        }, {
+	            name: 'A/R',
+	            data: [70, 80, 120, 30],
+	            stack: '2'
+	        }, {
+	            name: 'FrF',
+	            data: [170, 180, 190, 310],
+	            stack: '3'
+	        }, {
+	            name: 'NonF',
+	            data: [720, 640, 560, 595],
+	            stack: '4'
+	        }]
+	    });
+	
+	};
 });

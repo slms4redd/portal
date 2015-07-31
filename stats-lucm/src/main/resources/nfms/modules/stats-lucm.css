@@ -1,5 +1,7 @@
 div.lucm {
-	
+	margin-right: -5%;
+    margin-left: -5%;
+    width: 105% !important;
 }
 
 div.lucm .row {
@@ -7,12 +9,12 @@ div.lucm .row {
 }
 div.lucm .period-btns button {
 	width: auto;
-    margin: 0px .1em
+    margin: 0px .05em
 }
 div.lucm .row-matrix {
 	font-size: 11px;
 	padding: 10px 10px;
-	border: 1px solid rgba(233, 233, 233, 0.45);
+/* 	border: 1px solid rgba(233, 233, 233, 0.45); */
 }
 div.lucm .row-matrix td ,
 div.lucm .row-matrix th {

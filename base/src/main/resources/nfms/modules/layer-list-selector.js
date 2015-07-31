@@ -6,7 +6,7 @@ define([ "jquery", "message-bus", "layout", "customization", "i18n", "bootstrap"
 
 	var divsById = [];
 
-	var row 		= $( '<div class="row height80"></div>' );
+	var row 		= $( '<div class="row height85"></div>' );
 	layout.container.append( row );
 //	var container	= $( '<div class="col-md-3 col-sm-3 col-xs-3 panel-group layers-container open" id="group-accordion" role="tablist" aria-multiselectable="true"></div>' );
 //	row.append( container );

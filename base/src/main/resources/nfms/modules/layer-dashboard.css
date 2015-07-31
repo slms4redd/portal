@@ -5,6 +5,7 @@ div.dashboard {
 	overflow: hidden;
 	line-height: 1.5em;
 	letter-spacing: 0.02em;
+	font-size: 13px;
 }
 
 div.dashboard button.btn-collapse {
@@ -110,22 +111,25 @@ div.dashboard-content-selector button i{
 div.dashboard button.btn-transparent ,
 div.dashboard button.btn-transparent:focus {
 	color : #E9E9E9;
-	font-size: 13px;
 	border: none;
 	text-align: left;
 }
 div.dashboard button.btn-transparent:hover {
 	border: none;
 	color : rgb(50, 153, 187);
-	font-size: 13px;
+/* 	font-size: 13px; */
 	
 	-webkit-transition: color 0.3s ease-in-out;
 	-moz-transition: color 0.3s ease-in-out;
 	-o-transition: color 0.3s ease-in-out;
 	transition: color 0.3s ease-in-out;
 }
+div.row-toggle button.btn-transparent ,
+div.row-toggle button.btn-transparent:hover ,
+div.row-toggle button.btn-transparent:focus {
+	font-size: 14px;
+}
 div.row-toggle.closed {
-	
 }
 div.row-toggle.opened { 
 	
@@ -142,7 +146,7 @@ div.row-toggle-content.opened {
 
 div.row-dashbaord-padded {
  	padding: 5px;
-	font-size: 13px;
+/* 	font-size: 13px; */
 }
 div.info-table {
 	border: 1px solid rgba(233, 233, 233, 0.45);
