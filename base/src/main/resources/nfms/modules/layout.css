@@ -236,6 +236,7 @@ button.btn-collapse:hover {
 
 .btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle) {
   width: 85%;
+  white-space: nowrap;
 }
 .btn-group > .btn.dropdown-toggle {
   width: 15%;

@@ -115,6 +115,9 @@ define([ "jquery", "message-bus", "layout", "customization", "i18n", "bootstrap"
 		if( container.hasClass( 'open' ) ) {
 			container.removeClass( 'open' );
 			
+			// remove scroll bar in case there is
+			container.css( 'overflow', 'hidden' );
+			
 //			container.animate( {width: "45px"}, 600 );
 			container.animate( {'left': '-' + (container.parent().width() - toggleLayersSection.width() ) +'px' }, 500 );
 
@@ -130,6 +133,9 @@ define([ "jquery", "message-bus", "layout", "customization", "i18n", "bootstrap"
 			
 		} else {
 			container.addClass( 'open' );
+			// add scroll bar in case there is overflow
+			container.css( 'overflow', 'auto' );
+
 //			container.animate( {width: container.parent().width() }, 600 );
 			container.animate( {'left': '0px' }, 500 );
 

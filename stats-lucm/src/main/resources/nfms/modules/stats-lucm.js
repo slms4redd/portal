@@ -1,18 +1,21 @@
-define([ "jquery" , "message-bus" , "i18n", "layer-dashboard" ,"highcharts" , "jquery.actual.min"], function($, bus, i18n, layerDashbaord ,highcharts) {
+define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.actual.min"], function($, bus, i18n, layerDashbaord ,highcharts) {
 	
-	var startYears 			= new Array();
-	var endYears 			= new Array();
-	var currentStartYear 	= null;
-	var currentEndYear 		= null;
+//	var startYears 			= new Array();
+//	var endYears 			= new Array();
+//	var currentStartYear 	= null;
+//	var currentEndYear 		= null;
 	
-	bus.listen( "add-feature-stats" , function( event ,feature){
+	bus.listen( "add-feature-stats" , function( event , feature , show ){
 		var resources = parseResources( feature );
 		
-		startYears 			= new Array();
-		endYears 			= new Array();
-		currentStartYear 	= null;
-		currentEndYear 		= null;
-		
+//		startYears 			= new Array();
+//		endYears 			= new Array();
+//		currentStartYear 	= null;
+//		currentEndYear 		= null;
+		var startYears 			= new Array();
+		var endYears 			= new Array();
+		var currentStartYear 	= null;
+		var currentEndYear 		= null;
 		if( resources.length > 0 ){
 			
 			var container = $( '<div class="width100 height100 lucm"></div>' );
@@ -48,6 +51,7 @@ define([ "jquery" , "message-bus" , "i18n", "layer-dashboard" ,"highcharts" , "j
 			
 			for( var i = 0 ; i < resources.length ; i++ ){
 				var resource 	= resources[ i ];
+				
 				var attributes 	= resource.Attributes.attribute;
 				
 				var startYear  	= getAttributeByName( attributes , 'start_period').value;
@@ -216,7 +220,7 @@ define([ "jquery" , "message-bus" , "i18n", "layer-dashboard" ,"highcharts" , "j
 			// add element to dashboard
 			var fId = feature.fid.replace( '.' , '-' );
 			layerDashbaord.addFeatureStats( fId, feature.attributes.name , container );
-			layerDashbaord.toggleDashboardItem( 'stats' , fId , true );
+			layerDashbaord.toggleDashboardItem( 'stats' , fId , show );
 			
 			
 			// add charts
@@ -226,15 +230,15 @@ define([ "jquery" , "message-bus" , "i18n", "layer-dashboard" ,"highcharts" , "j
 			// bind events
 			
 //			$( '.collapsable' ).hide();
-			$( '.btn-toggle-item' ).each( function(i,b){
+			container.find( '.btn-toggle-item' ).each( function(i,b){
 				var btn = $( b );
-				var target = $( '.' + btn.attr( 'data-target' ) );
+				var target = container.find( '.' + btn.attr( 'data-target' ) );
 //				setTimeout( function(){ target.hide(); } , 300 );
 				target.hide();
 			});
-			$( '.btn-toggle-item' ).click(function(){
+			container.find( '.btn-toggle-item' ).click(function(){
 				var btn = $( this );
-				var target = $( '.' + btn.attr( 'data-target' ) );
+				var target = container.find( '.' + btn.attr( 'data-target' ) );
 				if( target.is(':visible') ){
 					target.slideUp();
 					btn.find( 'i' ).removeClass().addClass( 'fa fa-caret-right' );

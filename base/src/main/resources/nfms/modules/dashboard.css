@@ -47,11 +47,11 @@ div.dashboard-toggle-empty-col {
 /* 	height: 60px; */
 /* } */
 
-div.layer-label {
-	font-size: 15px;
-	text-align: center;
-	font-weight: bold;
-}
+/* div.layer-label { */
+/* 	font-size: 15px; */
+/* 	text-align: center; */
+/* 	font-weight: bold; */
+/* } */
 
 div.dashboard-container {
 	background-color: rgba(66, 66, 66, 0.85);
@@ -68,6 +68,27 @@ div.dashboard-content {
 	max-height: 85%;
 }
 
+div.dashboard-content-selector li{
+	padding : 0px 0.1em;
+} 
+div.dashboard-content-selector button.btn-default, 
+/* div.dashboard-content-selector button.btn-default[disabled],  */
+div.dashboard-content-selector button.btn-default:active, 
+div.dashboard-content-selector button.btn-default:focus {
+	border : 1px solid rgba(40, 34, 34, 0.9);
+	margin: 0px 0.2em;
+}
+div.dashboard-content-selector button.btn-default.active, 
+div.dashboard-content-selector button.btn-default.active[disabled], 
+div.dashboard-content-selector button.btn-default.active:active, 
+div.dashboard-content-selector button.btn-default.active:focus {
+	border : 1px solid rgba(50, 153, 187, 0.9);
+}
+div.dashboard-content-selector button.btn-default[disabled],
+div.dashboard-content-selector button.btn-default:disabled {
+	opacity: .5;
+    color: rgba(158, 151, 151, 0.95);
+}
 /* div.dashboard-content div.col-md-12 { */
 /* 	padding: 3% 8%;	 */
 /* } */
@@ -163,7 +184,7 @@ div.info-table div.title {
 /* Legend Style */
 /* ###### */
 .legend-box-column {
-/* 	padding: 3px; */
+	padding: .05em;
 /* 	border: 1px solid  */
 }
 .legend-box {

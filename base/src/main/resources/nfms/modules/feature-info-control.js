@@ -1,5 +1,7 @@
-define([ "map", "message-bus", "customization"  ], function(map, bus, customization ) {
+define([ "map", "message-bus", "customization","module"  ], function(map, bus, customization ,module) {
 
+	var config = module.config();
+	
 	var layerIds = new Array();
 	var layerWmsNames = new Array();
 	var queryableLayers = new Array();
@@ -10,7 +12,7 @@ define([ "map", "message-bus", "customization"  ], function(map, bus, customizat
 		url : customization["info.queryUrl"],
 //		layerUrls : [ customization["info.layerUrl"] ],
 		title : 'Identify features by clicking',
-		queryVisible : true,
+		queryVisible : false,
 		infoFormat : 'application/vnd.ogc.gml',
 		hover : false,
 		drillDown : true,
@@ -32,11 +34,38 @@ define([ "map", "message-bus", "customization"  ], function(map, bus, customizat
 			},
 			beforegetfeatureinfo : function() {
 				UI.lock();
-//				control.layers = queryableLayers;
+				
+				var layerNames = new Array();
 				control.layers = new Array();
+				
+				var getLayer = function( layerId ){
+					var layer 	= map.getLayersByName( layerId )[0];
+					var layerNamespace = layer.params.LAYERS;
+					if( layerNames.indexOf(layerNamespace) < 0 ){
+						layerNames.push( layerNamespace );
+						return layer;
+					}
+				};
+				
 				for (var i = 0; i < layerIds.length; i++) {
-					var layer = map.getLayersByName(layerIds[i])[0];
-					control.layers.push(layer);
+					var layerId = layerIds[i];
+					
+					var layer = getLayer( layerId );
+					if( layer ){
+						if( config.linkedLayers[layerId] ){
+							var linkedLayerId = config.linkedLayers[layerId];
+							if( linkedLayerId ){
+								var linkedLayer = getLayer( linkedLayerId );
+								if( linkedLayer ){
+									control.layers.push(linkedLayer);
+								}
+							}
+						}
+						
+						control.layers.push(layer);
+//						console.log( control.layers );
+					}
+					
 				}
 //				
 //				if (lastTimestamp != null) {

@@ -56,7 +56,7 @@
 			"wmsName" : "unredd:country",
 			"imageFormat" : "image/png8",
 			"visible" : true,
-			"queryable" : false
+			"queryable" : true
 		}
 		, {
 			"id" : "province_fcpf_cf",

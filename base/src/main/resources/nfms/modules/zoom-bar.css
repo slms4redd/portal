@@ -1,21 +1,26 @@
 .zoom-bar {
-/* 	position	: fixed; */
-/* 	z-index: 1001; */
-/* 	float: right; */
-/*   	bottom: 40px; */
-/*   	right: 0px; */
+    /* position: fixed; */
+    /* z-index: 1001; */
+    /* float: right; */
+    /* bottom: 40px; */
+    /* right: 0px; */
     position: fixed;
     z-index: 1001;
-    float: right;
-    bottom: 1%;
-    /* right: 20%; */
-    left: 4%
+    /* float: right; */
+    bottom: 0px;
+    right: 10%;
+    /* left: 4%; */
+    /* top: 1%; */
+    /* left: 10%; */
+    height: 5%;
+    width: 200px;
 }
 .zoom-bar button.btn-default {
-	font-size : 16px;
-	margin: 0px 0px;
-	padding: 12px 15px;
-	width: auto;
+    font-size: 16px;
+    margin: 0px 0px;
+   	padding: 5% 10%;
+    width: auto;
+    height: 100%;
 }
 
 .zoom-bar button.btn-default:hover {

@@ -14,6 +14,10 @@
 		}, layer-dashboard : {
 			"open" 	: true,
 			"infoButtonMsg" : "info_redd_profile_button"
+		}, feature-info-control : {
+			"linkedLayers" : {
+				"province" : "country"
+			 }
 		}
 	}
 }

@@ -1,10 +1,8 @@
-define([ "module", "jquery", "message-bus", "map", "i18n", "customization" ], function(module, $, bus, map, i18n, customization) {
-
+define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "dashboard" ], function(module, $, bus, map, i18n, customization, layerDashboard) {
+	
 	var infoUrl = customization['info.queryUrl'] ;
-//	var infoUrl = "http://178.33.8.123/diss_geostore/rest/resources";
 	
 	var infoQueryUrl = "proxy?url=" + infoUrl;
-//	var infoQueryUrl = "proxy?url=" + encodeURIComponent( infoUrl );
 	
 	var wmsNamePortalLayerName = {};
 
@@ -15,31 +13,6 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization" ], fu
 			wmsNamePortalLayerName[wmsName] = portalLayerName;
 		});
 	});
-
-	var hasDashboard 	= function(feature , functionCallback) {
-		var hasDashboard = false;
-		if (feature.attributes.hasOwnProperty("legend_file") && StringUtils.isNotBlank(feature.attributes.legend_file)) {
-			hasDashboard = true;
-		}
-		if (feature.attributes.hasOwnProperty("info_file") && StringUtils.isNotBlank(feature.attributes.info_file) ) {
-			hasDashboard = true;
-		}
-		
-//		$.ajax({
-//			url			: infoQueryUrl ,
-//			type		: "POST" ,
-//			data		: {bust : (new Date()).getTime()},
-//			dataType 	: "xml" ,
-////			dataType 	: "jsonp" ,
-//			success		: function(data){
-//				console.log( data );
-//			}
-//		
-//		});		
-		
-		functionCallback( hasDashboard );
-	}; 
-	
 
 	var checkHasDashbaord 	= function( eventFeatures , features , featureIds , i , functionCallback) {
 		var feature = null;
@@ -113,13 +86,12 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization" ], fu
 			var featureIds 	= new Array();
 			checkHasDashbaord( eventFeatures , features , featureIds , 0 , function(){
 				UI.unlock();
-//				console.log( features );
 				
-				if( features.length == 1 ){ 
-					bus.send( "open-dashboard-info-feature" , features[0] );
-				} else {
-					console.log( "TO-DO" );
-				}
+//				if( features.length == 1 ){ 
+					bus.send( "open-dashboard-info-feature" , [ features ] );
+//				} else {
+//					console.log( "TO-DO" );
+//				}
 			} );
 		} else {
 			UI.unlock();
@@ -128,6 +100,466 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization" ], fu
 	
 	});
 	
+	
+	
+	bus.listen( "open-dashboard-info-feature" , function( event, features ){
+		
+		layerDashboard.resetDashboardStats();
+
+		bus.send( "layers-dashboard-toggle-visibility" , true );
+//		console.log( features );
+		
+		features.sort( function(f1,f2){
+			return f1.fid.localeCompare(f2.fid);
+		});
+		
+		for( var i = 0 ; i < features.length ; i++ ){
+			var feature = features[ i ];
+			
+			var show = ( i == features.length-1 ) ? true : false;
+			
+			// open info
+			loadFeatureInfo( feature , show );
+		
+			// add stats
+			var fakeData = getFakeStatsData();
+	
+			feature.attributes['ResourceList'] = fakeData.ResourceList;
+			if( feature.attributes['ResourceList'] ){
+				bus.send( "add-feature-stats" , [ feature , show ] );
+			}
+		}
+	});
+	
+	var loadFeatureInfo = function( feature , show ){
+		var fId = feature.fid.replace( '.' , '-' );
+	
+//		layerDashboard.addFeatureInfo(fId, feature.attributes.name , data );
+//		layerDashboard.toggleDashboardItem( 'info' , fId , show );
+		
+		// open info
+		if ( feature.attributes.hasOwnProperty("info_file")  ) {
+			
+			var url =  "static/loc/" + customization.languageCode + "/html/" + feature.attributes.info_file;
+			$.ajax({
+				url			: url ,
+				data		: {bust : (new Date()).getTime()},
+				dataType 	: "html" ,
+				success		: function(data){
+//					success(data);
+					var data 		= $( data );
+					var dataClass 	=  "feature-info-" + fId ;
+					data.addClass( dataClass );
+					
+					layerDashboard.addFeatureInfo(fId, feature.attributes.name , data );
+					layerDashboard.toggleDashboardItem( 'info' , fId , show );
+					
+				}
+			});
+			
+			layerDashboard.showInfo();
+		
+		}
+	};
+	
+	var getFakeStatsData = function(){
+		var fakeData = {
+				  
+				  
+				  "ResourceList": {
+					    "Resource": [
+					      {
+					        
+										      "Attributes": {
+										        "attribute": [
+										          {
+										            "type": "STRING",
+										            "name": "zone_type",
+										            "value": "ecoregion"
+										          },
+										          {
+										            "type": "STRING",
+										            "name": "zone_name",
+										            "value": "ecoregion_north"
+										          },
+										          {
+										            "type": "INTEGER",
+										            "name": "start_period",
+										            "value": "1990"
+										          },
+										          {
+										            "type": "INTEGER",
+										            "name": "end_period",
+										            "value": "2015"
+										          },
+										          {
+										            "type": "STRING",
+										            "name": "stats_type",
+										            "value": "lucm"
+										          },
+										          {
+										            "type": "STRING",
+										            "name": "period",
+										            "value": "2000-2015"
+										          },
+										          {
+										            "type": "NUMBER",
+										            "name": "version",
+										            "value": "1.0"
+										          },
+										          {
+										            "type": "DATE",
+										            "name": "last_update",
+										            "value": "2015-06-30T14:44:39.262+0000"
+										          }
+										        ]
+										      },
+										      "category": {
+										        "id": "4",
+										        "name": "StatsData"
+										      },
+										      "store": {
+										        "data": [
+										            [32,645,654,32,645,654,32,645,654,32,645,654,32,645,654,654],
+					[432,654,65,432,654,65,432,654,65,432,654,65,432,654,65,65],
+					[43214,64,6534,43214,64,6534,43214,64,6534,43214,64,6534,43214,64,6534,6534],
+					[342,76,35,342,76,35,342,76,35,342,76,35,342,76,35,35],
+					[432,63,53,432,63,53,432,63,53,432,63,53,432,63,53,53],
+					[432,5463,65,432,5463,65,432,5463,65,432,5463,65,432,5463,65,65],
+					[432,546,6543,432,546,6543,432,546,6543,432,546,6543,432,546,6543,6543],
+					[432,456,653,432,456,653,432,456,653,432,456,653,432,456,653,653],
+					[46,456,65,46,456,65,46,456,65,46,456,65,46,456,65,65],
+					[76,4356,65,76,4356,65,76,4356,65,76,4356,65,76,4356,65,65],
+					[5436,3546,653,5436,3546,653,5436,3546,653,5436,3546,653,5436,3546,653,653],
+					[654,34,65,654,34,65,654,34,65,654,34,65,654,34,65,65],
+					[342,345,6543,342,345,6543,342,345,6543,342,345,6543,342,345,6543,6543],
+					[6543,65,643,6543,65,643,6543,65,643,6543,65,643,6543,65,643,643],
+					[65,3456,6543,65,3456,6543,65,3456,6543,65,3456,6543,65,3456,6543,6543],
+					[6543,653,6543,6543,653,6543,6543,653,6543,6543,653,6543,6543,653,6543,6543]
+										            ]
+										      },
+										      "creation": "2015-06-30T15:06:21.492+00:00",
+										      "description": "description of this resource",
+										      "id": "49",
+										      "name": "resource"
+										    
+					      },
+					      {
+					        
+					        
+											      "Attributes": {
+												        "attribute": [
+												          {
+												            "type": "STRING",
+												            "name": "zone_type",
+												            "value": "ecoregion"
+												          },
+												          {
+												            "type": "STRING",
+												            "name": "zone_name",
+												            "value": "ecoregion_north"
+												          },
+												          {
+												            "type": "INTEGER",
+												            "name": "start_period",
+												            "value": "1995"
+												          },
+												          {
+												            "type": "INTEGER",
+												            "name": "end_period",
+												            "value": "2015"
+												          },
+												          {
+												            "type": "STRING",
+												            "name": "stats_type",
+												            "value": "lucm"
+												          },
+												          {
+												            "type": "STRING",
+												            "name": "period",
+												            "value": "2000-2015"
+												          },
+												          {
+												            "type": "NUMBER",
+												            "name": "version",
+												            "value": "1.0"
+												          },
+												          {
+												            "type": "DATE",
+												            "name": "last_update",
+												            "value": "2015-06-30T14:44:39.262+0000"
+												          }
+												        ]
+												      },
+												      "category": {
+												        "id": "4",
+												        "name": "StatsData"
+												      },
+												      "store": {
+												        "data": [
+												            [32,645,654,32,645,654,32,645,654,32,645,654,32,645,654,654],
+					[432,654,65,432,654,65,432,654,65,432,654,65,432,654,65,65],
+					[43214,64,6534,43214,64,6534,43214,64,6534,43214,64,6534,43214,64,6534,6534],
+					[342,76,35,342,76,35,342,76,35,342,76,35,342,76,35,35],
+					[432,63,53,432,63,53,432,63,53,432,63,53,432,63,53,53],
+					[432,5463,65,432,5463,65,432,5463,65,432,5463,65,432,5463,65,65],
+					[432,546,6543,432,546,6543,432,546,6543,432,546,6543,432,546,6543,6543],
+					[432,456,653,432,456,653,432,456,653,432,456,653,432,456,653,653],
+					[46,456,65,46,456,65,46,456,65,46,456,65,46,456,65,65],
+					[76,4356,65,76,4356,65,76,4356,65,76,4356,65,76,4356,65,65],
+					[5436,3546,653,5436,3546,653,5436,3546,653,5436,3546,653,5436,3546,653,653],
+					[654,34,65,654,34,65,654,34,65,654,34,65,654,34,65,65],
+					[342,345,6543,342,345,6543,342,345,6543,342,345,6543,342,345,6543,6543],
+					[6543,65,643,6543,65,643,6543,65,643,6543,65,643,6543,65,643,643],
+					[65,3456,6543,65,3456,6543,65,3456,6543,65,3456,6543,65,3456,6543,6543],
+					[6543,653,6543,6543,653,6543,6543,653,6543,6543,653,6543,6543,653,6543,6543]
+												     ] },
+												      "creation": "2015-06-30T15:06:21.492+00:00",
+												      "description": "description of this resource",
+												      "id": "50",
+												      "name": "resource"
+												    
+					        
+					      },
+					      {
+					        
+					        
+											      "Attributes": {
+												        "attribute": [
+												          {
+												            "type": "STRING",
+												            "name": "zone_type",
+												            "value": "ecoregion"
+												          },
+												          {
+												            "type": "STRING",
+												            "name": "zone_name",
+												            "value": "ecoregion_north"
+												          },
+												          {
+												            "type": "INTEGER",
+												            "name": "start_period",
+												            "value": "2000"
+												          },
+												          {
+												            "type": "INTEGER",
+												            "name": "end_period",
+												            "value": "2015"
+												          },
+												          {
+												            "type": "STRING",
+												            "name": "stats_type",
+												            "value": "lucm"
+												          },
+												          {
+												            "type": "STRING",
+												            "name": "period",
+												            "value": "2000-2015"
+												          },
+												          {
+												            "type": "NUMBER",
+												            "name": "version",
+												            "value": "1.0"
+												          },
+												          {
+												            "type": "DATE",
+												            "name": "last_update",
+												            "value": "2015-06-30T14:44:39.262+0000"
+												          }
+												        ]
+												      },
+												      "category": {
+												        "id": "4",
+												        "name": "StatsData"
+												      },
+												      "store": {
+												        "data": [
+												            [32,645,654,32,645,654,32,645,654,32,645,654,32,645,654,654],
+					[432,654,65,432,654,65,432,654,65,432,654,65,432,654,65,65],
+					[43214,64,6534,43214,64,6534,43214,64,6534,43214,64,6534,43214,64,6534,6534],
+					[342,76,35,342,76,35,342,76,35,342,76,35,342,76,35,35],
+					[432,63,53,432,63,53,432,63,53,432,63,53,432,63,53,53],
+					[432,5463,65,432,5463,65,432,5463,65,432,5463,65,432,5463,65,65],
+					[432,546,6543,432,546,6543,432,546,6543,432,546,6543,432,546,6543,6543],
+					[432,456,653,432,456,653,432,456,653,432,456,653,432,456,653,653],
+					[46,456,65,46,456,65,46,456,65,46,456,65,46,456,65,65],
+					[76,4356,65,76,4356,65,76,4356,65,76,4356,65,76,4356,65,65],
+					[5436,3546,653,5436,3546,653,5436,3546,653,5436,3546,653,5436,3546,653,653],
+					[654,34,65,654,34,65,654,34,65,654,34,65,654,34,65,65],
+					[342,345,6543,342,345,6543,342,345,6543,342,345,6543,342,345,6543,6543],
+					[6543,65,643,6543,65,643,6543,65,643,6543,65,643,6543,65,643,643],
+					[65,3456,6543,65,3456,6543,65,3456,6543,65,3456,6543,65,3456,6543,6543],
+					[6543,653,6543,6543,653,6543,6543,653,6543,6543,653,6543,6543,653,6543,6543]
+												     ] },
+												      "creation": "2015-06-30T15:06:21.492+00:00",
+												      "description": "description of this resource",
+												      "id": "50",
+												      "name": "resource"
+												    
+					        
+					      },
+					      {
+					        
+					        
+											      "Attributes": {
+												        "attribute": [
+												          {
+												            "type": "STRING",
+												            "name": "zone_type",
+												            "value": "ecoregion"
+												          },
+												          {
+												            "type": "STRING",
+												            "name": "zone_name",
+												            "value": "ecoregion_north"
+												          },
+												          {
+												            "type": "INTEGER",
+												            "name": "start_period",
+												            "value": "2005"
+												          },
+												          {
+												            "type": "INTEGER",
+												            "name": "end_period",
+												            "value": "2015"
+												          },
+												          {
+												            "type": "STRING",
+												            "name": "stats_type",
+												            "value": "lucm"
+												          },
+												          {
+												            "type": "STRING",
+												            "name": "period",
+												            "value": "2000-2015"
+												          },
+												          {
+												            "type": "NUMBER",
+												            "name": "version",
+												            "value": "1.0"
+												          },
+												          {
+												            "type": "DATE",
+												            "name": "last_update",
+												            "value": "2015-06-30T14:44:39.262+0000"
+												          }
+												        ]
+												      },
+												      "category": {
+												        "id": "4",
+												        "name": "StatsData"
+												      },
+												      "store": {
+												        "data": [
+												            [32,645,654,32,645,654,32,645,654,32,645,654,32,645,654,654],
+					[432,654,65,432,654,65,432,654,65,432,654,65,432,654,65,65],
+					[43214,64,6534,43214,64,6534,43214,64,6534,43214,64,6534,43214,64,6534,6534],
+					[342,76,35,342,76,35,342,76,35,342,76,35,342,76,35,35],
+					[432,63,53,432,63,53,432,63,53,432,63,53,432,63,53,53],
+					[432,5463,65,432,5463,65,432,5463,65,432,5463,65,432,5463,65,65],
+					[432,546,6543,432,546,6543,432,546,6543,432,546,6543,432,546,6543,6543],
+					[432,456,653,432,456,653,432,456,653,432,456,653,432,456,653,653],
+					[46,456,65,46,456,65,46,456,65,46,456,65,46,456,65,65],
+					[76,4356,65,76,4356,65,76,4356,65,76,4356,65,76,4356,65,65],
+					[5436,3546,653,5436,3546,653,5436,3546,653,5436,3546,653,5436,3546,653,653],
+					[654,34,65,654,34,65,654,34,65,654,34,65,654,34,65,65],
+					[342,345,6543,342,345,6543,342,345,6543,342,345,6543,342,345,6543,6543],
+					[6543,65,643,6543,65,643,6543,65,643,6543,65,643,6543,65,643,643],
+					[65,3456,6543,65,3456,6543,65,3456,6543,65,3456,6543,65,3456,6543,6543],
+					[6543,653,6543,6543,653,6543,6543,653,6543,6543,653,6543,6543,653,6543,6543]
+												     ] },
+												      "creation": "2015-06-30T15:06:21.492+00:00",
+												      "description": "description of this resource",
+												      "id": "50",
+												      "name": "resource"
+												    
+					        
+					      },
+					      {
+					        
+					        
+											      "Attributes": {
+												        "attribute": [
+												          {
+												            "type": "STRING",
+												            "name": "zone_type",
+												            "value": "ecoregion"
+												          },
+												          {
+												            "type": "STRING",
+												            "name": "zone_name",
+												            "value": "ecoregion_north"
+												          },
+												          {
+												            "type": "INTEGER",
+												            "name": "start_period",
+												            "value": "2010"
+												          },
+												          {
+												            "type": "INTEGER",
+												            "name": "end_period",
+												            "value": "2015"
+												          },
+												          {
+												            "type": "STRING",
+												            "name": "stats_type",
+												            "value": "lucm"
+												          },
+												          {
+												            "type": "STRING",
+												            "name": "period",
+												            "value": "2000-2015"
+												          },
+												          {
+												            "type": "NUMBER",
+												            "name": "version",
+												            "value": "1.0"
+												          },
+												          {
+												            "type": "DATE",
+												            "name": "last_update",
+												            "value": "2015-06-30T14:44:39.262+0000"
+												          }
+												        ]
+												      },
+												      "category": {
+												        "id": "4",
+												        "name": "StatsData"
+												      },
+												      "store": {
+												        "data": [
+												            [32,645,654,32,645,654,32,645,654,32,645,654,32,645,654,654],
+					[432,654,65,432,654,65,432,654,65,432,654,65,432,654,65,65],
+					[43214,64,6534,43214,64,6534,43214,64,6534,43214,64,6534,43214,64,6534,6534],
+					[342,76,35,342,76,35,342,76,35,342,76,35,342,76,35,35],
+					[432,63,53,432,63,53,432,63,53,432,63,53,432,63,53,53],
+					[432,5463,65,432,5463,65,432,5463,65,432,5463,65,432,5463,65,65],
+					[432,546,6543,432,546,6543,432,546,6543,432,546,6543,432,546,6543,6543],
+					[432,456,653,432,456,653,432,456,653,432,456,653,432,456,653,653],
+					[46,456,65,46,456,65,46,456,65,46,456,65,46,456,65,65],
+					[76,4356,65,76,4356,65,76,4356,65,76,4356,65,76,4356,65,65],
+					[5436,3546,653,5436,3546,653,5436,3546,653,5436,3546,653,5436,3546,653,653],
+					[654,34,65,654,34,65,654,34,65,654,34,65,654,34,65,65],
+					[342,345,6543,342,345,6543,342,345,6543,342,345,6543,342,345,6543,6543],
+					[6543,65,643,6543,65,643,6543,65,643,6543,65,643,6543,65,643,643],
+					[65,3456,6543,65,3456,6543,65,3456,6543,65,3456,6543,65,3456,6543,6543],
+					[6543,653,6543,6543,653,6543,6543,653,6543,6543,653,6543,6543,653,6543,6543]
+												     ] },
+												      "creation": "2015-06-30T15:06:21.492+00:00",
+												      "description": "description of this resource",
+												      "id": "50",
+												      "name": "resource"
+												    
+					        
+					      }
+					    ]
+					  }
+					
+
+};
+		
+		return fakeData;
+	};
 	
 	
 //	bus.listen( "open-dashboard-info-feature", function(event, feature) {
