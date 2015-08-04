@@ -1,4 +1,4 @@
-# portal
+# Sri Lanka SLMS Portal
 
 This branch represents the custom Satellite Land Monitoring System for Sri Lanka. 
 
