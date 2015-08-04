@@ -1,32 +1,29 @@
-#zoom_to_max_extent {
-	background: url("images/ui-elements.png") no-repeat scroll 0
-		-80px transparent;
-	height: 25px;
-	left: 90px;
-	position: absolute;
-	top: 148px;
-	width: 25px;
-	z-index: 1000;
+.zoom-bar {
+    /* position: fixed; */
+    /* z-index: 1001; */
+    /* float: right; */
+    /* bottom: 40px; */
+    /* right: 0px; */
+    position: fixed;
+    z-index: 1001;
+    /* float: right; */
+    bottom: 0px;
+    right: 10%;
+    /* left: 4%; */
+    /* top: 1%; */
+    /* left: 10%; */
+    height: 5%;
+    width: 200px;
+}
+.zoom-bar button.btn-default {
+    font-size: 16px;
+    margin: 0px 0px;
+   	padding: 5% 10%;
+    width: auto;
+    height: 100%;
 }
 
-#zoom_out {
-	background: url("images/ui-elements.png") no-repeat scroll 0
-		-48px transparent;
-	height: 25px;
-	left: 10px;
-	position: absolute;
-	top: 148px;
-	width: 25px;
-	z-index: 1000;
-}
-
-#zoom_in {
-	background: url("images/ui-elements.png") no-repeat scroll 0
-		-16px transparent;
-	height: 25px;
-	left: 50px;
-	position: absolute;
-	top: 148px;
-	width: 25px;
-	z-index: 1000;
+.zoom-bar button.btn-default:hover {
+	color: #E9E9E9;
+	background-color: rgba(62, 64, 60, 0.9);
 }

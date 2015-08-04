@@ -1,7 +1,8 @@
 {
 	"requirejs" : {
 		"paths" : {
-			"jquery" : "../jslib/jquery-2.1.0"
+			"jquery" 	: "../jslib/jquery-2.1.3",
+			"bootstrap"	: "../jslib/bootstrap"
 		}
 	}
 }

@@ -1,25 +1,55 @@
-html,body {
-	margin: 0px;
-	height: 100%;
-	cursor: default;
-	font: 100% "Trebuchet MS", sans-serif;
-}
-
+@import url(http://fonts.googleapis.com/css?family=Roboto:400,100);
 body {
     -moz-user-select: -moz-none;
     -webkit-user-select: none;
+	overflow: hidden;
 }
 
-#center {
+html,body {
+/* 	margin: 0px; */
 	height: 100%;
+	width: 100%;
+	font-weight: 100 !important;
+	color: #E9E9E9;
+	
+	font-family: 'Roboto', sans-serif !important;
+}
+a {
+	font-weight: 100 !important;
+	font-family: 'Roboto', sans-serif !important;
+}
+button{
+	font-family: 'Roboto', sans-serif !important;
+	font-weight: 100 !important;
 }
 
-#header {
-	position: absolute;
-	top: 0;
-	left: 0;
+label.control-label {
+	font-weight: 100;
+	color : #E9E9E9;
+	padding: 0px;
+}
+input.form-control, select.form-control, textarea.form-control {
+	border-radius : 0px;
+	border: none;
+	background-color: rgba(157, 157, 157, 0.20);
+	color: #E9E9E9;
+}
+option {
+	font-weight: 100;
+}
+/* #center { */
+/* 	height: 100%; */
+/* } */
+
+.header {
+	position: relative;
+/* 	background-color: #FFF; */
+/* 	position: absolute; */
+/* 	top: 0; */
+/* 	left: 0; */
 	width: 100%;
-	height: 142px;
+/* 	height: 10%; */
+/* 	height: 142px; */
 	z-index: 1001;
 }
 
@@ -27,16 +57,290 @@ body {
 	height: auto;
 	width: 100%;
 	position: absolute;
-	top: 142px;
+	top: 0px;
+	left: 0px;
 	bottom: 0px;
 }
 
-.ui-front {
-	/* 
-	Apparently it is possible to put the dialogs on top
-	without messing with the z-index css property in jquery 1.10 but I
-	haven't been able to do it:
-	http://jqueryui.com/upgrade-guide/1.10/#removed-zindex-option
-	*/
-	z-index: 3000 !important;
+/* common utility css classes */
+.no-padding {
+	padding: 0 !important;
+}
+.no-margin {
+	margin: 0 !important;
+}
+.height5 {
+	height: 5% !important;
+}
+.height10 {
+	height: 10% !important;
+}
+.height80 {
+	height: 80% !important;
+}
+.height85 {
+	height: 85% !important;
+}
+.height100 {
+	height: 100% !important;
+}
+.width100 {
+	width: 100% !important;
+}
+
+.text-center {
+	text-align: center;	
+}
+
+/* Common button styles */
+button.btn {
+	white-space: normal;
+}
+
+/* button transparent */
+.btn-transparent,
+.btn-transparent:active,
+.btn-transparent:focus {
+	background-color: transparent;
+	color: #E9E9E9;
+}
+.btn-transparent:hover ,
+.btn-transparent.active {
+	color : rgb(50, 153, 187);
+}
+
+/* default button style */
+button.btn-default ,
+button.btn-default[disabled] ,
+a.btn-default ,
+button.btn-default:active ,
+a.btn-default:active ,
+button.btn-default:focus ,
+a.btn-default:focus {
+	color: #E9E9E9;
+	background-color: rgba(40, 34, 34, 0.7);
+	border-radius: 0px;
+	border: 1px solid transparent;
+	font-size: 12px;
+  	font-weight: 100 !important;
+  	width : 100%;
+}
+
+button.btn-default:hover ,
+a.btn-default:hover {
+	color: #E9E9E9;
+	text-decoration: none;
+	background-color: rgba(40, 34, 34, 0.95);
+	border: 1px solid transparent;
+	
+	-webkit-transition: background-color 0.3s ease-in-out;
+	-moz-transition: background-color 0.3s ease-in-out;
+	-o-transition: background-color 0.3s ease-in-out;
+	transition: background-color 0.3s ease-in-out;
+}
+
+button.btn-default.active ,
+button.btn-default.active[disabled] ,
+a.btn-default.active ,
+button.btn-default.active:active ,
+a.btn-default.active:active {
+	color: #E9E9E9;
+	border: 1px solid transparent;
+	background-color: rgba(50, 153, 187, 0.7);
+}
+
+button.btn-default.active:hover ,
+a.btn-default.active:hover {
+	color: #E9E9E9;
+	text-decoration: none;
+	background-color: rgba(50, 153, 187, 0.95);
+	border: 1px solid transparent;
+	
+	-webkit-transition: background-color 0.3s ease-in-out;
+	-moz-transition: background-color 0.3s ease-in-out;
+	-o-transition: background-color 0.3s ease-in-out;
+	transition: background-color 0.3s ease-in-out;
+}
+
+/* externa link a class */
+a.ext-link ,
+a.ext-link:focus {
+  color: #E9E9E9;
+  font-size: 12px;
+  background-color: rgba(50, 153, 187, 0.4);
+  border-radius: 2px;
+  /* border: 1px solid transparent; */
+  font-weight: 100 !important;
+  /* width: 100%; */
+  /* border-bottom: 1px solid rgba(50, 153, 187, 0.7); */
+  padding: 6px 10px;
+  text-decoration: none;
+  letter-spacing: .02em;
+}
+a.ext-link:hover {
+	color: #E9E9E9;
+  	font-size: 12px;
+	text-decoration: none;
+	background-color: rgba(50, 153, 187, 0.9);
+	-webkit-transition: background-color 0.3s ease-in-out;
+	-moz-transition: background-color 0.3s ease-in-out;
+	-o-transition: background-color 0.3s ease-in-out;
+	transition: background-color 0.3s ease-in-out;
+}
+/* collapsable button  */
+button.btn-collapse {
+
+	/* 	background-color: transparent; */
+	/* 	padding: 2px 10px;  */
+	/* 	font-size: 12px; */
+	/*   	opacity: 0.8; */
+	/*   	color: rgba(233, 233, 233, 0.90); */
+	background-color: transparent;
+	/* padding: 2px 10px; */
+	font-size: 16px;
+	opacity: 0.9;
+	color: rgba(233, 233, 233, 0.90);}
+button.btn-collapse:hover {
+	color: rgba(50, 153, 187, 0.99);
+	
+	-webkit-transition: color 0.4s ease-in-out;
+	-moz-transition: color 0.4s ease-in-out;
+	-o-transition: color 0.4s ease-in-out;
+	transition: color 0.4s ease-in-out;
+}
+
+
+/* button group  */
+.btn-group {
+}
+.btn-group button {
+	border: 1px solid rgba(22, 22, 22, 0.15);
+	color: #E9E9E9;
+	background-color: rgba(40, 34, 34, 0.7);
+	font-size: 12px;
+	text-align: left;
+	
+	border-radius: 0px;
+}
+.btn-group button:hover,
+.btn-group button:focus {
+	color: #E9E9E9;
+	font-size: 12px;
+	
+	border-radius: 0px;
+}
+
+.btn-group > .btn + .dropdown-toggle {
+	padding: 6px 8px !important;
+}
+
+.btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle) {
+  width: 85%;
+  white-space: nowrap;
+}
+.btn-group > .btn.dropdown-toggle {
+  width: 15%;
+  text-align: center;
+  
+}
+.btn-group button.active {
+	background-color: rgba(50, 153, 187, 0.7);
+}
+
+ul.dropdown-menu {
+	background-color: rgba(40, 34, 34, 0.95);
+	top : 90%;
+	min-width: 100%;
+}
+
+ul.dropdown-menu button, 
+ul.dropdown-menu button:focus {
+	border: none;
+	background: none;
+	text-align: left;
+/* 	background-color: rgba(40, 34, 34, 0.96); */
+}
+
+ul.dropdown-menu button:hover {
+	background-color: rgba(66, 66, 66, 0.4);
+/* 	padding: 6px 12px; */
+	border: none;
+}
+.caret {
+	border-top: .4em solid !important;
+  	border-right: .4em solid transparent !important;
+  	border-left: .4em solid transparent !important;
+}
+}
+/* div.dashboard-content-selector button i{ */
+/*   position: relative; */
+/*   left: -5%; */
+/* } */
+
+
+button.layer-time-btn,
+button.layer-time-btn:active,
+button.layer-time-btn:focus {
+	float: left;
+	width: 30%;
+	font-size: 10px;
+	padding: 5px 5px;
+	margin: 1px 1px;
+	text-align: center !important;
+}
+
+
+
+/* nav bar */
+div.nav.nav-tabs > li > a {
+	color : #E9E9E9;
+	border-bottom: 1px solid rgba(40, 34, 34, 0.7);
+  	border-radius: 4px 4px 0 0;
+}
+
+
+/* modal lock  */
+.modal-lock {
+	z-index: 9000 !important;
+}
+.modal-backdrop.in {
+  filter: alpha(opacity=50);
+  opacity: .5 !important;
+}
+.modal-lock .modal-dialog {
+	width: 20%;
+	top: 40%;
+	position: absolute;
+	left: 40%;
+}
+.modal-lock .progress {
+	height: 10px;
+  	border-radius: 0px;
+}
+.modal-lock .progress-bar-info {
+  background-color: rgba(50, 153, 187, 0.7);
+}
+.bold {
+	font-weight: bold;
+}
+.line-height2{
+	line-height: 2em;
+}
+/*  table css style */
+table.table {
+	 border-collapse: collapse;
+	 margin-bottom: 0px !important;
+}
+table.table > thead > tr > th {
+	border-bottom: 1px solid rgba(233, 233, 233, 0.20);
+	background-color: rgba(50, 153, 187, 0.15);
+	font-weight: 100;
+}
+table.table > tbody > tr > td {
+	border-color: 	rgba(233, 233, 233, 0.20);
+	background-color: rgba(233, 233, 233, 0.10);
+	padding-left: 15px;	
+}
+td.indent {
+	text-indent: 3em;	
 }

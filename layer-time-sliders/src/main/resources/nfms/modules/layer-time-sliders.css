@@ -1,10 +1,17 @@
 .layer-time-slider {
-	display: inline-block;
-	width: 50%;
-	margin-left: 10px;
+	text-align: center;
 }
 
-.layer-time-slider-title {
-	margin-top: 10px;
-	margin-bottom: 5px;
+.layer-badge-timestamp {
+	font-size: 9px;
+	position: absolute;
+	left: 80%;
+	top: 1em;
+}
+
+.layer-badge-timestamp i.fa {
+	font-size: 8px;
+	top: -1px;
+	position: relative;
+	right: 2px;
 }

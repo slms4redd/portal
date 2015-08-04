@@ -5,11 +5,21 @@
 			"show-flag" : true,
 			"show-logos" : true
 		},
-		"info-dialog" : {
-			"open-in-center" : center
-		},
 		"error-management" : {
 			"div-id" : null
+		}, footer : {
+			"logo" : "static/img/logo.png" 
+		}, tutorial : {
+			"href" : "tutorial.html"
+		}, dashboard : {
+			"open" 	: true,
+			"infoButtonMsg" : "info_redd_profile_button"
+		}, feature-info-control : {
+			"linkedLayers" : {
+				"province" : "country"
+			 }
+		}, map : {
+			"options": { "minScale": 500000, "maxScale": 10000000, "numZoomLevels" : 7}
 		}
 	}
 }

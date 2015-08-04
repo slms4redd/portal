@@ -9,9 +9,6 @@
 		</after>
 	</ordering>
 
-	<listener>
-		<listener-class>org.fao.unredd.feedback.servlet.FeedbackContextListener</listener-class>
-	</listener>
 
 	<servlet>
 		<servlet-name>create-comment-servlet</servlet-name>

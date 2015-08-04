@@ -1,5 +1,6 @@
-define([ "message-bus", "layout", "openlayers" ], function(bus, layout) {
-
+define([ "message-bus", "layout", "module", "openlayers" ], function(bus, layout, module) {
+	
+	var config = module.config();
 	/*
 	 * keep the information about wms layers that will be necessary for
 	 * visibility, opacity, etc.
@@ -23,18 +24,36 @@ define([ "message-bus", "layout", "openlayers" ], function(bus, layout) {
 	};
 
 	OpenLayers.ProxyHost = "proxy?url=";
-
-	map = new OpenLayers.Map(layout.map.attr("id"), {
-		theme : null,
-		projection : new OpenLayers.Projection("EPSG:900913"),
-		displayProjection : new OpenLayers.Projection("EPSG:4326"),
-		units : "m",
-		allOverlays : true,
-		controls : []
-	});
-	map.addControl(new OpenLayers.Control.Navigation());
-	map.addControl(new OpenLayers.Control.Scale());
-
+	
+	var mapId = layout.map.attr("id"); 
+	
+	var mapOptions = {
+			theme : null,
+			projection : new OpenLayers.Projection("EPSG:900913"),
+			displayProjection : new OpenLayers.Projection("EPSG:4326"),
+			units : "m",
+			allOverlays : true,
+			controls : []
+	};
+	// read map options from configuration 
+	if( config.options ){
+		for (var optName in config.options) {
+	        if ( config.options.hasOwnProperty(optName) ) {
+	        	mapOptions[ optName ] = config.options[ optName ];
+	        }
+	    }
+	}
+	map = new OpenLayers.Map( mapId , mapOptions );
+	
+	    
+//	map.events.register('zoomend', map, function() {
+//		  var zoomInfo = 'Zoom level=' + map.getZoom() + '/' + (map.numZoomLevels + 1);
+//		  console.log( zoomInfo );
+//		});
+	map.addControl( new OpenLayers.Control.Navigation() );
+	map.addControl( new OpenLayers.Control.Scale() );
+//	map.addControl( new OpenLayers.Control.PanZoomBar() );
+	
 	bus.listen("add-layer", function(event, layerInfo) {
 		var mapLayerArray = [];
 		$.each(layerInfo.wmsLayers, function(index, wmsLayer) {
@@ -47,29 +66,51 @@ define([ "message-bus", "layout", "openlayers" ], function(bus, layout) {
 					protocol : new OpenLayers.Protocol.WFS({
 						version : "1.0.0",
 						url : wmsLayer.baseUrl,
-						featureType : wmsLayer.featureTypeName
+						featureType : wmsLayer.featureType,
 					}),
 					projection : new OpenLayers.Projection("EPSG:4326")
 				});
 			} else {
-				layer = new OpenLayers.Layer.WMS(wmsLayer.id, wmsLayer.baseUrl, {
-					layers : wmsLayer.wmsName,
-					buffer : 0,
-					transitionEffect : "resize",
-					removeBackBufferDelay : 0,
-					isBaseLayer : false,
-					transparent : true,
-					format : wmsLayer.imageFormat || 'image/png'
-				}, {
-					noMagic : true
-				});
+				
+				var wmsParams = {
+						layers : wmsLayer.wmsName,
+						buffer : 0,
+						transitionEffect : "resize",
+						removeBackBufferDelay : 0,
+						isBaseLayer : false,
+						transparent : true,
+						format : wmsLayer.imageFormat || 'image/png',
+//						tilesorigin: map.maxExtent.left + ',' + map.maxExtent.bottom
+						singleTile: true
+					};
+				for (var paramName in wmsLayer.wmsParameters) {
+			        if ( wmsLayer.wmsParameters.hasOwnProperty(paramName) ) {
+			            wmsParams[ paramName ] = wmsLayer.wmsParameters[ paramName ];
+			        }
+			    }
+				for (var paramName in layerInfo.wmsParameters) {
+					if ( layerInfo.wmsParameters.hasOwnProperty(paramName) ) {
+						wmsParams[ paramName ] = layerInfo.wmsParameters[ paramName ];
+					}
+				}
+				
+				var options = { noMagic : true };
+				for (var optionName in wmsLayer.wmsOptions) {
+					if ( wmsLayer.wmsOptions.hasOwnProperty(optionName) ) {
+						options[ optionName ] = wmsLayer.wmsOptions[ optionName ];
+					}
+				}
+				
+				layer = new OpenLayers.Layer.WMS( wmsLayer.id,  wmsLayer.baseUrl, wmsParams, options );
 			}
 			layer.id = wmsLayer.id;
+			
 			if (map !== null) {
 				map.addLayer(layer);
-				map.setLayerIndex(layer, wmsLayer.zIndex);
+//				map.setLayerIndex(layer, wmsLayer.zIndex);
+				layer.setZIndex(wmsLayer.zIndex);
 			}
-			mapLayerArray.push(wmsLayer.id);
+			mapLayerArray.push(wmsLayer);
 		});
 		if (mapLayerArray.length > 0) {
 			mapLayersByLayerId[layerInfo.id] = mapLayerArray;
@@ -77,6 +118,7 @@ define([ "message-bus", "layout", "openlayers" ], function(bus, layout) {
 	});
 
 	bus.listen("layers-loaded", function() {
+		
 		// Add the vector layer for highlighted features on top of all the other
 		// layers
 
@@ -100,7 +142,7 @@ define([ "message-bus", "layout", "openlayers" ], function(bus, layout) {
 		var mapLayers = mapLayersByLayerId[layerId];
 		if (mapLayers) {
 			$.each(mapLayers, function(index, mapLayerId) {
-				var layer = map.getLayer(mapLayerId);
+				var layer = map.getLayer(mapLayerId.id);
 				layer.setVisibility(visibility);
 			});
 		}
@@ -147,7 +189,7 @@ define([ "message-bus", "layout", "openlayers" ], function(bus, layout) {
 		var mapLayers = mapLayersByLayerId[layerId];
 		if (mapLayers) {
 			$.each(mapLayers, function(index, mapLayerId) {
-				var layer = map.getLayer(mapLayerId);
+				var layer = map.getLayer(mapLayerId.id);
 				layer.setOpacity(opacity);
 			});
 		}

@@ -1,0 +1,102 @@
+.tutorial-btn-container {
+	z-index: 1001;
+	position: relative;
+	float: left;
+	padding: 15px 10px;
+}
+
+button.tutorial-btn ,
+button.tutorial-btn:focus {
+	padding: 6px 12px;
+  border-radius: 18px;
+  /* border: 1px solid rgba(50, 153, 187, 0.6); */
+  /* border: 1px solid rgba(233, 233, 233, 0.1); */
+  color: rgba(233, 233, 233, 0.7);
+}
+button.tutorial-btn:hover, 
+button.tutorial-btn:active {
+/*   	border: 1px solid rgba(233, 233, 233, 0.3); */
+  	color: rgba(233, 233, 233, 0.7);
+}
+.tutorial {
+	display: none;
+	margin: 0px !important;
+	width: 35%;
+	height: 70%;
+	overflow: hidden; font-size : 15px;
+	z-index: 9002;
+	position: fixed;
+	left: 15%;
+	-webkit-box-shadow: 0px 15px 32px 4px rgba(102, 102, 102, 0.8);
+	-moz-box-shadow: 0px 15px 32px 4px rgba(102, 102, 102, 0.8);
+	box-shadow: 0px 15px 32px 4px rgba(102, 102, 102, 0.8);
+	border: 1px solid rgba(66, 66, 66, 0.40);
+	font-size: 15px;
+}
+
+.tutorial-header {
+/* 	cursor: move; */
+	margin: 0px !important;
+	background-color: rgba(68, 66, 63, 0.65);
+	padding: 10px 0px 10px 0px;
+	height: 8%;
+	
+}
+
+.tutorial-header div {
+	text-align: center;
+	color: #E9E9E9;
+}
+
+.tutorial-header button, .tutorial-header button:hover, .tutorial-header button:active
+	{
+	background: none;
+	border: none;
+	color: #E9E9E9;
+	width: 100%;
+	height: 100%;
+	padding: 0px !important;
+	font-size: 17px;
+}
+
+.tutorial-body {
+	margin: 0px !important;
+	background-color: rgba(229, 229, 229, 0.95);
+	color: rgba(22, 22, 22, 0.99);
+	padding: 13px 5px 13px 5px;
+	height: 92%;
+	overflow: auto;
+}
+
+.tutorial-body img {
+	max-width: 50%;
+}
+.toturial-item-link{
+	cursor: pointer;
+	padding: 9px 2px;
+	border-bottom: 1px solid rgba(68, 66, 63, 0.3);
+}
+.toturial-item-link:hover{
+	cursor: pointer;
+	background-color: rgba(50, 153, 187, 0.2);	
+}
+
+.toturial-item {
+	display: none;
+	height: 100%;
+}
+
+.toturial-item .header {
+	text-align: center;
+	font-weight: bold;
+	font-size: 15px;
+	padding: 5px 0px !important;
+}
+
+.toturial-item .content {
+	padding: 6px 0px 3px 5% !important;
+}
+
+.toturial-item .content-1 {
+ 	padding: 6px 0px 10px 8% !important;
+}

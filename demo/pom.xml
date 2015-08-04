@@ -49,6 +49,11 @@
 			<artifactId>time-slider</artifactId>
 			<version>3.1-SNAPSHOT</version>
 		</dependency>
+		<dependency>
+			<groupId>org.fao.unredd</groupId>
+			<artifactId>stats-lucm</artifactId>
+			<version>3.1-SNAPSHOT</version>
+		</dependency>
 		<!-- Other deployments may access other databases, so it is responsibility 
 			of the application to include the necessary drivers -->
 		<dependency>
@@ -59,7 +64,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>unredd-portal</finalName>
+		<finalName>portal</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -134,7 +139,7 @@
 		<profile>
 			<id>optimize</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<activeByDefault>false</activeByDefault>
 			</activation>
 			<build>
 				<plugins>
@@ -234,7 +239,7 @@
 							</filterConfig>
 							<!-- Skip requirejs optimization if true -->
 							<skip>
-								false
+								true
 							</skip>
 						</configuration>
 					</plugin>

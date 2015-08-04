@@ -1,7 +1,52 @@
-define([ "jquery", "message-bus", "layout", "customization", "i18n", "jquery-ui" ], function($, bus, layout, customization, i18n, ui) {
+define([ "jquery", "message-bus", "layout", "customization", "i18n", "bootstrap" ], function($, bus, layout, customization, i18n) {
+//	var iconClosed = '<span class="fa-stack"><i class="fa fa-circle-thin fa-stack-2x"></i><i class="fa fa-angle-double-right fa-stack-1x"></i></span>';
+//	var iconOpened = '<span class="fa-stack"><i class="fa fa-circle-thin fa-stack-2x"></i><i class="fa fa-angle-double-left fa-stack-1x"></i></span>';
+	var iconClosed = '<i class="fa fa-angle-double-right"></i>';
+	var iconOpened = '<i class="fa fa-angle-double-left"></i>';
 
 	var divsById = [];
 
+	var row 		= $( '<div class="row height85"></div>' );
+	layout.container.append( row );
+//	var container	= $( '<div class="col-md-3 col-sm-3 col-xs-3 panel-group layers-container open" id="group-accordion" role="tablist" aria-multiselectable="true"></div>' );
+//	row.append( container );
+	
+	var col	= $( '<div class="col-md-3 col-sm-3 col-xs-3 height100"></div>' );
+	row.append( col );
+	var rowContainer = $( '<div class="row height100" style="  overflow: hidden;"></div>' );
+	col.append( rowContainer );
+	var container	= $( '<div class="col-md-12 col-sm-12 col-xs-12 layers-container no-padding open" role="tablist" aria-multiselectable="true"></div>' );
+//	var container	= $( '<div class="col-md-12 col-sm-12 col-xs-12 layers-container no-padding open" id="group-accordion" role="tablist" aria-multiselectable="true"></div>' );
+	rowContainer.append( container );
+	
+	var dashboardCol = $( '<div class="col-md-5 col-md-offset-4 col-sm-5 col-sm-offset-4 col-xs-4 height100"></div>' );
+	row.append( dashboardCol );
+	
+	$( window ).resize(function() {
+		if( container.hasClass( 'open' ) ) {
+			container.stop().animate( {width: container.parent().width() }, 300 );
+		}
+	});
+	
+	var addToggleLayersSection = function(){
+		var row = $( '<div class="row no-margin" />' );
+		container.append( row );
+		var col	= $( '<div class="col-md-1 col-md-offset-11 no-padding" />' );
+		row.append( col );
+		var btnDiv	= $( '<div class="toggle-layers" />' );
+		col.append( btnDiv );
+		
+		var btn		= $( '<button class="btn btn-collapse no-padding">'+iconOpened+'</button>' );
+		btnDiv.append( btn );
+		
+		btn.click( function(e){
+			bus.send( "layers-toggle-visibility" );
+			btn.blur();
+		});
+	};
+	addToggleLayersSection();
+	
+	
 	var divContainer = $("<div/>").attr("id", "layers_container").appendTo("body");
 
 	var divLayerListSelector = $("<div/>").attr("id", "layer_list_selector_pane").appendTo("body").hide();
@@ -40,13 +85,74 @@ define([ "jquery", "message-bus", "layout", "customization", "i18n", "jquery-ui"
 
 		divsById[id] = div;
 	};
-
+	
 	bus.listen("modules-loaded", function() {
-		divLayerListSelector.buttonset();
-		divLayerListSelector.show();
+//		divLayerListSelector.buttonset();
+//		divLayerListSelector.show();
 	});
 
+	bus.listen("layers-loaded" , function(){
+		//change icon to layers list group heading
+		$('.collapse').on('hide.bs.collapse', function () {
+			var $this = $( this );
+			var icon = $this.parent().find( '[href=#' + $this.attr('id') +']' ).find( 'i' );
+			icon.removeClass();
+			icon.addClass( 'fa fa-caret-right' );
+		});
+		
+		$('.collapse').on('show.bs.collapse', function () {
+			var $this = $( this );
+			var icon = $this.parent().find( '[href=#' + $this.attr('id') +']' ).find( 'i' );
+			icon.removeClass();
+			icon.addClass( 'fa fa-caret-down' );
+		});
+		
+	});
+	
+	bus.listen( "layers-toggle-visibility", function( event ){
+		var toggleLayersSection = container.find( '.toggle-layers' );
+		var btn = toggleLayersSection.find( 'button' );
+		if( container.hasClass( 'open' ) ) {
+			container.removeClass( 'open' );
+			
+			// remove scroll bar in case there is
+			container.css( 'overflow', 'hidden' );
+			
+//			container.animate( {width: "45px"}, 600 );
+			container.animate( {'left': '-' + (container.parent().width() - toggleLayersSection.width() ) +'px' }, 500 );
+
+			var panel = container.children( '.panel' );
+			panel.animate( {opacity: "0"}, 500 );
+			
+			setTimeout( function(){
+				btn.empty();
+				btn.append( iconClosed );
+				btn.blur();
+				
+			}, 200 );
+			
+		} else {
+			container.addClass( 'open' );
+			// add scroll bar in case there is overflow
+			container.css( 'overflow', 'auto' );
+
+//			container.animate( {width: container.parent().width() }, 600 );
+			container.animate( {'left': '0px' }, 500 );
+
+			var panel = container.children( '.panel' );
+			panel.animate( {opacity: "1"}, 400 );
+
+			setTimeout( function(){
+				btn.empty();
+				btn.append( iconOpened );
+				btn.blur();
+			}, 200 );
+		}
+	});
+	
 	return {
-		"registerLayerPanel" : registerLayerPanel
+		"registerLayerPanel" 		: registerLayerPanel ,
+		"layersContainer"			: container ,
+		"layersDashboardContainer"	: dashboardCol 
 	};
 });

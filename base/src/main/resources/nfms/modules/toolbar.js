@@ -1,7 +1,10 @@
 define([ "layout", "jquery" ], function(layout) {
 
-	var divToolbar = $("<div/>").attr("id", "toolbar");
-	layout.header.append(divToolbar);
-
-	return divToolbar;
+	var toolbarRow = $( '<div class="row" />' );
+	layout.container.append( toolbarRow );
+	
+	var toolbar = $( '<div class="col-md-12 toolbar" />' );
+	toolbarRow.append( toolbar );
+	
+	return toolbar;
 });

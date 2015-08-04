@@ -69,6 +69,15 @@ define(["i18n"], function(i18n) {
 		var tmpDate = new Date();
 		tmpDate.setISO8601(dateString);
 		return tmpDate.getLocalizedDate();
+		var tmpDate = new Date();
+		tmpDate.setISO8601(dateString);
+		return tmpDate.getLocalizedDate();
+	};
+	
+	Date.getFullYear = function( dateString ){
+		var tmpDate = new Date();
+		tmpDate.setISO8601(dateString);
+		return tmpDate.getFullYear();
 	};
 
 });

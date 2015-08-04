@@ -1,23 +1,77 @@
-#layers_container {
-	left: 10px;
-	position: absolute;
-	top: 215px;
-	width: 250px;
-	z-index: 1100;
+div.layers-container {
+	background-color: rgba(66, 66, 66, 0.85);
+	opacity 		: 0.92;
+	position		: relative;
+	z-index			: 1100;	
+	max-height		: 100%;
+	color			: #E9E9E9;
+	overflow		: auto;
 }
 
-.layer_container_panel {
-	padding: 10px 15px;
-	background-color: black;
-	border-radius: 6px;
-	color: white;
-	font-size: 11px;
-	border: 1px solid #666666;
+.layers-container .panel,
+.layers-container .panel-heading {
+	background-color: transparent;
+	border-radius	: 0px !important;
+	padding			: 0 !important;
+	border			: none;
+}
+.layers-container .row {
+	margin: 0px !important;
+}
+/* .layers-container .group-layers { */
+/* 	padding			: 10px 10px 10px 10px; */
+/* } */
+.layers-container .sub-group-heading {
+	padding			: 20px 0px 10px 18px;
+	font-size		: 14px;
+}
+.layers-container .group-panel-body {
+	padding: 10px 0px !important;
+  	margin: 0px 10% !important;
+  	background-color: rgba(40, 34, 34, 0.35);
+  	border-top: none;
+  	border-left: 1px solid rgba(22, 22, 22, 0.25);
+  	border-bottom: 1px solid rgba(22, 22, 22, 0.25);
+  	border-right: 1px solid rgba(22, 22, 22, 0.25);
 }
 
-#layer_list_selector_pane {
-    top: 186px;
-    left: 10px;
-    position: absolute;
-    z-index: 1100;
+.layers-container button.btn-default {
+	text-align: left;
 }
+
+
+.layers-container .panel-heading button.btn-default,
+.layers-container .panel-heading button.btn-default:active {
+	text-align			: left;
+	font-size			: 14px;
+	border				: 1px solid rgba(22, 22, 22, 0.25);
+}
+.layers-container .panel-heading button.btn-default:hover {
+	background-color	: rgba(22, 22, 22, 0.99);
+}
+
+.layers-container .panel-heading button span.badge {
+  float: right;
+  border-radius: 1px;
+  font-weight: 100;
+  border: 1px solid rgba(255, 153, 0, 0.16);
+  background: rgba(22, 22, 22, 0.1);
+  font-size: 10px;
+  right: 5px;
+  top: 5px;
+  position: absolute;
+}
+.toggle-layers {
+	text-align: center;
+	width: 100%;
+	padding: 5px 0px 10px 0px;
+	right: 10%;
+  	position: relative;
+}
+
+
+/* /* // OLD */ */
+/* #layers_container { */
+/* 	display: none; */
+/* } */
+

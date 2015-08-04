@@ -39,14 +39,10 @@ public class ClientContentServlet extends HttpServlet {
 				return;
 			}
 			resp.setDateHeader("Last-Modified", lastModified);
-
-			// Set content type
-			FileNameMap fileNameMap = URLConnection.getFileNameMap();
-			String type = fileNameMap.getContentTypeFor(pathInfo);
-			resp.setContentType(type);
 			stream = new BufferedInputStream(new FileInputStream(file));
 		} else {
 			String path = "/nfms" + pathInfo;
+			
 			InputStream classPathResource = this.getClass()
 					.getResourceAsStream(path);
 			if (classPathResource != null) {
@@ -54,6 +50,17 @@ public class ClientContentServlet extends HttpServlet {
 				stream = new BufferedInputStream(classPathResource);
 			}
 		}
+		// Set content type
+		String type = null;
+		if (pathInfo.endsWith("css")) {
+			type = "text/css";
+		} else if (pathInfo.endsWith("js")) {
+			type = "application/javascript";
+		} else {
+			FileNameMap fileNameMap = URLConnection.getFileNameMap();
+			type = fileNameMap.getContentTypeFor(pathInfo);
+		}
+		resp.setContentType(type);
 
 		if (stream == null) {
 			throw new StatusServletException(404,
@@ -61,6 +68,7 @@ public class ClientContentServlet extends HttpServlet {
 		} else {
 			// Send contents
 			try {
+				
 				IOUtils.copy(stream, resp.getOutputStream());
 			} catch (IOException e) {
 				logger.error("Error reading file", e);

@@ -18,26 +18,23 @@ public class AppContextListener implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		ServletContext servletContext = sce.getServletContext();
+		
 		String rootPath = servletContext.getRealPath("/");
-		String configInitParameter = servletContext
-				.getInitParameter("PORTAL_CONFIG_DIR");
-		boolean configCache = Boolean.parseBoolean(System
-				.getenv("NFMS_CONFIG_CACHE"));
-		Config config = new DefaultConfig(rootPath, configInitParameter,
-				configCache);
+		String configInitParameter = servletContext.getInitParameter("PORTAL_CONFIG_DIR");
+//		boolean configCache = Boolean.parseBoolean(System.getenv("NFMS_CONFIG_CACHE"));
+		boolean configCache = Boolean.TRUE;
+
+		Config config = new DefaultConfig(rootPath, configInitParameter, configCache);
 		servletContext.setAttribute("config", config);
 
-		JEEContextAnalyzer context = new JEEContextAnalyzer(new JEEContext(
-				servletContext));
-		servletContext.setAttribute("js-paths",
-				context.getRequireJSModuleNames());
+		JEEContextAnalyzer context = new JEEContextAnalyzer(new JEEContext(servletContext));
+		servletContext.setAttribute("js-paths", context.getRequireJSModuleNames());
 		servletContext.setAttribute("css-paths", context.getCSSRelativePaths());
-		servletContext.setAttribute("requirejs-paths",
-				context.getNonRequirePathMap());
-		servletContext.setAttribute("requirejs-shims",
-				context.getNonRequireShimMap());
-		servletContext.setAttribute("plugin-configuration",
-				context.getConfigurationElements());
+		servletContext.setAttribute("requirejs-paths", context.getNonRequirePathMap());
+		servletContext.setAttribute("requirejs-shims", context.getNonRequireShimMap());
+		servletContext.setAttribute("plugin-configuration", context.getConfigurationElements());
+		
+//		System.setProperty( "content.types.user.table", servletContext.getRealPath("/WEB-INF/default_config/content-types.properties") );
 	}
 
 	@Override

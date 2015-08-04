@@ -1,8 +1,19 @@
-.blue_button.selected {
-	color: #fff;
+.lang-buttons {
+	z-index: 1001;
+  	position: relative;
+	float: right;
+	padding: 15px 10px;
 }
 
-.lang_button {
-	float: right;
-	margin-left: 20px;
+.lang-buttons a.btn-default {
+	margin: 0px 2px;
+	padding: 10px 18px;
+	border-radius: 10px;
+	border: 1px solid rgba(50, 153, 187, 0.6);
+}
+
+.lang-buttons a.btn-default.active {
+	background-color: rgba(50, 153, 187, 0.8);
+	pointer-events: none;
+   	cursor: default;
 }

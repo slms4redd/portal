@@ -34,6 +34,7 @@ public class MainJSServlet extends HttpServlet {
 			output = template.generate();
 		}
 
+		resp.setContentType( "application/javascript" );
 		resp.getWriter().print(output);
 	}
 
