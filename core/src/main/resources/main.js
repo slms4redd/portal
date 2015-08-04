@@ -4,7 +4,7 @@ require.config({
 //	urlArgs : "bust=" + (new Date()).getTime(),
 	$paths,
 	$shim,
-	waitSeconds : 15
+	waitSeconds : 60
 });
 
 require([ "customization" ]);
