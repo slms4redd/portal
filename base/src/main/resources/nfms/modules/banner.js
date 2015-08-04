@@ -4,10 +4,10 @@ define([ "jquery", "layout", "i18n", "message-bus", "module" ], function($, layo
 	
 	var addElements 	= function( parent , elements ){
 		$.each( elements , function( i , element ){
-			console.log( element );
 			
 			var domElem = $( '<' + element.name + '/>' );
 			
+			// add styles
 			if( element.styles ){
 				for (var name in element.styles) {
 			        if ( element.styles.hasOwnProperty( name) ) {
@@ -16,6 +16,7 @@ define([ "jquery", "layout", "i18n", "message-bus", "module" ], function($, layo
 			    }
 			}
 			
+			// add attributes
 			if( element.attributes ){
 				for (var name in element.attributes) {
 			        if ( element.attributes.hasOwnProperty( name) ) {
@@ -24,12 +25,21 @@ define([ "jquery", "layout", "i18n", "message-bus", "module" ], function($, layo
 			    }
 			}
 			
+			// add css classes
+			if( element.cssClasses ){
+				for (var cssClass in element.cssClasses ) {
+					domElem.addClass( element.cssClasses[cssClass] );
+			    }
+			} 
+			
+			// add i18n label
 			if( element.label ){
 				domElem.append( i18n[element.label] );
 			}
-			
+			//append to dom
 			parent.append( domElem );
 			
+			// append sub elements 
 			if( element.elements ){
 				addElements( domElem, element.elements);
 			}

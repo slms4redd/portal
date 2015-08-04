@@ -9,7 +9,8 @@
 										"z-index" : "1001" , "text-align" : "center" , "left" : "30%" ,
 										"width": "40%" , "background-color": "rgba(157, 157, 157, 0.66)"} ,
 						"label"		: "demo",
-						"attributes": [],				
+						"attributes": [],	
+						"cssClasses": ["test","test2"],	
 						"elements"	: []				
 					 }
 				]
