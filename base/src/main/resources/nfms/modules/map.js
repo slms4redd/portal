@@ -1,5 +1,6 @@
-define([ "message-bus", "layout", "openlayers" ], function(bus, layout) {
-
+define([ "message-bus", "layout", "module", "openlayers" ], function(bus, layout, module) {
+	
+	var config = module.config();
 	/*
 	 * keep the information about wms layers that will be necessary for
 	 * visibility, opacity, etc.
@@ -25,14 +26,26 @@ define([ "message-bus", "layout", "openlayers" ], function(bus, layout) {
 	OpenLayers.ProxyHost = "proxy?url=";
 	
 	var mapId = layout.map.attr("id"); 
-	map = new OpenLayers.Map( mapId , {
-		theme : null,
-		projection : new OpenLayers.Projection("EPSG:900913"),
-		displayProjection : new OpenLayers.Projection("EPSG:4326"),
-		units : "m",
-		allOverlays : true,
-		controls : []
-	});
+	
+	var mapOptions = {
+			theme : null,
+			projection : new OpenLayers.Projection("EPSG:900913"),
+			displayProjection : new OpenLayers.Projection("EPSG:4326"),
+			units : "m",
+			allOverlays : true,
+			controls : []
+	};
+	// read map options from configuration 
+	if( config.options ){
+		for (var optName in config.options) {
+	        if ( config.options.hasOwnProperty(optName) ) {
+	        	mapOptions[ optName ] = config.options[ optName ];
+	        }
+	    }
+	}
+	map = new OpenLayers.Map( mapId , mapOptions );
+	
+	    
 //	map.events.register('zoomend', map, function() {
 //		  var zoomInfo = 'Zoom level=' + map.getZoom() + '/' + (map.numZoomLevels + 1);
 //		  console.log( zoomInfo );

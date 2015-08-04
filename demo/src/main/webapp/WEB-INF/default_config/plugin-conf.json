@@ -11,13 +11,15 @@
 			"logo" : "static/img/logo.png" 
 		}, tutorial : {
 			"href" : "tutorial.html"
-		}, layer-dashboard : {
+		}, dashboard : {
 			"open" 	: true,
 			"infoButtonMsg" : "info_redd_profile_button"
 		}, feature-info-control : {
 			"linkedLayers" : {
 				"province" : "country"
 			 }
+		}, map : {
+			"options": { "minScale": 500000, "maxScale": 10000000, "numZoomLevels" : 7}
 		}
 	}
 }
