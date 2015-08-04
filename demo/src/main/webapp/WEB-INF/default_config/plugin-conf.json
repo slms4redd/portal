@@ -1,9 +1,18 @@
 {
 	"default-conf" : {
 		"banner" : {
-			"hide" : false,
-			"show-flag" : true,
-			"show-logos" : true
+			"elements" : 
+				[
+					{ 
+						"name"		: "div" , 
+						"styles"	: {"position": "absolute" , "color" : "#142022", "font-size" : "60px",
+										"z-index" : "1001" , "text-align" : "center" , "left" : "30%" ,
+										"width": "40%" , "background-color": "rgba(157, 157, 157, 0.66)"} ,
+						"label"		: "demo",
+						"attributes": [],				
+						"elements"	: []				
+					 }
+				]
 		},
 		"error-management" : {
 			"div-id" : null
