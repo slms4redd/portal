@@ -7,3 +7,4 @@ dev.properties
 *.vpp~[0-9]*
 *.vpp.working
 
+/bin/

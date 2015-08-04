@@ -1,0 +1,19 @@
+{
+	"default-conf" : {
+		"banner" : {
+			"hide" : false,
+			"show-flag" : true,
+			"show-logos" : true
+		},
+		"error-management" : {
+			"div-id" : null
+		}, footer : {
+			"logo" : "static/img/logo.png" 
+		}, tutorial : {
+			"href" : "tutorial.html"
+		}, layer-dashboard : {
+			"open" 	: true,
+			"infoButtonMsg" : "info_redd_profile_button"
+		}
+	}
+}

@@ -9,7 +9,7 @@
 	<modules>
 		<module>core</module>
 		<module>base</module>
-		<module>demo</module>
+		<module>portal-srilanka</module>
 		<module>jwebclient-analyzer</module>
 		<module>jwebclient-analyzer-maven-plugin</module>
 		<module>feedback</module>
@@ -18,8 +18,8 @@
 		<module>integration-tests</module>
 		<module>time-slider</module>
 		<module>language-buttons</module>
-    <module>stats-lucm</module>
-  </modules>
+    	<module>stats-lucm</module>
+  	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<geotools.version>9.2</geotools.version>
