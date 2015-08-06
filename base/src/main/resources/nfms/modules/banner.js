@@ -48,6 +48,7 @@ define([ "jquery", "layout", "i18n", "message-bus", "module" ], function($, layo
 	
 	if( config.elements ){
 		var bannerRow = $( '<div class="row banner"></div>' ); 
+		
 		layout.header.append( bannerRow );
 		
 		var banner = $( '<div class="col-md-12"></div>' ); 

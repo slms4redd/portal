@@ -2,36 +2,22 @@ define([ "jquery", "layout", "i18n", "message-bus", "module" ], function($, layo
 
 	var config = module.config();
 
-	var footer = $( '<div class="row footer" />' );
-	layout.container.append( footer );
+	var header = $( '<div class="row header" />' );
+	layout.container.append( header );
 	
-	var footerContainer = $( '<div class="col-md-12" />' );
-	footer.append( footerContainer );
+	var headerContainer = $( '<div class="col-md-12" />' );
+	header.append( headerContainer );
 	
 	if( config.logo ){
 		var row = $( '<div class="row" />' );
-		footerContainer.append( row );
+		headerContainer.append( row );
 		var col = $( '<div class="col-md-12" style="padding-left: 20px"/>' );
 		row.append( col );
 		
-		var link = $( '<a /> ');
-		link.attr( 'href' , config.link1 );
-		var descr = $("em").attr("attr1");
-		$("a").text(descr);
-		
-		col.append( link );
-	}
-	
-	/*if( config.link1 ){
-		var row = $( '<div class="row" />' );
-		footerContainer.append( row );
-		var col = $( '<div class="col-md-12" style="padding-left: 20px"/>' );
-		row.append( col );
-		
-		var a = $( '<a /> ');
-		img.attr( 'href' , config.link1 );
+		var img = $( '<img /> ');
+		img.attr( 'src' , config.logo );
 		col.append( img );
-	}*/
+	}
 	
 //	if (!config["hide"]) {
 //		var divBanner = $("<div/>").attr("id", "banner");
