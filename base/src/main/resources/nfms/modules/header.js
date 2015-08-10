@@ -8,7 +8,7 @@ define([ "jquery", "layout", "i18n", "message-bus", "module" ], function($, layo
 	var headerContainer = $( '<div class="col-md-12" />' );
 	header.append( headerContainer );
 	
-	/*if( config.logo ){
+	if( config.logo ){
 		var row = $( '<div class="row" />' );
 		headerContainer.append( row );
 		var col = $( '<div class="col-md-12" style="padding-left: 20px"/>' );
@@ -17,7 +17,7 @@ define([ "jquery", "layout", "i18n", "message-bus", "module" ], function($, layo
 		var img = $( '<img /> ');
 		img.attr( 'src' , config.logo );
 		col.append( img );
-	}*/
+	}
 	
 //	if (!config["hide"]) {
 //		var divBanner = $("<div/>").attr("id", "banner");
