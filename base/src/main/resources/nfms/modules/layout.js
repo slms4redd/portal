@@ -8,7 +8,7 @@ define([ "jquery" ], function($) {
 	var divHeader 		= $( '<div class="row header" ></div>' );
 	divContainer.append( divHeader );
 	var contentHeader 		= $( '<div class="col-md-12" ></div>' );
-	divHeader.append( contentHeader );
+	divHeader.append( contentHeader );	
 	//	var divCenter = $("<div/>").attr("id", "center");
 //	body.append(divCenter);
 	var divMap 			= $("<div/>").attr("id", "map");

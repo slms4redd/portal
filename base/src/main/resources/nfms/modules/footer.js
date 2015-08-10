@@ -8,7 +8,7 @@ define([ "jquery", "layout", "i18n", "message-bus", "module" ], function($, layo
 	var footerContainer = $( '<div class="col-md-12" />' );
 	footer.append( footerContainer );
 	
-	if( config.logo ){
+	if( config.link1 ){
 		var row = $( '<div class="row" />' );
 		footerContainer.append( row );
 		var col = $( '<div class="col-md-12" style="padding-left: 20px"/>' );
