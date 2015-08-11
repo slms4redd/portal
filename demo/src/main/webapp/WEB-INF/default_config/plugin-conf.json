@@ -29,7 +29,7 @@
 				"province" : "country"
 			 }
 		}, map : {
-			"options": { "minScale": 500000, "maxScale": 10000000, "numZoomLevels" : 7}
+			"options": { "minScale": 500000, "maxScale": 10000000, "numZoomLevels" : 8}
 		}
 	}
 }

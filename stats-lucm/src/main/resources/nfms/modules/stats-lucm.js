@@ -56,7 +56,7 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 				
 				var startYear  	= getAttributeByName( attributes , 'start_period').value;
 				var endYear  	= getAttributeByName( attributes , 'end_period').value ;
-				var data 		= resource.store.data;
+				var data 		= $.parseJSON( resource.store.data );
 				
 				if( startYears.indexOf(startYear) < 0 ){
 					startYears.push( startYear );
@@ -217,7 +217,7 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 			rowLCHeader.append(  colCollapsableLC );
 			
 			
-			// add element to dashboard
+			// add UI element to dashboard
 			var fId = feature.fid.replace( '.' , '-' );
 			layerDashbaord.addFeatureStats( fId, feature.attributes.name , container );
 			layerDashbaord.toggleDashboardItem( 'stats' , fId , show );
@@ -229,11 +229,9 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 			
 			// bind events
 			
-//			$( '.collapsable' ).hide();
 			container.find( '.btn-toggle-item' ).each( function(i,b){
 				var btn = $( b );
 				var target = container.find( '.' + btn.attr( 'data-target' ) );
-//				setTimeout( function(){ target.hide(); } , 300 );
 				target.hide();
 			});
 			container.find( '.btn-toggle-item' ).click(function(){
@@ -245,8 +243,6 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 				} else {
 					target.slideDown();
 					btn.find( 'i' ).removeClass().addClass( 'fa fa-caret-down' );
-					// resize highcharts width
-//					$(window).trigger('resize');
 				}
 			});
 		}

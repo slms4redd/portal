@@ -31,7 +31,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.fao.unredd</groupId>
-			<artifactId>feedback</artifactId>
+			<artifactId>feedback-vn</artifactId>
 			<version>3.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>

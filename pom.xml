@@ -19,6 +19,7 @@
 		<module>time-slider</module>
 		<module>language-buttons</module>
     <module>stats-lucm</module>
+    <module>feedback-vn</module>
   </modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -10,7 +10,7 @@ html,body {
 	height: 100%;
 	width: 100%;
 	font-weight: 100 !important;
-	color: #E9E9E9;
+	color: #E9E9E9 !important;
 	
 	font-family: 'Roboto', sans-serif !important;
 }
@@ -23,8 +23,8 @@ button{
 	font-weight: 100 !important;
 }
 
-label.control-label {
-	font-weight: 100;
+label {
+	font-weight: 100 !important;
 	color : #E9E9E9;
 	padding: 0px;
 }

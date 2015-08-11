@@ -1,4 +1,4 @@
-define([ "jquery", "layout", "i18n", "message-bus", "module" ], function($, layout, i18n, bus, module) {
+define([ "jquery", "layout", "i18n", "message-bus", "module", "portal-ui" ], function($, layout, i18n, bus, module) {
 
 	var config = module.config();
 	
@@ -8,34 +8,8 @@ define([ "jquery", "layout", "i18n", "message-bus", "module" ], function($, layo
 			var domElem = $( '<' + element.name + '/>' );
 			
 			// add styles
-			if( element.styles ){
-				for (var name in element.styles) {
-			        if ( element.styles.hasOwnProperty( name) ) {
-			        	domElem.css( name , element.styles[name] );
-			        }
-			    }
-			}
+			UI.parseStyle( domElem , element );
 			
-			// add attributes
-			if( element.attributes ){
-				for (var name in element.attributes) {
-			        if ( element.attributes.hasOwnProperty( name) ) {
-			        	domElem.attr( name , element.attributes[name] );
-			        }
-			    }
-			}
-			
-			// add css classes
-			if( element.cssClasses ){
-				for (var cssClass in element.cssClasses ) {
-					domElem.addClass( element.cssClasses[cssClass] );
-			    }
-			} 
-			
-			// add i18n label
-			if( element.label ){
-				domElem.append( i18n[element.label] );
-			}
 			//append to dom
 			parent.append( domElem );
 			
