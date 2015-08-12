@@ -1,5 +1,5 @@
-define([ "message-bus", "layout" , "url-parameters", "map", "toolbar", "i18n", "jquery", "openlayers", "edit-controls" ],//
-function(bus, layout, urlParameters, map, toolbar, i18n, $) {
+define([ "message-bus", "layout" , "i18n", "jquery", "portal-string-utils" , "portal-ui"],//
+function(bus, layout, i18n, $) {
 	
 	var container		= $( '<div class="feedback-container" />' );
 	layout.container.append( container );
@@ -20,27 +20,23 @@ function(bus, layout, urlParameters, map, toolbar, i18n, $) {
 	colButton.append( btn );
 
 	btn.click( function(){
-//		top: 50%;
-		var top 		= '95%';
-		var cssClass 	= 'closed';
 		if( feedback.hasClass( 'closed' ) ){
-			top 		= '50%';
-			cssClass 	= 'opened';
-			
-//			bus.send( "activate-exclusive-control", drawingToolbar );
-//			map.addLayer( feedbackLayer );
-			
+			openFeedback();
 		} else {
-			// remove feedback
-//			feedbackLayer.removeAllFeatures();
-//			bus.send( "activate-default-exclusive-control" );
-//			map.removeLayer( feedbackLayer );
-			// reset form
-			feedbackForm.find( 'button[type=reset]' ).click();
+			closeFeedback();
 		}
-		container.animate( {'top': top }, 400 );
-		feedback.removeClass().addClass( 'feedback ' + cssClass );
 	});	
+	
+	var openFeedback = function(){
+		container.animate( {'top': '40%' }, 400 );
+		feedback.removeClass().addClass( 'feedback opened' );
+	};
+
+	var closeFeedback = function(){
+		container.animate( {'top': '95%' }, 400 );
+		feedback.removeClass().addClass( 'feedback closed' );
+		feedbackForm.find( 'button[type=reset]' ).click();
+	};
 	
 	var rowForm = $(  '<div class="row feedback-form" />' );
 	feedback.append( rowForm );
@@ -56,7 +52,7 @@ function(bus, layout, urlParameters, map, toolbar, i18n, $) {
 	
 //	var drawingTools = 
 //		'<div class="form-group">'+
-//	      '<label class="col-md-2 col-md-offset-1 control-label">Draw</label>'+
+//	      '<label class="col-md-2  control-label">Draw</label>'+
 //	      '<div class="col-md-8 olControlPortalToolbar" id="dr_tools">'+
 //	      '</div>'+
 //	    '</div>';
@@ -64,7 +60,7 @@ function(bus, layout, urlParameters, map, toolbar, i18n, $) {
 	
 //	var layerSelect = 
 //		'<div class="form-group">'+
-//			'<label for="layersFeedback" class="col-md-2 col-md-offset-1 control-label">Layers</label>'+
+//			'<label for="layersFeedback" class="col-md-2  control-label">Layers</label>'+
 //			'<div class="col-md-8">'+
 ////				'<select class="form-control" id="layersFeedback"/>'+
 //				'<select multiple="" class="form-control" id="layersFeedback"/>'+
@@ -74,43 +70,48 @@ function(bus, layout, urlParameters, map, toolbar, i18n, $) {
 	
 	var email = 
 		'<div class="form-group">'+
-	      '<label for="inputEmail" class="col-md-2 col-md-offset-1 control-label">' + i18n['Feedback.form.email'] + ' *</label>'+
-	      '<div class="col-md-8">'+
-	        '<input type="text" class="form-control" id="inputEmail" placeholder="Email">'+
+	      '<label for="email" class="col-md-4  control-label">' + i18n['Feedback.form.email'] + ' *</label>'+
+	      '<div class="col-md-7">'+
+	        '<input type="text" class="form-control" name="email" placeholder="' + i18n['Feedback.form.email'] + '">'+
 	      '</div>'+
 	    '</div>';
 	fieldset.append( $(email) );
 	
 	var affiliation = 
 		'<div class="form-group">'+
-	      '<label for="" class="col-md-2 col-md-offset-1 control-label">' + i18n['Feedback.form.affiliation'] + ' *</label>'+
-	      '<div class="col-md-8">'+
-	        '<div class="radio"> <label> <input type="radio" name="affiliation" value="government" checked="">' + i18n['Feedback.form.government'] + '</label></div>'+
-	        '<div class="radio"> <label> <input type="radio" name="affiliation" value="ngo" checked="">' + i18n['Feedback.form.ngo'] + '</label></div>'+
-	        '<div class="radio"> <label> <input type="radio" name="affiliation" value="international_organization" checked="">' + i18n['Feedback.form.int_org'] + '</label></div>'+
-	        '<div class="radio feedback-input-group"> <label class="feedback-input-group-addon"> <input type="radio" name="affiliation" value="other" checked=""></label><input type="text" class="form-control" id="affiliation_other" name="affiliation_other" placeholder="'+i18n['Feedback.form.other_specify']+'"></div>'+
+	      '<label for="" class="col-md-4  control-label">' + i18n['Feedback.form.affiliation'] + ' *</label>'+
+	      '<div class="col-md-7">'+
+	        '<div class="radio"> <label> <input type="radio" name="affiliation" value="government">' + i18n['Feedback.form.government'] + '</label></div>'+
+	        '<div class="radio"> <label> <input type="radio" name="affiliation" value="ngo">' + i18n['Feedback.form.ngo'] + '</label></div>'+
+	        '<div class="radio"> <label> <input type="radio" name="affiliation" value="international_organization">' + i18n['Feedback.form.int_org'] + '</label></div>'+
+	        '<div class="radio feedback-input-group"> <label class="feedback-input-group-addon"> <input type="radio" name="affiliation" value="other"></label><input type="text" class="form-control" name="affiliation_other" placeholder="'+i18n['Feedback.form.other_specify']+'"></div>'+
 //	        '<div class="radio"> <label> <input type="radio" name="affiliation" value="other" checked="">' + i18n['Feedback.form.other_specify'] + '</label><input type="text" class="form-control" id="affiliation_other" name="affiliation_other" placeholder="'+i18n['Feedback.form.other_specify']+'"></div>'+
 	      '</div>'+
 	    '</div>';
 	fieldset.append( $(affiliation) );
-//	<div class="radio">
-//    <label>
-//      <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked="">
-//      Option one is this
-//    </label>
-//  </div>
+	
+	
+	var location = 
+		'<div class="form-group">'+
+	      '<label class="col-md-4  control-label">' + i18n['Feedback.form.location'] + ' *</label>'+
+	      '<div class="col-md-7">'+
+	        '<div class="radio"> <label> <input type="radio" name="location" value="vietnam">' + i18n['Feedback.form.vietnam'] + '</label></div>'+
+	        '<div class="radio feedback-input-group"> <label class="feedback-input-group-addon"> <input type="radio" name="location" value="other" ></label><input type="text" class="form-control" name="location_other" placeholder="'+i18n['Feedback.form.other_specify']+'"></div>'+
+	      '</div>'+
+	    '</div>';
+	fieldset.append( $(location) );
   
 	var comments = 
 		'<div class="form-group">'+
-			'<label for="comments" class="col-md-2 col-md-offset-1 control-label">Comments *</label>'+
-			'<div class="col-md-8">'+
-				'<textarea class="form-control" rows="3" id="comments"></textarea>'+
+			'<label for="comments" class="col-md-4  control-label">Comments *</label>'+
+			'<div class="col-md-7">'+
+				'<textarea class="form-control" rows="3" name="comments"></textarea>'+
 			'</div>'+
 		'</div>';
 	fieldset.append( $(comments) );
 	
 	var buttons = 
-		'<div class="form-group">'+
+		'<div class="form-group" style="padding-top: 10px;">'+
 			'<div class="col-md-3 col-md-offset-3">'+
 				'<button type="reset" class="btn btn-default active">Reset</button>'+
 			'</div>'+
@@ -120,7 +121,30 @@ function(bus, layout, urlParameters, map, toolbar, i18n, $) {
 		'</div>';
 	fieldset.append( $(buttons) );
 	
-	
+	var affiliationOther 	= feedbackForm.find( 'input[name=affiliation_other]' );
+	affiliationOther.prop( 'disabled' , 'disabled' );
+	var affiliationInputs	= feedbackForm.find( 'input[name=affiliation]' );
+	affiliationInputs.change( function(e){
+		if( $(this).val() == 'other' ){
+			affiliationOther.prop( 'disabled' , false );
+		} else {
+			affiliationOther.prop( 'disabled' , 'disabled' );
+			affiliationOther.val( '' );
+		}
+	});
+
+	var locationOther 		= feedbackForm.find( 'input[name=location_other]' );
+	locationOther.prop( 'disabled' , 'disabled' );
+	var locationInputs 		= feedbackForm.find( 'input[name=location]' );
+	locationInputs.change( function(e){
+		if( $(this).val() == 'other' ){
+			locationOther.prop( 'disabled' , false );
+		} else {
+			locationOther.prop( 'disabled' , 'disabled' );
+			locationOther.val( '' );
+		}
+	});
+
 	// add feedback layer
 //	var feedbackLayers 	= new Array();
 //	var feedbackLayer 	= new OpenLayers.Layer.Vector( "Feedback" );
@@ -129,50 +153,61 @@ function(bus, layout, urlParameters, map, toolbar, i18n, $) {
 //	});
 	
 	
-	var txtEmail 			= $( '#inputEmail' );
-	var txtComment 			= $( '#comments' );
-	var layersFeedback 		= $( '#layersFeedback' );
+	var txtEmail 			= feedbackForm.find( '[name=email]' );
+	var txtComment 			= feedbackForm.find( '[name=comments]' );
+	var mailRegex 			= /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+
 	var submitForm = function() {
 
-		var mailRegex = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		// vaidate email
 		if ( !mailRegex.test(txtEmail.val()) ){
 			bus.send("error", i18n["Feedback.invalid-email-address"]);
-//		} else if( !drawingToolbar.hasFeatures()) {
-//			bus.send("error", i18n["Feedback.no-geometries"]);
-		} else if( !txtComment.val() ){
-			bus.send("error", i18n["Feedback.no-comments"]);
 		} else {
-			// Do submit
 			
-//			var data = feedbackForm.serialize();
-			var layers = []; 
-			layersFeedback.find(':selected').each(function(i, selected){ 
-				layers[i] = $(selected).val(); 
-			});
-			var data = {
-				"lang" 		: urlParameters.get("lang"),
-				"comment" 	: txtComment.val(),
-				"geometry" 	: drawingToolbar.getFeaturesAsWKT(),
-				"layers" 	: layers.join(),
-				"email" 	: txtEmail.val()
-			};
-//			console.log( data );
-//			var timestamp = feedbackLayers[cmbLayer.val()].timestamp;
-//			if (timestamp != null) {
-//				data.date = timestamp.getDate() + "/" + (timestamp.getMonth() + 1) + "/" + timestamp.getFullYear();
-//			}
+			// validate affiliation
+			var affiliation 		= feedbackForm.find( 'input[name=affiliation]:checked' );
+			
+			if( affiliation.length <= 0 || StringUtils.isBlank(affiliation.val()) || (affiliation.val()=='other' && StringUtils.isBlank(affiliationOther.val()) ) ){
+				bus.send("error", i18n["Feedback.invalid-affiliation"]);
+			} else {
+				
+				// validate location
+				var location  		= feedbackForm.find( 'input[name=location]:checked' );
+				if( location.length <= 0 || StringUtils.isBlank(location.val()) || (location.val()=='other' && StringUtils.isBlank(locationOther.val()) ) ){
+					bus.send("error", i18n["Feedback.invalid-location"]);
+				} else {
+					
+					// validate comments
+					if( !txtComment.val() ){
+						bus.send("error", i18n["Feedback.no-comments"]);
+					} else {
+						UI.lock();
+						// Do submit
+						var data = feedbackForm.serialize();
 
+						console.log( data );
+						
+						bus.send("ajax", {
+							type : 'POST',
+							url : 'create-comment',
+							data : data,
+							success : function(data, textStatus, jqXHR) {
+								UI.unlock();
+								bus.send("info", i18n["Feedback.mail_sent"]);
+								closeFeedback();
+							},
+							errorFunction : function(){
+								UI.unlock();
+							},
+							errorMsg : i18n["Feedback.submit_error"]
+						});
+					
+					}
+					
+				}
+				
+			}
 			
-//			bus.send("ajax", {
-//				type : 'POST',
-//				url : 'create-comment?',
-//				data : data,
-//				success : function(data, textStatus, jqXHR) {
-//					bus.send("info", i18n["Feedback.verify_mail_sent"]);
-//					dlg.dialog('close');
-//				},
-//				errorMsg : i18n["Feedback.submit_error"]
-//			});
 		}
 	
 	};

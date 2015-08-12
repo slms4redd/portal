@@ -21,5 +21,13 @@
 		<servlet-name>create-comment-servlet</servlet-name>
 		<url-pattern>/create-comment</url-pattern>
 	</servlet-mapping>
+	<servlet>
+		<servlet-name>verify-comment-servlet</servlet-name>
+		<servlet-class>org.fao.unredd.feedback.servlet.VerifyCommentServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>verify-comment-servlet</servlet-name>
+		<url-pattern>/verify-comment</url-pattern>
+	</servlet-mapping>
 
 </web-fragment>

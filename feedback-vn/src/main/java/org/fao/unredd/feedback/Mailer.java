@@ -1,8 +1,6 @@
 package org.fao.unredd.feedback;
 
-import java.util.Date;
 import java.util.Properties;
-import java.util.regex.Pattern;
 
 import javax.mail.Authenticator;
 import javax.mail.Message;
@@ -21,26 +19,29 @@ public class Mailer {
 	private String userName;
 	private String password;
 	private String title;
-	private String verifiedMessage;
-
+	private String recipient;
+//	private String verifiedMessage;
+	public Mailer(){}
 	public Mailer(Properties properties) throws MissingArgumentException {
-		this(properties.getProperty("feedback-mail-host"), properties
-				.getProperty("feedback-mail-port"), properties
-				.getProperty("feedback-mail-username"), properties
-				.getProperty("feedback-mail-password"), properties
-				.getProperty("feedback-admin-mail-title"), properties
-				.getProperty("feedback-admin-mail-text"));
+		this(
+				properties.getProperty("feedback-mail-host"), 
+				properties.getProperty("feedback-mail-port"), 
+				properties.getProperty("feedback-mail-username"), 
+				properties.getProperty("feedback-mail-password"), 
+				properties.getProperty("feedback-admin-mail-title"),
+				properties.getProperty("feedback-mail-recipient")
+				);
 	}
 
-	public Mailer(String host, String port, String userName, String password,
-			String title, String verifiedMessage)
-			throws MissingArgumentException {
-		this.host = checkNull(host);
-		this.port = checkNull(port);
-		this.userName = checkNull(userName);
-		this.password = checkNull(password);
-		this.title = checkNull(title);
-		this.verifiedMessage = checkNull(verifiedMessage);
+	public Mailer(String host, String port, String userName, String password, String title, String recipient) throws MissingArgumentException {
+		this.host 		= checkNull( host );
+		this.port 		= checkNull( port );
+		this.userName 	= checkNull( userName );
+		this.password 	= checkNull( password );
+		this.title 		= checkNull( title );
+		this.recipient 	= checkNull( recipient );
+		
+		// this.verifiedMessage = checkNull(verifiedMessage);
 	}
 
 	private String checkNull(String value) throws MissingArgumentException {
@@ -51,30 +52,30 @@ public class Mailer {
 		}
 	}
 
-	public void sendVerificationMail(String linkLanguage, String title,
-			String verifyMessage, String email, String verificationCode)
-			throws MessagingException {
-		String i18nVerifyMessage = verifyMessage.replaceAll(
-				Pattern.quote("$lang"), linkLanguage);
-		replaceCodeAndSendMail(email, verificationCode, i18nVerifyMessage,
-				title);
-	}
+	// public void sendVerificationMail(String linkLanguage, String title,
+	// String verifyMessage, String email, String verificationCode)
+	// throws MessagingException {
+	// String i18nVerifyMessage = verifyMessage.replaceAll(
+	// Pattern.quote("$lang"), linkLanguage);
+	// replaceCodeAndSendMail(email, verificationCode, i18nVerifyMessage,
+	// title);
+	// }
+	//
+	// private void replaceCodeAndSendMail(String email, String verificationCode,
+	// String text, String title) throws MessagingException,
+	// AddressException {
+	// text = text.replaceAll(Pattern.quote("$code"), verificationCode);
+	// sendMail(email, title, text);
+	// }
 
-	private void replaceCodeAndSendMail(String email, String verificationCode,
-			String text, String title) throws MessagingException,
-			AddressException {
-		text = text.replaceAll(Pattern.quote("$code"), verificationCode);
-		sendMail(email, title, text);
-	}
-
-	private void sendMail(String email, String title, String text)
-			throws MessagingException, AddressException {
+	private void sendMail( String host , String port, final String userName , final String password , 
+			String recipient, String title, String text, String replyTo  ) throws MessagingException, AddressException {
 		// sets SMTP server properties
 		Properties properties = new Properties();
-		properties.put("mail.smtp.host", host);
-		properties.put("mail.smtp.port", port);
 		properties.put("mail.smtp.auth", "true");
 		properties.put("mail.smtp.starttls.enable", "true");
+		properties.put("mail.smtp.host", host);
+		properties.put("mail.smtp.port", port);
 
 		// creates a new session with an authenticator
 		Authenticator auth = new Authenticator() {
@@ -82,15 +83,19 @@ public class Mailer {
 				return new PasswordAuthentication(userName, password);
 			}
 		};
-
 		Session session = Session.getInstance(properties, auth);
+		
 		Message msg = new MimeMessage(session);
+		
 		msg.setFrom(new InternetAddress(userName));
-		InternetAddress[] toAddresses = { new InternetAddress(email) };
-		msg.setRecipients(Message.RecipientType.TO, toAddresses);
+		
+		msg.setRecipients(Message.RecipientType.TO, InternetAddress.parse( recipient ) );
+		
 		msg.setSubject(title);
-		msg.setSentDate(new Date());
-
+//		msg.setSentDate(new Date());
+		
+		msg.setReplyTo( InternetAddress.parse(replyTo) );
+		
 		// set plain text message
 		msg.setText(text);
 
@@ -98,16 +103,26 @@ public class Mailer {
 		Transport.send(msg);
 	}
 
-	public void sendVerifiedMail(String verificationCode)
-			throws AddressException, MessagingException {
-		replaceCodeAndSendMail(userName, verificationCode, verifiedMessage,
-				title);
+	public void sendFeedback( String replyTo, String message ) throws AddressException, MessagingException {
+		this.sendMail(this.host, this.port, this.userName, this.password, this.recipient, this.title, message, replyTo);
 	}
-
-	public void sendValidatedMail(String mail, String verificationCode,
-			String validatedMessage, String title) throws AddressException,
-			MessagingException {
-		replaceCodeAndSendMail(mail, verificationCode, validatedMessage, title);
+	
+	public static void main(String[] args) throws AddressException, MessagingException {
+		Mailer mailer = new Mailer( );
+		mailer.sendMail("smtp.gmail.com", "587", "vietnam.geoportal@gmail.com", "Unr3ddGeoPortal", "mino.togna@gmail.com"
+				, "Title email", "text message", "mino.togna@gmail.com");
 	}
+	
+	// public void sendVerifiedMail(String verificationCode)
+	// throws AddressException, MessagingException {
+	// replaceCodeAndSendMail(userName, verificationCode, verifiedMessage,
+	// title);
+	// }
+	//
+	// public void sendValidatedMail(String mail, String verificationCode,
+	// String validatedMessage, String title) throws AddressException,
+	// MessagingException {
+	// replaceCodeAndSendMail(mail, verificationCode, validatedMessage, title);
+	// }
 
 }

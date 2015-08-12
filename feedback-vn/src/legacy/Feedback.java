@@ -1,8 +1,12 @@
 package org.fao.unredd.feedback;
 
+import java.util.Locale;
+import java.util.ResourceBundle;
+
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 
+import org.fao.unredd.portal.Config;
 import org.fao.unredd.portal.PersistenceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,40 +16,24 @@ public class Feedback {
 	private static final Logger logger = LoggerFactory.getLogger(Feedback.class);
 
 //	private FeedbackPersistence persistence;
-	private Mailer mailer;
+	private Mailer mailInfo;
 //	private String srid = "900913";
 
-	public Feedback( Mailer mailer ) {
-		this.mailer = mailer;
+	@Deprecated
+	public Feedback(FeedbackPersistence feedbackPersistence, Mailer mailInfo) {
+//		this.persistence = feedbackPersistence;
+		this.mailInfo = mailInfo;
 	}
-	
-	public void send(String replyTo, String affiliation, String location, String comments) throws AddressException, MessagingException {
-		// TODO Auto-generated method stub
-		StringBuffer msg = new StringBuffer();
-		msg.append( "From: " );
-		msg.append( replyTo );
-		msg.append( "\r\n\r\n");
-		msg.append( "Affiliation: " );
-		msg.append( affiliation );
-		msg.append( "\r\n\r\n");
-		msg.append( "Location: ");
-		msg.append( location );
-		msg.append( "\r\n\r\n");
-		msg.append( "Comments: ");
-		msg.append( "\r\n");
-		msg.append( comments);
-		msg.append( "\r\n");
-		
-		mailer.sendFeedback( replyTo , msg.toString() );
-		
+	public Feedback( Mailer mailInfo ) {
+		this.mailInfo = mailInfo;
 	}
-	
-	public String send(String geom, String comment, String email, String layerName, String layerDate, String linkLanguage, String mailTitle, String verificationMessage)
+
+	public String insertNew(String geom, String comment, String email, String layerName, String layerDate, String linkLanguage, String mailTitle, String verificationMessage)
 			throws CannotSendMailException, PersistenceException, MissingArgumentException {
-//		checkNull("geom", geom);
-//		checkNull("comment", comment);
-//		checkNull("email", email);
-//		checkNull("layerName", layerName);
+		checkNull("geom", geom);
+		checkNull("comment", comment);
+		checkNull("email", email);
+		checkNull("layerName", layerName);
 
 		logger.info("Feedback requested with the following parameters:");
 		logger.info("email: " + email);
@@ -58,18 +46,22 @@ public class Feedback {
 		 * non unique verification code, but these are valid only a period of time so collisions are very rare
 		 */
 		String verificationCode = Integer.toString((geom + comment + email).hashCode());
-//		try {
-//			mailInfo.sendVerificationMail(linkLanguage, mailTitle, verificationMessage, email, verificationCode);
-//		} catch (MessagingException e) {
-//			throw new CannotSendMailException(e);
-//		}
-		
+//		persistence.insert(geom, srid, comment, email, layerName, layerDate, verificationCode, linkLanguage);
+		try {
+			mailInfo.sendVerificationMail(linkLanguage, mailTitle, verificationMessage, email, verificationCode);
+		} catch (MessagingException e) {
+			throw new CannotSendMailException(e);
+		}
+//		persistence.cleanOutOfDate();
 
 		return verificationCode;
 	}
 
-	
-
+	private void checkNull(String paramName, String paramValue) throws MissingArgumentException {
+		if (paramValue == null) {
+			throw new MissingArgumentException(paramName);
+		}
+	}
 
 //	public void verify(String verificationCode) throws VerificationCodeNotFoundException, PersistenceException, AddressException, MessagingException {
 //		if (persistence.existsUnverified(verificationCode)) {

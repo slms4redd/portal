@@ -21,6 +21,9 @@ define([ "jquery", "message-bus" ], function($, bus) {
 				message = jqXHR.status + ": " + unrecognized;
 			}
 			bus.send("error", message);
+			if( ajaxParams.errorFunction ){
+				 ajaxParams.errorFunction();
+			}
 		};
 
 		$.ajax(ajaxParams);

@@ -46,10 +46,6 @@ define([ "message-bus", "layout", "module", "openlayers" ], function(bus, layout
 	map = new OpenLayers.Map( mapId , mapOptions );
 	
 	    
-//	map.events.register('zoomend', map, function() {
-//		  var zoomInfo = 'Zoom level=' + map.getZoom() + '/' + (map.numZoomLevels + 1);
-//		  console.log( zoomInfo );
-//		});
 	map.addControl( new OpenLayers.Control.Navigation() );
 	map.addControl( new OpenLayers.Control.Scale() );
 //	map.addControl( new OpenLayers.Control.PanZoomBar() );
@@ -136,6 +132,11 @@ define([ "message-bus", "layout", "module", "openlayers" ], function(bus, layout
 		});
 		highlightLayer.id = "Highlighted Features";
 		map.addLayer(highlightLayer);
+		
+		
+		
+//		lon: 11675010.494753, lat: 2386740.8229121
+
 	});
 
 	bus.listen("layer-visibility", function(event, layerId, visibility) {

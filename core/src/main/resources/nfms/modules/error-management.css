@@ -1,0 +1,51 @@
+#message-box {
+    padding: 20px 15px;
+    position: absolute;
+    width: 40%;
+    height: auto;
+    z-index: 9000;
+    left: 30%;
+    border: 1px solid;
+    border-radius: 8px;
+    top: 15%;
+    font-size: 15px;
+    text-align: center;
+    display: none;
+}
+
+#message-box.error {
+	background-color: rgba(210, 4, 52, 0.78);
+    border-color: rgb(210, 4, 52);	
+}
+#message-box.info {
+	background-color: rgba(4, 118, 210, 0.78);
+    border-color: rgb(4, 118, 210);	
+}
+
+
+#message-box .close-message-box {
+	position: absolute;
+    right: 0px;
+    top: 0px;
+    border-left: 1px solid;
+    border-bottom: 1px solid;
+    padding: .6em;
+    font-size: 12px;
+    color: rgba(233, 233, 233, 0.70);
+    border-bottom-left-radius: 8px;
+}
+#message-box .close-message-box:hover {
+	cursor: pointer;
+	color: rgba(233, 233, 233, 0.95);
+}
+
+#message-box.info .close-message-box {
+	border-color: rgb(4, 118, 210);	
+}
+#message-box.error .close-message-box {
+	border-color: rgb(210, 4, 52);	
+}
+
+#message-box .message-text {
+	
+}
