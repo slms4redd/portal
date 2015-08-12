@@ -1,0 +1,36 @@
+{
+	"default-conf" : {
+		"banner" : {
+			"elements" : 
+				[
+					{ 
+						"name"		: "div" , 
+						"styles"	: {"position": "absolute" , "color" : "#142022", "font-size" : "60px",
+										"z-index" : "1001" , "text-align" : "center" , "left" : "30%" ,
+										"width": "40%" , "background-color": "rgba(157, 157, 157, 0.66)"} ,
+						"label"		: "demo",
+						"attributes": [],	
+						"cssClasses": ["test","test2"],	
+						"elements"	: []				
+					 }
+				]
+		},
+		"error-management" : {
+			"div-id" : null
+		},header : {
+			"logo" : "static/img/logo.png" 
+		},footer : {
+			"link1" : "http://theredddesk.org/countries/sri-lanka",
+			"attr1" : "Sri Lanka REDD"
+		}, tutorial : {
+			"href" : "tutorial.html"
+		}, dashboard : {
+			"open" 	: true,
+			"infoButtonMsg" : "info_redd_profile_button"
+		}, feature-info-control : {
+			"linkedLayers" : {
+				"province" : "country"
+			 }
+		}
+	}
+}
