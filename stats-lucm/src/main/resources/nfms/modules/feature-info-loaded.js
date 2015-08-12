@@ -10,6 +10,7 @@ define([ "jquery", "message-bus" , "i18n" ], function($, bus, i18n) {
 		data.find( '.province' ).append( i18n['province'] );
 		data.find( '.province_approved_msg2' ).append( i18n['province_approved_msg2'] );
 		data.find( '.province_deforestation_drivers' ).append( i18n['province_deforestation_drivers'] );
+		data.find( '.deforestation_drivers' ).append( i18n['deforestation_drivers'] );
 		
 		data.find( '.identified' ).append( i18n['identified'] );
 		data.find( '.agriculture_expansion_non_subsistence' ).append( i18n['agriculture_expansion_non_subsistence'] );
@@ -26,6 +27,8 @@ define([ "jquery", "message-bus" , "i18n" ], function($, bus, i18n) {
 		data.find( '.urban_expansion' ).append( i18n['urban_expansion'] );
 
 		data.find( '.main_interventions' ).append( i18n['main_interventions'] );
+		data.find( '.province_main_interventions' ).append( i18n['province_main_interventions'] );
+		data.find( '.provinces_for_implementation' ).append( i18n['provinces_for_implementation'] );
 		data.find( '.districts_for_implementation' ).append( i18n['districts_for_implementation'] );
 
 		data.find( '.list_districs_redd_agreements' ).append( i18n['list_districs_redd_agreements'] );

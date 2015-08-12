@@ -35,7 +35,11 @@ function(bus, layout, i18n, $) {
 	var closeFeedback = function(){
 		container.animate( {'top': '95%' }, 400 );
 		feedback.removeClass().addClass( 'feedback closed' );
+		
 		feedbackForm.find( 'button[type=reset]' ).click();
+		affiliationOther.prop( 'disabled' , 'disabled' );
+		locationOther.prop( 'disabled' , 'disabled' );
+
 	};
 	
 	var rowForm = $(  '<div class="row feedback-form" />' );
