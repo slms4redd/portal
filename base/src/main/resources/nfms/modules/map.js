@@ -39,7 +39,10 @@ define([ "message-bus", "layout", "module", "openlayers" ], function(bus, layout
 	if( config.options ){
 		for (var optName in config.options) {
 	        if ( config.options.hasOwnProperty(optName) ) {
-	        	mapOptions[ optName ] = config.options[ optName ];
+	        	var configValue = eval( config.options[ optName.toString() ]);
+//	        	console.log( configValue );
+	        	mapOptions[ optName ] = configValue;
+//	        	mapOptions[ optName ] = config.options[ optName ];
 	        }
 	    }
 	}

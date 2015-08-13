@@ -188,8 +188,6 @@ function(bus, layout, i18n, $) {
 						UI.lock();
 						// Do submit
 						var data = feedbackForm.serialize();
-
-						console.log( data );
 						
 						bus.send("ajax", {
 							type : 'POST',
