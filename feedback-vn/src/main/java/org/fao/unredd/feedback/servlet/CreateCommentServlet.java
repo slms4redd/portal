@@ -18,6 +18,7 @@ import org.fao.unredd.portal.Config;
 import org.fao.unredd.portal.StatusServletException;
 
 public class CreateCommentServlet extends HttpServlet {
+	private static final String OTHER = "other";
 	private static final long serialVersionUID = 1L;
 
 	@Override
@@ -29,12 +30,14 @@ public class CreateCommentServlet extends HttpServlet {
 
 		String email = req.getParameter("email");
 		String affiliation = req.getParameter("affiliation");
-		if (StringUtils.isBlank(affiliation)) {
-			affiliation = req.getParameter("affiliation_other");
+		if (affiliation.equals(OTHER)) {
+			affiliation += ": "+ req.getParameter("affiliation_other");
 		}
-		String location = req.getParameter("location");
-		if (StringUtils.isBlank(location)) {
-			location = req.getParameter("location_other");
+		
+		String location 	 = req.getParameter("location");
+		String locationOther = req.getParameter("location_other");
+		if (location.equals(OTHER) && StringUtils.isNotBlank(locationOther)) {
+			location += ": "+ locationOther;
 		}
 		String comments = req.getParameter("comments");
 

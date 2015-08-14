@@ -47,5 +47,35 @@
 }
 
 #message-box .message-text {
-	
+}
+
+
+/* custom popover styles */
+[data-style=error] + .popover {
+	background-color: rgba(210, 4, 52, 0.78);
+    border-color: rgb(210, 4, 52);
+    font-weight: 100 !important;
+    color: #E9E9E9 !important;
+    font-family: 'Roboto', sans-serif !important;
+}
+[data-style=error] + .popover.top > .arrow {
+    border-top-color: rgb(210, 4, 52);
+}
+[data-style=error] + .popover.top > .arrow:after {
+    border-top-color: rgba(210, 4, 52, 0.78);
+}
+
+
+[data-style=info] + .popover {
+	background-color: rgba(4, 118, 210, 0.78);
+    border-color: rgba(4, 118, 210, 1);
+    font-weight: 100 !important;
+    color: #E9E9E9 !important;
+    font-family: 'Roboto', sans-serif !important;
+}
+[data-style=info] + .popover.top > .arrow {
+    border-top-color: rgba(4, 118, 210, 1);
+}
+[data-style=info] + .popover.top > .arrow:after {
+    border-top-color: rgba(4, 118, 210, 0.78);
 }

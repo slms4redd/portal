@@ -11,6 +11,7 @@ import javax.mail.Transport;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.ServletContext;
 
 public class Mailer {
 
@@ -20,8 +21,7 @@ public class Mailer {
 	private String password;
 	private String title;
 	private String recipient;
-//	private String verifiedMessage;
-	public Mailer(){}
+
 	public Mailer(Properties properties) throws MissingArgumentException {
 		this(
 				properties.getProperty("feedback-mail-host"), 
@@ -30,9 +30,20 @@ public class Mailer {
 				properties.getProperty("feedback-mail-password"), 
 				properties.getProperty("feedback-admin-mail-title"),
 				properties.getProperty("feedback-mail-recipient")
-				);
+		);
 	}
-
+	
+	public Mailer(ServletContext servletContext)  throws MissingArgumentException {
+		this(
+				servletContext.getInitParameter("feedback-mail-host"), 
+				servletContext.getInitParameter("feedback-mail-port"), 
+				servletContext.getInitParameter("feedback-mail-username"), 
+				servletContext.getInitParameter("feedback-mail-password"), 
+				servletContext.getInitParameter("feedback-admin-mail-title"),
+				servletContext.getInitParameter("feedback-mail-recipient")
+		);
+	}
+	
 	public Mailer(String host, String port, String userName, String password, String title, String recipient) throws MissingArgumentException {
 		this.host 		= checkNull( host );
 		this.port 		= checkNull( port );
@@ -51,22 +62,6 @@ public class Mailer {
 			throw new MissingArgumentException(value);
 		}
 	}
-
-	// public void sendVerificationMail(String linkLanguage, String title,
-	// String verifyMessage, String email, String verificationCode)
-	// throws MessagingException {
-	// String i18nVerifyMessage = verifyMessage.replaceAll(
-	// Pattern.quote("$lang"), linkLanguage);
-	// replaceCodeAndSendMail(email, verificationCode, i18nVerifyMessage,
-	// title);
-	// }
-	//
-	// private void replaceCodeAndSendMail(String email, String verificationCode,
-	// String text, String title) throws MessagingException,
-	// AddressException {
-	// text = text.replaceAll(Pattern.quote("$code"), verificationCode);
-	// sendMail(email, title, text);
-	// }
 
 	private void sendMail( String host , String port, final String userName , final String password , 
 			String recipient, String title, String text, String replyTo  ) throws MessagingException, AddressException {
@@ -107,22 +102,4 @@ public class Mailer {
 		this.sendMail(this.host, this.port, this.userName, this.password, this.recipient, this.title, message, replyTo);
 	}
 	
-	public static void main(String[] args) throws AddressException, MessagingException {
-		Mailer mailer = new Mailer( );
-		mailer.sendMail("smtp.gmail.com", "587", "vietnam.geoportal@gmail.com", "Unr3ddGeoPortal", "mino.togna@gmail.com"
-				, "Title email", "text message", "mino.togna@gmail.com");
-	}
-	
-	// public void sendVerifiedMail(String verificationCode)
-	// throws AddressException, MessagingException {
-	// replaceCodeAndSendMail(userName, verificationCode, verifiedMessage,
-	// title);
-	// }
-	//
-	// public void sendValidatedMail(String mail, String verificationCode,
-	// String validatedMessage, String title) throws AddressException,
-	// MessagingException {
-	// replaceCodeAndSendMail(mail, verificationCode, validatedMessage, title);
-	// }
-
 }

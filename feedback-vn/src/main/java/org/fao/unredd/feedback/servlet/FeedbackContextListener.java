@@ -1,7 +1,5 @@
 package org.fao.unredd.feedback.servlet;
 
-import java.util.Properties;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -9,7 +7,6 @@ import javax.servlet.ServletContextListener;
 import org.fao.unredd.feedback.Feedback;
 import org.fao.unredd.feedback.Mailer;
 import org.fao.unredd.feedback.MissingArgumentException;
-import org.fao.unredd.portal.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -27,12 +24,12 @@ public class FeedbackContextListener implements ServletContextListener {
 	@Override
 	public void contextInitialized(ServletContextEvent sce) {
 		final ServletContext servletContext = sce.getServletContext();
-		final Config config = (Config) servletContext.getAttribute("config");
-		Properties properties = config.getProperties();
+//		final Config config = (Config) servletContext.getAttribute("config");
+//		Properties properties = config.getProperties();
 
 		try {
 //			DBFeedbackPersistence feedbackPersistence = new DBFeedbackPersistence(properties.getProperty("feedback-db-table"));
-			Mailer mailer = new Mailer(properties);
+			Mailer mailer = new Mailer( servletContext );
 			Feedback feedback = new Feedback( mailer );
 //			feedback.createTable();
 			servletContext.setAttribute("feedback", feedback);

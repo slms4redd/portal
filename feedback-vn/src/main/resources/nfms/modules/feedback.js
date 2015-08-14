@@ -8,7 +8,7 @@ function(bus, layout, i18n, $) {
 	container.append( feedback );	
 	
 	
-	var rowButton = $(  '<div class="row feedback-btn" />' );
+	var rowButton = $(  '<div class="row feedback-btn no-margin" />' );
 	feedback.append( rowButton );
 	
 	rowButton.append( '<div class="col-md-4 feedback-btn-bottom-border height100" />' );
@@ -16,10 +16,10 @@ function(bus, layout, i18n, $) {
 	rowButton.append( colButton );
 	rowButton.append( '<div class="col-md-4 feedback-btn-bottom-border height100" />' );
 	
-	var btn = $( '<button class="btn btn-default height100"><i class="fa fa-bullhorn"></i>  Feedback</button>' );
-	colButton.append( btn );
+	var feedbackToggleBtn = $( '<button class="btn btn-default height100"><i class="fa fa-bullhorn"></i>  Feedback</button>' );
+	colButton.append( feedbackToggleBtn );
 
-	btn.click( function(){
+	feedbackToggleBtn.click( function(){
 		if( feedback.hasClass( 'closed' ) ){
 			openFeedback();
 		} else {
@@ -42,7 +42,7 @@ function(bus, layout, i18n, $) {
 
 	};
 	
-	var rowForm = $(  '<div class="row feedback-form" />' );
+	var rowForm = $(  '<div class="row feedback-form no-margin" />' );
 	feedback.append( rowForm );
 	
 	var colForm = $(  '<div class="col-md-12" />' );
@@ -82,7 +82,7 @@ function(bus, layout, i18n, $) {
 	fieldset.append( $(email) );
 	
 	var affiliation = 
-		'<div class="form-group">'+
+		'<div class="form-group affiliation-box">'+
 	      '<label for="" class="col-md-4  control-label">' + i18n['Feedback.form.affiliation'] + ' *</label>'+
 	      '<div class="col-md-7">'+
 	        '<div class="radio"> <label> <input type="radio" name="affiliation" value="government">' + i18n['Feedback.form.government'] + '</label></div>'+
@@ -96,7 +96,7 @@ function(bus, layout, i18n, $) {
 	
 	
 	var location = 
-		'<div class="form-group">'+
+		'<div class="form-group location-box">'+
 	      '<label class="col-md-4  control-label">' + i18n['Feedback.form.location'] + ' *</label>'+
 	      '<div class="col-md-7">'+
 	        '<div class="radio"> <label> <input type="radio" name="location" value="vietnam">' + i18n['Feedback.form.vietnam'] + '</label></div>'+
@@ -115,15 +115,15 @@ function(bus, layout, i18n, $) {
 	fieldset.append( $(comments) );
 	
 	var buttons = 
-		'<div class="form-group" style="padding-top: 10px;">'+
+		$( '<div class="form-group" style="padding-top: 10px;">'+
 			'<div class="col-md-3 col-md-offset-3">'+
 				'<button type="reset" class="btn btn-default active">Reset</button>'+
 			'</div>'+
 			'<div class="col-md-3">'+
 				' <button type="button" class="btn btn-default active feedback-submit-btn">Submit</button>'+
 			'</div>'+
-		'</div>';
-	fieldset.append( $(buttons) );
+		'</div>' );
+	fieldset.append( buttons );
 	
 	var affiliationOther 	= feedbackForm.find( 'input[name=affiliation_other]' );
 	affiliationOther.prop( 'disabled' , 'disabled' );
@@ -165,25 +165,31 @@ function(bus, layout, i18n, $) {
 
 		// vaidate email
 		if ( !mailRegex.test(txtEmail.val()) ){
-			bus.send("error", i18n["Feedback.invalid-email-address"]);
+			bus.send("error-popover", [ i18n["Feedback.invalid-email-address" ] , txtEmail]);
 		} else {
 			
 			// validate affiliation
 			var affiliation 		= feedbackForm.find( 'input[name=affiliation]:checked' );
 			
 			if( affiliation.length <= 0 || StringUtils.isBlank(affiliation.val()) || (affiliation.val()=='other' && StringUtils.isBlank(affiliationOther.val()) ) ){
-				bus.send("error", i18n["Feedback.invalid-affiliation"]);
+				var box 		= feedbackForm.find( '.affiliation-box' );
+//				bus.send("error", [ i18n["Feedback.invalid-affiliation"] , offset]);
+				bus.send("error-popover", [ i18n["Feedback.invalid-affiliation"] , box]);
+			
 			} else {
 				
 				// validate location
 				var location  		= feedbackForm.find( 'input[name=location]:checked' );
-				if( location.length <= 0 || StringUtils.isBlank(location.val()) || (location.val()=='other' && StringUtils.isBlank(locationOther.val()) ) ){
-					bus.send("error", i18n["Feedback.invalid-location"]);
-				} else {
+				// || (location.val()=='other' && StringUtils.isBlank(locationOther.val()) )
+				if( location.length <= 0 || StringUtils.isBlank(location.val()) ){
 					
+					var box 		= feedbackForm.find( '.location-box' );
+					bus.send("error-popover", [ i18n["Feedback.invalid-location"] , box]);
+//					bus.send("error", [ i18n["Feedback.invalid-location"] , offset]);
+				} else {
 					// validate comments
 					if( !txtComment.val() ){
-						bus.send("error", i18n["Feedback.no-comments"]);
+						bus.send("error-popover", [ i18n["Feedback.no-comments"] , txtComment]);
 					} else {
 						UI.lock();
 						// Do submit
@@ -195,7 +201,12 @@ function(bus, layout, i18n, $) {
 							data : data,
 							success : function(data, textStatus, jqXHR) {
 								UI.unlock();
-								bus.send("info", i18n["Feedback.mail_sent"]);
+								
+								var offset = feedbackToggleBtn.offset(); 
+								offset.top = offset.top - 60;
+								bus.send("info", [ i18n["Feedback.mail_sent"] ]);
+//								bus.send("info", [ i18n["Feedback.mail_sent"] , offset]);
+
 								closeFeedback();
 							},
 							errorFunction : function(){
