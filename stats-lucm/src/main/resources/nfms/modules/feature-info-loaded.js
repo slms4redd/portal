@@ -1,7 +1,7 @@
 define([ "jquery", "message-bus" , "i18n" ], function($, bus, i18n) {
 
-	
-	bus.listen( "feature-info-loaded", function( event, data ){
+	Features = {};
+	Features.onLoad = function( data ){
 		var data = $( data );
 		
 		data.find( '.national_redd_action_program' ).append( i18n['national_redd_action_program'] );
@@ -50,7 +50,7 @@ define([ "jquery", "message-bus" , "i18n" ], function($, bus, i18n) {
 			}
 		});
 	
-	});
+	};
 	
 
 });

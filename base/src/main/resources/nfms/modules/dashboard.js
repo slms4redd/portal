@@ -1,22 +1,30 @@
 define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization" ,"module", "i18nUtils","jquery-color","jquery-easing" ], function($, bus, layerListSelector, i18n, customization , module ) {
 	
 	
+	var DashboardType = function(name){
+		this.name = name;
+		
+		this.toString = function(){
+			return this.name;
+		};
+	};
 	
-	var config = module.config();
-//	var iconOpened = '<span class="fa-stack"><i class="fa fa-circle-thin fa-stack-2x"></i><i class="fa fa-angle-double-right fa-stack-1x"></i></span>' ;
-//	var iconClosed = '<span class="fa-stack"><i class="fa fa-circle-thin fa-stack-2x"></i><i class="fa fa-tachometer fa-stack-1x"></i></span>' ;
-	var iconOpened = '<i class="fa fa-angle-double-right"></i>' ;
-	var iconClosed = '<i class="fa fa-tachometer"></i>' ;
+	var DashboardSources 	= { FEATURES: new DashboardType('features') , LAYERS: new DashboardType('layer')  };
+	var DashboardTypes 		= { INFO: new DashboardType('info') , LEGEND: new DashboardType('legend') , STATS: new DashboardType('stats')  };
 
 	
-	var dashboard = $( '<div class="row dashboard height100"></div>' );
+	var config = module.config();
+
+	var iconOpened = '<i class="fa fa-angle-double-right"></i>' ;
+	var iconClosed = '<i class="fa fa-tachometer"></i>' ;
 	
+	var dashboard = $( '<div class="row dashboard height100"></div>' );
 	layerListSelector.layersDashboardContainer.append( dashboard );
-		
+	
+	// dashbaord toggle 
 	var dashboardToggle = $( '<div class="col-md-1 dashboard-toggle no-padding "></div>' )
 	dashboard.append( dashboardToggle );
 	
-//	var btnCollapse = $( '<button class="btn btn-collapse">' + iconClosed + '</button>' );
 	var dashboardToggleBtn = $( '<div class="dashboard-toggle-btn"></div>' )
 	dashboardToggle.append( dashboardToggleBtn );
 	var btnCollapse = $( '<button class="btn btn-collapse">' + iconOpened + '</button>' );
@@ -25,43 +33,15 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 	dashboardToggle.append( dashboardToggleEmptyCol );
 	
 	btnCollapse.click( function(e){
-		bus.send( "layers-dashboard-toggle-visibility" );
+		bus.send( "dashboard-toggle-visibility" );
 		btnCollapse.blur();
 	});
 	
+	
+	// main dashbaord container
 	var dashboardContainer	= $( '<div class="col-md-11 height100 dashboard-container"></div>' );
 	dashboard.append( dashboardContainer );
-	
-//	var rowHeader	= $( '<div class="row dashboard-header height10"></div>')
-//	dashboardContainer.append( rowHeader );
-//	var colHeader	= $( '<div class="col-md-12"></div>' );
-//	rowHeader.append( dashboardToggle );
-//	rowHeader.append( colHeader );
-	
-//	colHeader.append( btnCollapse );
-	
-//	var dashboardToggle = $( '<div class="dashboard-toggle"></div>' );
-//	dashboardToggle.append( btnCollapse );
-//	colHeader.append( dashboardToggle );
-//	
-//	var btnGroup = $( '<div class="btn-group"><button type="button" class="btn layer-label">- Select Layer</button>'+
-//      '<button type="button" class="btn dropdown-toggle" data-toggle="dropdown" aria-expanded="false">'+
-//       '<span class="caret"></span>'+
-////        '<span class="sr-only">Toggle Dropdown</span>'+
-//      '</button>'+
-//      '<ul class="dropdown-menu" role="menu">'+
-////        '<li><button class="btn btn-default">layer 1</button></li>'+
-////        '<li><button class="btn btn-default">layer 2</button></li>'+
-//        '</ul>'+
-//    '</div>' );
-
-//	colHeader.append( btnGroup );
-//	btnGroup.hide();
-	
-	var layerLabel = $( '<div class="layer-label"></div>' );
-//	colHeader.append( layerLabel );
-//	layerLabel.hi
-	
+		
 	dashboard.css( 'right' , '-' + (dashboard.width() ) +'px' );
 //	dashboard.css( 'right' , '-' + (dashboard.width() - dashboardToggle.width() ) +'px' );
 	dashboard.addClass( 'closed' );
@@ -80,6 +60,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 	var ul = $( '<ul class="nav nav-tabs nav-justified"></ul>' );
 	divNav.append( ul );
 	
+	// dashboard type buttons 
 	var liLegend = $( '<li></li>' );
 	ul.append( liLegend );
 	var btnLegend = $( '<button class="btn btn-default"><i class="fa fa-th-list"></i> </button>' );
@@ -118,63 +99,63 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 	var dashboardContent	= $( '<div class="col-md-12 heigth100"></div>' );
 	dashboardContentRow.append( dashboardContent );
 	
+	
+	// type: legend
 	var legend = $( '<div class="dashboard-content-item legend"></div>' );
 	legend.hide();
 	dashboardContent.append( legend );
 	
-	var legendLayers = $( '<div class="width100 height100"></div>')
-//	var legendLayers = $( '<div class="dashboard-layers width100 height100"></div>')
-//	var legendFeatures = $( '<div class="dashboard-features width100 height100"></div>')
+	var legendLayers 	= $( '<div class="dashboard-layer width100 height100"></div>')
+	var legendFeatures = $( '<div class="dashboard-features width100 height100"></div>')
 	legend.append( legendLayers );
-//	legend.append( legendFeatures );
+	legend.append( legendFeatures );
 	
+	
+	// type: INFO
 	var info = $( '<div class="dashboard-content-item info"></div>' );
 	info.hide();
 	dashboardContent.append( info );
-	var infoLayers = $( '<div class="dashboard-layers width100 height100"></div>')
+	
+	var infoLayers = $( '<div class="dashboard-layer width100 height100"></div>')
 	var infoFeatures = $( '<div class="dashboard-features width100 height100"></div>')
 	info.append( infoLayers );
 	info.append( infoFeatures );
 
-	
+	// type: stats
 	var stats = $( '<div class="dashboard-content-item stats"></div>' );
 	stats.hide();
 	dashboardContent.append( stats );
-	var statsLayers = $( '<div class="dashboard-layers width100 height100"></div>')
+	var statsLayers = $( '<div class="dashboard-layer width100 height100"></div>')
 	var statsFeatures = $( '<div class="dashboard-features width100 height100"></div>')
 	stats.append( statsLayers );
 	stats.append( statsFeatures );
 	
-	// reset the dashboard to its origianl state ( for layer from the left menu )
+	
+	
+	
+	
+	
+	// reset the dashboard to its origianl state
 	var resetDashboard = function(){
 		
-//		btnGroup.find( 'ul' ).empty();
-//		btnGroup.hide();
-		
-//		layerLabel.html( '' );
-//		layerLabel.hide();
-		
-		btnLegend.prop( 'disabled' , false );
+		btnLegend.prop( 'disabled' , true );
 		btnInfo.prop( 'disabled' , true );
 		btnStats.attr( 'disabled' , true );
 		
 		dashboardBtnBar.find( 'button' ).removeClass( 'active' );
 		
 		$( '.dashboard-features' ).hide();
-		$( '.dashboard-layers' ).show();
-//		legend.empty();
-//		info.empty();
-//		stats.empty();
-		
+		$( '.dashboard-layer' ).hide();
 	};
 	
+	// ?????
 	var resetDashboardStats = function(){
 		dashboardBtnBar.find( 'button' ).removeClass( 'active' );
 		
 		btnInfo.prop( 'disabled' , true );
 		btnStats.attr( 'disabled' , true );
 		
-		$( '.dashboard-layers' ).hide();
+		$( '.dashboard-layer' ).hide();
 		$( '.dashboard-features' ).empty();
 		$( '.dashboard-features' ).show();
 		
@@ -220,7 +201,52 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 	resetDashboard();
 	showLegend();
 	
+	// DASHBOARD events
+	/**
+	 * It opens or closes the dashboard based on the open parameter
+	 * 
+	 * open [boolean]: true | false
+	 */
+	bus.listen( "dashboard-toggle-visibility" , function(event , open){
+		var icon = null;
+		if( dashboard.hasClass('opened') && open ){
+			//nothing happens 
+		}
+		else {
+			
+			if( dashboard.hasClass('opened') && !open){
+				dashboard.removeClass( 'opened' ).addClass( 'closed' );
+				dashboard.stop().animate( {'right': '-' + (dashboard.width() - dashboardToggle.width() + 1 ) +'px' }, 500 );
+				
+				icon = iconClosed;
+			} else {
+				dashboard.removeClass( 'closed' ).addClass( 'opened' );
+				dashboard.animate( {'right': 0 }, 700 ,'easeInOutQuad');
+				
+				
+				icon = iconOpened;
+			}
+			
+			icon = $( icon );
+			icon.hide();
+			setTimeout( function(){
+				btnCollapse.empty();
+				btnCollapse.append( icon );
+				btnCollapse.blur();
+				
+				icon.fadeIn();
+			}, 300 );
+			
+		}
+	});
 	
+	$( window ).resize(function() {
+//		var right = ( dashboard.hasClass( 'opened' ) ) ? "0" : "-"+(dashboard.width() ) +"px";
+		var right = ( dashboard.hasClass( 'opened' ) ) ? "0" : "-"+(dashboard.width() - dashboardToggle.width() + 1) +"px";
+		dashboard.stop().animate( {'right': right }, 200 );
+	});
+	
+	//DASHBAORD ELEMENT EVENTS
 	var addDashboardItem = function( id , label , classPrefix , container , content , show ){
 		
 		var rowToggle = $( '<div class="row row-toggle closed"></div>' );
@@ -249,15 +275,18 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 		
 		btn.click( function(){
 			var elem = $( '.' + classPrefix + '-layer-' +  id );
-			toggleDashboardItem( classPrefix , id , !elem.is( ':visible' ) );
+			bus.send( 'dashboard-element-toggle-state' ,  [classPrefix , id , !elem.is( ':visible' )] );
+			
 		});
 	};
 	
-	var toggleDashboardItem = function( classPrefix , id , show ){
+	bus.listen( 'dashboard-element-toggle-state' , function( event , TYPE , id , expand ){
+		var classPrefix = TYPE.toString();
+		
 		var toggle = $( '.' + classPrefix + '-toggle-' +  id );
 		var btnToggle = toggle.find( 'div.toggle-btn button' );
 		var elem = $( '.' + classPrefix + '-layer-' +  id );
-		if( show ){
+		if( expand ){
 			elem.slideDown( 400 );
 			btnToggle.find( 'i').removeClass().addClass('fa fa-caret-down');
 			toggle.removeClass( 'closed' ).addClass( 'opened' );
@@ -266,90 +295,192 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 			btnToggle.find( 'i').removeClass().addClass('fa fa-caret-right');
 			toggle.removeClass( 'opened' ).addClass( 'closed' );
 		}
-	};
+	});
 	
 	
-	
-	var toggleDashboardElement = function( id , show ){
+	bus.listen( 'dashboard-element-toggle-visibility' , function( event , id , show ) {
 		if( show === true ){
 			$( '.legend-toggle-' + id ).fadeIn( 200 );
 			$( '.info-toggle-' + id ).fadeIn( 200 );
-			toggleDashboardItem('legend', id , show );
-			toggleDashboardItem('info', id , show );
+			$( '.stats-toggle-' + id ).fadeIn( 200 );
+			
+			bus.send( 'dashboard-element-toggle-state' ,  ['legend' , id , show] );
+			bus.send( 'dashboard-element-toggle-state' ,  ['info' , id , show] );
+			bus.send( 'dashboard-element-toggle-state' ,  ['stats' , id , show] );
 		} else {
 			// close dashboard item for the given layer
 			$( '.legend-layer-' + id ).fadeOut( 300 );
 			$( '.legend-toggle-' + id ).fadeOut( 300 );
 			$( '.legend-toggle-' + id ).find( 'button i' ).removeClass().addClass('fa fa-caret-right');
+
 			$( '.info-layer-' + id ).fadeOut( 300 );
 			$( '.info-toggle-' + id ).fadeOut( 300 );
 			$( '.info-toggle-' + id ).find( 'button i' ).removeClass().addClass('fa fa-caret-right');
+
+			$( '.stats-layer-' + id ).fadeOut( 300 );
+			$( '.stats-toggle-' + id ).fadeOut( 300 );
+			$( '.stats-toggle-' + id ).find( 'button i' ).removeClass().addClass('fa fa-caret-right');
 		}
+	});
+	
+	
+	/**
+	 * Add a specific dashbaord item to the container based on its TYPE and SOURCE
+	 * 
+	 * TYPE 	= dashbaord.TYPE.INFO | dashbaord.TYPE.LEGEND | dashbaord.TYPE.STATS
+	 * 
+	 * SOURCE 	= dashbaord.SOURCE.FEATURES | dashbaord.SOURCE.LAYERS
+	 */
+	bus.listen('add-dashboard-element' , function(event, id , label, data , show , TYPE, SOURCE) {
+		var buttonType 	= getButtonType( TYPE );
+		buttonType.prop( 'disabled' , false );
+
+		var container	= getDashboardElementContainer( TYPE , SOURCE );
+		
+		addDashboardItem( id, label , TYPE.toString(), container , data , show );
+		
+	});
+	/**
+	 * Private method that returns the button for a dashboard element based on the TYPE
+	 * 
+	 * TYPE 	= dashbaord.TYPE.INFO | dashbaord.TYPE.LEGEND | dashbaord.TYPE.STATS
+	 */
+	var getButtonType = function(TYPE){
+		var buttonType;
+		switch( TYPE.toString() ){
+			case DashboardTypes.INFO.toString() :
+				buttonType = btnInfo;
+				break;
+			case DashboardTypes.LEGEND.toString() :
+				buttonType = btnLegend;
+				break;
+			case DashboardTypes.STATS.toString() :
+				buttonType = btnStats;
+				break;
+		};
+		return buttonType;
+	}
+	/**
+	 * Private method that returns the container for a dashboard element based on the TYPE and SOURCE
+	 * 
+	 * TYPE 	= dashbaord.TYPE.INFO | dashbaord.TYPE.LEGEND | dashbaord.TYPE.STATS
+	 * 
+	 * SOURCE 	= dashbaord.SOURCE.FEATURES | dashbaord.SOURCE.LAYERS
+	 */
+	var getDashboardElementContainer = function( TYPE , SOURCE ){
+		var container = null;
+		switch( TYPE.toString() ){
+			case DashboardTypes.INFO.toString() :
+				switch( SOURCE.toString() ){
+					case DashboardSources.FEATURES.toString():
+						container = infoFeatures;
+						break;
+					case DashboardSources.LAYERS.toString():
+						container = infoLayers;
+						break;
+				}
+				break;
+			case DashboardTypes.LEGEND.toString() :
+				switch( SOURCE.toString() ){
+					case DashboardSources.FEATURES.toString():
+						container = legendFeatures;
+						break;
+					case DashboardSources.LAYERS.toString():
+						container = legendLayers;
+						break;
+				}
+				break;
+			case DashboardTypes.STATS.toString() :
+				switch( SOURCE.toString() ){
+					case DashboardSources.FEATURES.toString():
+						container = statsFeatures;
+						break;
+					case DashboardSources.LAYERS.toString():
+						container = statsLayers;
+						break;
+				}
+				break;
+		};
+		return container;
 	};
 	
-	bus.listen( "group-active-layers-changed" , function(event , groupId , count){
-		var show = ( count > 0 ) ? true : false;
-		toggleDashboardElement( groupId , show );
-	});
-	
-	bus.listen("layer-visibility", function(event, layerId, visible) {
-		toggleDashboardElement( layerId, visible );
-	});
-	
-	
-	bus.listen( "layers-dashboard-toggle-visibility" , function(event , open){
-		var icon = null;
-		if( dashboard.hasClass('opened') && !open){
-			dashboard.removeClass( 'opened' ).addClass( 'closed' );
-			dashboard.stop().animate( {'right': '-' + (dashboard.width() - dashboardToggle.width() + 1 ) +'px' }, 500 );
-//			dashboard.stop().animate( {'right': '-' + (dashboard.width()) +'px' }, 700 ,'easeOutQuad');
-			
-			icon = iconClosed;
-		} else {
-			dashboard.removeClass( 'closed' ).addClass( 'opened' );
-			dashboard.animate( {'right': 0 }, 700 ,'easeInOutQuad');
-			
-			
-			icon = iconOpened;
+	bus.listen('dashboard-reset-type' , function(event ,TYPE, SOURCE){
+		//empty type
+		var elems = dashboard.find( '.dashboard-content-item.'+TYPE.toString() ).find('.dashboard-'+SOURCE.toString());
+		elems.empty();
+
+		//disable button if others have not elements as well
+		elems = dashboard.find( '.dashboard-content-item.'+TYPE.toString() ).children().not( '.dashboard-'+SOURCE.toString() );
+		if( elems.children().length <= 0 ){
+			var btn = getButtonType(TYPE);
+			btn.prop('disabled',true);
+			btn.removeClass('active');
 		}
-		
-		icon = $( icon );
-		icon.hide();
-		setTimeout( function(){
-			btnCollapse.empty();
-			btnCollapse.append( icon );
-			btnCollapse.blur();
-			
-			icon.fadeIn();
-		}, 300 );
+
 	});
 	
-	// methods to call from outside
-	var addLayerLegend = function( id , label , data , show ){
-		btnLegend.prop( 'disabled' , false );
-		addDashboardItem( id, label , 'legend', legendLayers , data , show );
-	};
-	var addLayerInfo = function( id , label , data ,show ){
-		btnLegend.prop( 'disabled' , false );
-		addDashboardItem( id, label , 'info', infoLayers , data , show );
-	};
-	
-	var addFeatureInfo = function( id , label , data ){
-		btnInfo.prop( 'disabled' , false );
-		addDashboardItem( id, label , 'info', infoFeatures , data , true );
+	bus.listen('dashboard-activate-type' , function(event, TYPE, SOURCE){
+		var typeContainer = dashboard.find( '.dashboard-content-item.'+TYPE.toString() );
+		var elems = typeContainer.children().not( '.dashboard-'+SOURCE.toString() );
+		elems.hide();
 		
-		var container = dashboard.find('.info-layer-' +  id );
+		elems = typeContainer.find( '.dashboard-'+SOURCE.toString() );
+		elems.fadeIn();
 		
-		bus.send( 'feature-info-loaded' , container );
-	};
-	var addFeatureStats = function( id , label , data ){
-		btnStats.prop( 'disabled' , false );
-		addDashboardItem( id, label , 'stats', statsFeatures , data , true );
-	};
+	});
 	
-	var scrollTo = function( id , targetItem ){
+	/**
+	 * Shows a section of the dashbaord based on the specified TYPE
+	 * 
+	 * TYPE = dashbaord.TYPE.INFO | dashbaord.TYPE.LEGEND | dashbaord.TYPE.STATS 
+	 * 
+	 * SOURCE 	= dashbaord.SOURCE.FEATURES | dashbaord.SOURCE.LAYERS
+	 */
+	bus.listen('dashboard-show-type' , function(event, TYPE, SOURCE){
+		
+		switch( TYPE.toString() ){
+			case DashboardTypes.INFO.toString() :
+				showInfo();
+				break;
+			case DashboardTypes.LEGEND.toString() :
+				showLegend();
+				break;
+			case DashboardTypes.STATS.toString() :
+				showStats();
+				break;
+		};
+
+		bus.send('dashboard-activate-type' ,[TYPE,SOURCE] );
+	});
+	
+	// 
+	bus.listen('highlight-dashboard-element' , function(event, id , TYPE , SOURCE){
+		var container 	= getDashboardElementContainer( TYPE , SOURCE );
+		var toggleBtn 	= container.find( '.' + TYPE.toString() + '-toggle-' + id );
+		var targetItem 	= container.find( '.' + TYPE.toString() + '-' + SOURCE.toString()+ '-' + id  )
+		
+		var highlightItem = function(){
+			var color = $.Color( "rgba(50, 153, 187, 0.2)" );
+			toggleBtn.animate(
+					{ 'backgroundColor': color }
+					, 300 
+					, function(){
+						toggleBtn.animate(
+								{ 'backgroundColor': "transparent" }
+								, 2000 )
+					});
+			targetItem.animate(
+					{ 'backgroundColor': color }
+					, 300 
+					, function(){
+						targetItem.animate(
+								{ 'backgroundColor': "transparent" }
+								, 2000 )
+					});
+		};
+		
+		//first scroll to target item, then highlights it
 		setTimeout( function(){
-//			console.log( "top-position" +  $( targetItem ).position().top );
 			var scrollTop = 0;
 			if(  $( targetItem ).position().top < 40 ){
 				scrollTop = 0; 
@@ -358,66 +489,17 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 				scrollTop = Math.abs( scrollTop );				
 			}
 			
-//			console.log( scrollTop );
-//			if( scrollTop > 0 ){
-				dashboardContentRow.animate(
-						{ scrollTop: scrollTop }
-						, 200 
-						,'easeInOutQuad'
-						, function(){
-							highlightItem( id , targetItem );
-						}
-					);			
-//			} else {
-//				highlightItem( id , targetItem );
-//			}
+			dashboardContentRow.animate( { scrollTop: scrollTop } , 200  ,'easeInOutQuad' , highlightItem );			
 			
 		}, 250);
-	};
-	// private methods
-	$( window ).resize(function() {
-//		var right = ( dashboard.hasClass( 'opened' ) ) ? "0" : "-"+(dashboard.width() ) +"px";
-		var right = ( dashboard.hasClass( 'opened' ) ) ? "0" : "-"+(dashboard.width() - dashboardToggle.width() + 1) +"px";
-		dashboard.stop().animate( {'right': right }, 200 );
+		
 	});
 	
-	// 
-	var highlightItem = function( id , targetItem ){
-		var legendItem = $( '.legend-toggle-' + id );
-		var infoItem = $( '.info-toggle-' + id );
-
-		var items = $( legendItem , infoItem ) ;
-		var color = $.Color( "rgba(50, 153, 187, 0.2)" );
-//		var color = $.Color( "rgba(251, 252, 166, 0.10)" );
-		items.animate(
-				{ 'backgroundColor': color }
-				, 300 
-				, function(){
-					items.animate(
-						{ 'backgroundColor': "transparent" }
-						, 2000 )
-		});
-		targetItem.animate(
-				{ 'backgroundColor': color }
-				, 300 
-				, function(){
-					targetItem.animate(
-						{ 'backgroundColor': "transparent" }
-						, 2000 )
-		});
-	};
 	
 	return {
-		addLayerLegend		: addLayerLegend,
-		addLayerInfo		: addLayerInfo,
-		addFeatureStats 	: addFeatureStats ,
-		addFeatureInfo 		: addFeatureInfo ,
-		showInfo 			: showInfo ,
-		showLegend 			: showLegend ,
-		showStats 			: showStats ,
-		toggleDashboardItem : toggleDashboardItem,
-		resetDashboardStats	: resetDashboardStats,
-		scrollTo			: scrollTo,
+		
+		SOURCE	: DashboardSources,		
+		TYPE	: DashboardTypes
 	}
 	
 });

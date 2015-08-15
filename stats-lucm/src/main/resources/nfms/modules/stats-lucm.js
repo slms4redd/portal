@@ -1,11 +1,11 @@
-define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.actual.min"], function($, bus, i18n, layerDashbaord ,highcharts) {
+define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.actual.min"], function($, bus, i18n, dashboard ,highcharts) {
 	
 //	var startYears 			= new Array();
 //	var endYears 			= new Array();
 //	var currentStartYear 	= null;
 //	var currentEndYear 		= null;
 	
-	bus.listen( "add-feature-stats" , function( event , feature , show ){
+	bus.listen( "add-feature-stats" , function( event , feature , openSection , expand ){
 		var resources = parseResources( feature );
 		
 //		startYears 			= new Array();
@@ -219,8 +219,17 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 			
 			// add UI element to dashboard
 			var fId = feature.fid.replace( '.' , '-' );
-			layerDashbaord.addFeatureStats( fId, feature.attributes.name , container );
-			layerDashbaord.toggleDashboardItem( 'stats' , fId , show );
+			bus.send( 'add-dashboard-element' , [fId , feature.attributes.name, container , true , dashboard.TYPE.STATS, dashboard.SOURCE.FEATURES]);
+			
+//			if( openSection ){
+//				bus.send( "dashboard-show-type" , [dashboard.TYPE.STATS, dashboard.SOURCE.FEATURES] );
+//			} else {
+			bus.send( "dashboard-activate-type" , [dashboard.TYPE.STATS, dashboard.SOURCE.FEATURES] );
+//			}
+			
+			if( !expand ){
+				bus.send( 'dashboard-element-toggle-state' , [dashboard.TYPE.STATS , fId , false] );
+			}
 			
 			
 			// add charts

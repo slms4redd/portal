@@ -1,6 +1,10 @@
+/**
+ * Controller module for layer dashboard
+ * 
+ * @author M. Togna
+ */
 define([ "jquery", "message-bus", "dashboard" ,"module" ],
 		function($, bus, dashboard, module ) {
-	
 	
 	
 	bus.listen("add-group", function(event, groupInfo) {
@@ -11,7 +15,8 @@ define([ "jquery", "message-bus", "dashboard" ,"module" ],
 					data		: {bust : (new Date()).getTime()},
 					dataType 	: "html" ,
 					success		: function(data){
-						dashboard.addLayerLegend( groupInfo.id, groupInfo.name , data , true );
+//						dashboard.addLayerLegend( groupInfo.id, groupInfo.name , data , true );
+						bus.send( 'add-dashboard-element' , [groupInfo.id , groupInfo.name, data , true , dashboard.TYPE.LEGEND, dashboard.SOURCE.LAYERS]);
 					}
 				});
 		}
@@ -24,7 +29,8 @@ define([ "jquery", "message-bus", "dashboard" ,"module" ],
 				dataType 	: "html" ,
 				success		: function(data){
 //					dashboard.addDashboardItem( groupInfo.id, groupInfo.name , 'info', infoLayers , data , true );
-					dashboard.addLayerInfo( groupInfo.id, groupInfo.name , data , true );
+//					dashboard.addLayerInfo( groupInfo.id, groupInfo.name , data , true );
+					bus.send( 'add-dashboard-element' , [groupInfo.id , groupInfo.name, data , true , dashboard.TYPE.INFO, dashboard.SOURCE.LAYERS]);
 				}
 			});
 		}
@@ -43,7 +49,8 @@ define([ "jquery", "message-bus", "dashboard" ,"module" ],
 						dataType 	: "html" ,
 						success		: function(data){
 //							dashboard.addDashboardItem( portalLayer.id, portalLayer.label , 'legend', legendLayers , data , portalLayer.active);
-							dashboard.addLayerLegend( portalLayer.id, portalLayer.label , data  , portalLayer.active);
+//							dashboard.addLayerLegend( portalLayer.id, portalLayer.label , data  , portalLayer.active);
+							bus.send( 'add-dashboard-element' , [portalLayer.id , portalLayer.label, data , portalLayer.active , dashboard.TYPE.LEGEND, dashboard.SOURCE.LAYERS]);
 						}
 					});
 				}
@@ -58,37 +65,30 @@ define([ "jquery", "message-bus", "dashboard" ,"module" ],
 				dataType 	: "html" ,
 				success		: function(data){
 //					dashboard.addDashboardItem( portalLayer.id, portalLayer.label , 'info', infoLayers , data , portalLayer.active );
-					dashboard.addLayerInfo( portalLayer.id, portalLayer.label , data , portalLayer.active);
+//					dashboard.addLayerInfo( portalLayer.id, portalLayer.label , data , portalLayer.active);
+					bus.send( 'add-dashboard-element' , [portalLayer.id , portalLayer.label, data , portalLayer.active , dashboard.TYPE.INFO, dashboard.SOURCE.LAYERS]);
 				}
 			});
 		}
+	});
+	
+	bus.listen( "group-active-layers-changed" , function(event , groupId , count){
+		var show = ( count > 0 ) ? true : false;
+		bus.send( 'dashboard-element-toggle-visibility' , [groupId , show ] );
+	});
+	
+	bus.listen("layer-visibility", function(event, layerId, visible) {
+		bus.send( 'dashboard-element-toggle-visibility' , [layerId , visible ] );
 	});
 	
 	// click from layer list
 	bus.listen( "open-layer-dashboard" , function( event, id ){
 		
 		event.preventDefault();
-		
-//		resetDashboard();
-		
-		var legendItem = $( '.legend-toggle-' + id );
-		var infoItem = $( '.info-toggle-' + id );
-		var targetItem = null; 
-		if( legendItem.length ){
-			dashboard.showLegend();
-			targetItem = $( '.legend-layer-' + id );;
-		} else if( infoItem.length ){
-			dashboard.showInfo();
-			targetItem = $( '.info-layer-' + id );;
-		}
-		
-		dashboard.toggleDashboardItem( 'legend' , id , true );
-		dashboard.toggleDashboardItem( 'info' , id , true );
+		bus.send( "dashboard-toggle-visibility" , true );
 
-		dashboard.scrollTo( id , targetItem );
-
-		bus.send( "layers-dashboard-toggle-visibility" , true );
-		
+		bus.send( "dashboard-show-type" , [dashboard.TYPE.LEGEND, dashboard.SOURCE.LAYERS] );
+		bus.send( "highlight-dashboard-element" , [id , dashboard.TYPE.LEGEND, dashboard.SOURCE.LAYERS] );
 	});
 	
 });

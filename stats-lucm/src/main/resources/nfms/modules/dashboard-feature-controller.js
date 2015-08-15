@@ -1,4 +1,4 @@
-define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "dashboard" ], function(module, $, bus, map, i18n, customization, layerDashboard) {
+define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "dashboard","feature-info-loaded" ], function(module, $, bus, map, i18n, customization, dashboard) {
 	
 	var infoUrl = customization['info.queryUrl'] ;
 	
@@ -78,7 +78,7 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 	}
 	
 	
-	bus.listen( "info-features", function(event, eventFeatures, x, y) {
+	bus.listen( "info-features", function(event, eventFeatures, openSection) {
 		if( eventFeatures && eventFeatures.length > 0 ){
 			
 			var features 	= new Array();
@@ -86,7 +86,7 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 			checkHasDashbaord( eventFeatures , features , featureIds , 0 , function(){
 				UI.unlock();
 				
-				bus.send( "open-dashboard-info-feature" , [ features ] );
+				bus.send( "open-dashboard-info-feature" , [ features ,openSection ] );
 
 			} );
 		} else {
@@ -98,44 +98,46 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 	
 	
 	
-	bus.listen( "open-dashboard-info-feature" , function( event, features ){
+	bus.listen( "open-dashboard-info-feature" , function( event, features , openSection  ){
 		
-		layerDashboard.resetDashboardStats();
-
-		bus.send( "layers-dashboard-toggle-visibility" , true );
-//		console.log( features );
-		
-		features.sort( function(f1,f2){
-			return f1.fid.localeCompare(f2.fid);
-		});
-		
-		for( var i = 0 ; i < features.length ; i++ ){
-			var feature = features[ i ];
+		if( features.length > 0 ){
 			
-			var show = ( i == features.length-1 ) ? true : false;
+			if( openSection !== false ){
+				openSection = true ;
+			}
 			
-			// open info
-//			console.log( " =========== FEATURES LOADED : " );
-//			console.log( feature );
-//			console.log( " =========== END FEATURES LOADED " );
-			loadFeatureInfo( feature , show );
-		
-			// add stats
-			var fakeData = getFakeStatsData();
-	
-			feature.attributes['ResourceList'] = fakeData.ResourceList;
-			if( feature.attributes['ResourceList'] ){
-				bus.send( "add-feature-stats" , [ feature , show ] );
+			bus.send( "dashboard-toggle-visibility" , true );
+			
+			features.sort( function(f1,f2){
+				return f1.fid.localeCompare(f2.fid);
+			});
+			
+			bus.send( "dashboard-reset-type" , [dashboard.TYPE.INFO, dashboard.SOURCE.FEATURES] );
+			bus.send( "dashboard-reset-type" , [dashboard.TYPE.LEGEND, dashboard.SOURCE.FEATURES] );
+			bus.send( "dashboard-reset-type" , [dashboard.TYPE.STATS, dashboard.SOURCE.FEATURES] );
+			
+			for( var i = 0 ; i < features.length ; i++ ){
+				var feature = features[ i ];
+				
+				var expand = ( i == features.length-1 ) ? true : false;
+				
+				// open info
+				loadFeatureInfo( feature , openSection , expand );
+				
+				// add stats
+				var fakeData = getFakeStatsData();
+				
+				feature.attributes['ResourceList'] = fakeData.ResourceList;
+				if( feature.attributes['ResourceList'] ){
+					bus.send( "add-feature-stats" , [ feature , openSection , expand ] );
+				}
 			}
 		}
 	});
 	
-	var loadFeatureInfo = function( feature , show ){
+	var loadFeatureInfo = function( feature , openSection, expand ){
 		var fId = feature.fid.replace( '.' , '-' );
 	
-//		layerDashboard.addFeatureInfo(fId, feature.attributes.name , data );
-//		layerDashboard.toggleDashboardItem( 'info' , fId , show );
-		
 		// open info
 		if ( feature.attributes.hasOwnProperty("info_file")  ) {
 			
@@ -150,14 +152,22 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 					var dataClass 	=  "feature-info-" + fId ;
 					data.addClass( dataClass );
 					
-					layerDashboard.addFeatureInfo(fId, feature.attributes.name , data );
-					layerDashboard.toggleDashboardItem( 'info' , fId , show );
+					Features.onLoad( data );
 					
+					bus.send( 'add-dashboard-element' , [fId , feature.attributes.name, data , true , dashboard.TYPE.INFO, dashboard.SOURCE.FEATURES]);
+					
+					if( openSection ){
+						bus.send( "dashboard-show-type" , [dashboard.TYPE.INFO, dashboard.SOURCE.FEATURES] );
+					} else {
+						bus.send( "dashboard-activate-type" , [dashboard.TYPE.INFO, dashboard.SOURCE.FEATURES] );
+					}
+					
+					if( !expand ){
+						bus.send( 'dashboard-element-toggle-state' , [dashboard.TYPE.INFO , fId , false] );
+					}
 				}
 			});
 			
-			layerDashboard.showInfo();
-		
 		}
 	};
 	
