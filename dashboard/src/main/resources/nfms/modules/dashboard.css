@@ -4,8 +4,8 @@ div.dashboard {
 	color: #E9E9E9;
 	overflow: hidden;
 	line-height: 1.5em;
-	letter-spacing: 0.02em;
-	font-size: 13px;
+	letter-spacing: 0.01em;
+	font-size: 12px;
 }
 
 div.dashboard button.btn-collapse {
@@ -156,7 +156,7 @@ div.dashboard button.btn-transparent:hover {
 div.row-toggle button.btn-transparent ,
 div.row-toggle button.btn-transparent:hover ,
 div.row-toggle button.btn-transparent:focus {
-	font-size: 14px;
+	font-size: 13px;
 }
 div.row-toggle.closed {
 }
@@ -164,8 +164,8 @@ div.row-toggle.opened {
 	
 }
 div.row-toggle-content {
-/* 	padding: 10px 5px 15px 25px; */
-	padding: 0px 5px 15px 25px;
+/* 	padding: 0px 5px 15px 25px; */
+	padding: 0px 15px 15px 15px;
 }
 div.row-toggle-content.closed {
 	
@@ -179,11 +179,20 @@ div.row-dashbaord-padded {
 /* 	font-size: 13px; */
 }
 div.info-table {
-	border: 1px solid rgba(233, 233, 233, 0.45);
-    margin: 0px 1em !important;
+/* 	border-left: 1px solid rgba(233, 233, 233, 0.05); */
+/* 	border-right: 1px solid rgba(233, 233, 233, 0.05); */
+/* 	border-bottom: 1px solid rgba(233, 233, 233, 0.05); */
+/* 	border-left: 1px solid rgba(50, 153, 187, 0.2); */
+/* 	border-right: 1px solid rgba(50, 153, 187, 0.2); */
+/* 	border-bottom: 1px solid rgba(50, 153, 187, 0.2); */
+
+/*     margin: -5px .8em 0px .8em !important; */
+    margin:  0px .6em !important;
 /*     margin: 1.5em 1em 0em 1em !important; */
-    padding-top: 10px;
-    padding-bottom: 10px;
+/*     padding-top: 10px; */
+/*     padding-bottom: 10px; */
+   	padding : 10px 0px;
+/*     background-color: rgba(40, 34, 34, 0.35); */
 }
 div.info-table div.title {
 /* 	padding-top: 10px; */
@@ -203,7 +212,7 @@ div.info-table div.title {
 	border: 1px solid rgba(233, 233, 233, 0.4);
 }
 .legend-label {
-	font-size: 12px;
+/* 	font-size: 12px; */
   	padding: 2px 2px;
 }
 .legend-line  {

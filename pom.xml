@@ -20,7 +20,9 @@
 		<module>language-buttons</module>
     <module>stats-lucm</module>
     <module>feedback-vn</module>
-  </modules>
+    <module>dashboard</module>
+    <module>dashboard-layer-controller</module>
+	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<geotools.version>9.2</geotools.version>

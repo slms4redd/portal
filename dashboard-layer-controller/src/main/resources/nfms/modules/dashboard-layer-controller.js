@@ -85,9 +85,14 @@ define([ "jquery", "message-bus", "dashboard" ,"module" ],
 	bus.listen( "open-layer-dashboard" , function( event, id ){
 		
 		event.preventDefault();
+		// open dashboard
 		bus.send( "dashboard-toggle-visibility" , true );
-
+		// show legeng for layers
 		bus.send( "dashboard-show-type" , [dashboard.TYPE.LEGEND, dashboard.SOURCE.LAYERS] );
+		// expand the item
+		bus.send( "dashboard-element-toggle-state" , [dashboard.TYPE.LEGEND, id , true] );
+		bus.send( "dashboard-element-toggle-state" , [dashboard.TYPE.INFO, id , true] );
+		// highlight the item
 		bus.send( "highlight-dashboard-element" , [id , dashboard.TYPE.LEGEND, dashboard.SOURCE.LAYERS] );
 	});
 	
