@@ -77,7 +77,6 @@ public class IndexHTMLServlet extends HttpServlet {
 	}
 
 	private ArrayList<String> getStyleSheets(Config config, String path) {
-		ArrayList<String> styleSheets = new ArrayList<String>();
 		File styleFolder = new File(config.getDir(), path);
 		return getStyleSheets(styleFolder, path);
 	}

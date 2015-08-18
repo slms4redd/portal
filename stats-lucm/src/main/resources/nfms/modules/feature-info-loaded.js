@@ -3,6 +3,10 @@ define([ "jquery", "message-bus" , "i18n" ], function($, bus, i18n) {
 	Features = {};
 	Features.onLoad = function( data ){
 		var data = $( data );
+
+		data.find( '.btn-drivers' ).append( i18n['btn-drivers'] );
+		data.find( '.btn-interventions' ).append( i18n['btn-interventions'] );
+		data.find( '.btn-areas' ).append( i18n['btn-areas'] );
 		
 		data.find( '.national_redd_action_program' ).append( i18n['national_redd_action_program'] );
 		data.find( '.province_approved_msg1' ).append( i18n['province_approved_msg1'] );
@@ -37,19 +41,35 @@ define([ "jquery", "message-bus" , "i18n" ], function($, bus, i18n) {
 		
 		
 		
-		data.find( '.collapsable' ).hide();
-		data.find( '.btn-collapsable' ).click(function(){
+//		data.find( '.collapsable' ).hide();
+//		data.find( '.btn-collapsable' ).click(function(){
+//			var btn = $( this );
+//			var target = $( '.' + btn.attr( 'data-target' ) );
+//			if( target.is(':visible') ){
+//				target.slideUp();
+//				btn.find( 'i' ).removeClass().addClass( 'fa fa-caret-right' );
+//			} else {
+//				target.slideDown();
+//				btn.find( 'i' ).removeClass().addClass( 'fa fa-caret-down' );
+//			}
+//		});
+		
+		var infoTables = data.filter( '.info-table' );
+		infoTables.hide();
+		
+		var btns =  data.filter( '.header-btns' ).find('button');
+		btns.click( function(e){
 			var btn = $( this );
-			var target = $( '.' + btn.attr( 'data-target' ) );
-			if( target.is(':visible') ){
-				target.slideUp();
-				btn.find( 'i' ).removeClass().addClass( 'fa fa-caret-right' );
-			} else {
-				target.slideDown();
-				btn.find( 'i' ).removeClass().addClass( 'fa fa-caret-down' );
+			if( !btn.hasClass('active') ){
+				btns.removeClass( 'active' );
+				btn.addClass( 'active' );
+				
+				infoTables.hide();
+				var target = data.filter( '.' + btn.attr( 'data-target' ) );
+				target.fadeIn();
 			}
 		});
-	
+		btns[0].click();
 	};
 	
 

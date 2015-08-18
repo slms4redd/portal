@@ -51,6 +51,8 @@ define([ "message-bus", "layout", "module", "openlayers" ], function(bus, layout
 	    
 	map.addControl( new OpenLayers.Control.Navigation() );
 	map.addControl( new OpenLayers.Control.Scale() );
+//	map.addControl( new OpenLayers.Control.ScaleLine() );
+//	map.addControl(new OpenLayers.Control.ScaleLine({bottomOutUnits: 'm'}));
 //	map.addControl( new OpenLayers.Control.PanZoomBar() );
 	
 	bus.listen("add-layer", function(event, layerInfo) {

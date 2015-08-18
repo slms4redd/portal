@@ -20,16 +20,28 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 			
 			var container = $( '<div class="width100 height100 lucm"></div>' );
 			
+			var headerBtns = $(' <div class="row row-dashbaord-padded header-btns">'+
+								'<div class="col-md-12" >'+
+								'<ul class="nav nav-tabs nav-justified">'+
+									'<li><button class="btn btn-default" data-target="lucm-fa-chart">'+i18n['btn-stats-forest-area']+'</button></li>'+
+									'<li><button class="btn btn-default" data-target="lucm-lc-chart">'+i18n['btn-stats-forest-change']+'</button></li>'+
+									'<li><button class="btn btn-default" data-target="lucm-table">'+i18n['btn-stats-change-matrix']+'</button></li>'+
+								'</ul>'+
+							'</div>'+
+						'</div> ');
+			container.append( headerBtns );
 			
-			var rowHeader = $( '<div class="row row-dashbaord-padded info-table"></div>' );
+			var rowHeader = $( '<div class="row row-dashbaord-padded info-table lucm-table"></div>' );
 			container.append( rowHeader );
 			var colHeader = $( '<div class="col-md-12 title"></div>' );
+			colHeader.append( i18n['forest_cover_change_matrix'] );
 			rowHeader.append(  colHeader );
-			var toggleButton = $( '<button class="btn btn-transparent btn-toggle-item" data-target="lucm-table"><i class="fa fa-caret-right"></i>&nbsp;</button>' );
-			toggleButton.append( i18n['forest_cover_change_matrix'] );
-			colHeader.append( toggleButton );
+//			var toggleButton = $( '<button class="btn btn-transparent btn-toggle-item" data-target="lucm-table"><i class="fa fa-caret-right"></i>&nbsp;</button>' );
+//			toggleButton.append( i18n['forest_cover_change_matrix'] );
+//			colHeader.append( toggleButton );
 			
-			var colCollapsableMatrix = $( '<div class="col-md-12 lucm-table">' );
+//			var colCollapsableMatrix = $( '<div class="col-md-12 lucm-table">' );
+			var colCollapsableMatrix = $( '<div class="col-md-12">' );
 			rowHeader.append(  colCollapsableMatrix );
 			
 			
@@ -192,28 +204,32 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 			// add chart containers
 			
 			// change of forest area
-			var rowForestArea = $( '<div class="row row-dashbaord-padded info-table"></div>' );
+			var rowForestArea = $( '<div class="row row-dashbaord-padded info-table lucm-fa-chart"></div>' );
 			container.append( rowForestArea );
 			var colFAHeader = $( '<div class="col-md-12 title"></div>' );
+			colFAHeader.append( i18n['change_forest_area'] );
 			rowForestArea.append(  colFAHeader );
-			var toggleButtonFA = $( '<button class="btn btn-transparent btn-toggle-item" data-target="lucm-fa-chart"><i class="fa fa-caret-right"></i>&nbsp;</button>' );
-			toggleButtonFA.append( i18n['change_forest_area'] );
-			colFAHeader.append( toggleButtonFA );
+//			var toggleButtonFA = $( '<button class="btn btn-transparent btn-toggle-item" data-target="lucm-fa-chart"><i class="fa fa-caret-right"></i>&nbsp;</button>' );
+//			toggleButtonFA.append( i18n['change_forest_area'] );
+//			colFAHeader.append( toggleButtonFA );
 			
-			var colCollapsableFA = $( '<div class="col-md-12 lucm-fa-chart">' );
+//			var colCollapsableFA = $( '<div class="col-md-12 lucm-fa-chart">' );
+			var colCollapsableFA = $( '<div class="col-md-12">' );
 			rowForestArea.append(  colCollapsableFA );
 			
 			
 			//area of land cover change
-			var rowLCHeader = $( '<div class="row row-dashbaord-padded info-table"></div>' );
+			var rowLCHeader = $( '<div class="row row-dashbaord-padded info-table lucm-lc-chart"></div>' );
 			container.append( rowLCHeader );
 			var colLCHeader = $( '<div class="col-md-12 title"></div>' );
+			colLCHeader.append( i18n['area_land_cover_change'] );
 			rowLCHeader.append(  colLCHeader );
-			var toggleButtonLC = $( '<button class="btn btn-transparent btn-toggle-item" data-target="lucm-lc-chart"><i class="fa fa-caret-right"></i>&nbsp;</button>' );
-			toggleButtonLC.append( i18n['area_land_cover_change'] );
-			colLCHeader.append( toggleButtonLC );
+//			var toggleButtonLC = $( '<button class="btn btn-transparent btn-toggle-item" data-target="lucm-lc-chart"><i class="fa fa-caret-right"></i>&nbsp;</button>' );
+//			toggleButtonLC.append( i18n['area_land_cover_change'] );
+//			colLCHeader.append( toggleButtonLC );
 			
-			var colCollapsableLC = $( '<div class="col-md-12 lucm-lc-chart">' );
+			var colCollapsableLC = $( '<div class="col-md-12">' );
+//			var colCollapsableLC = $( '<div class="col-md-12 lucm-lc-chart">' );
 			rowLCHeader.append(  colCollapsableLC );
 			
 			
@@ -237,23 +253,39 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 			createLandCoverChangeChart( colCollapsableLC , null );
 			
 			// bind events
+			var infoTables = container.find( '.info-table' );
+			infoTables.hide();
 			
-			container.find( '.btn-toggle-item' ).each( function(i,b){
-				var btn = $( b );
-				var target = container.find( '.' + btn.attr( 'data-target' ) );
-				target.hide();
-			});
-			container.find( '.btn-toggle-item' ).click(function(){
+			var btns =  container.find( '.header-btns button');
+			btns.click( function(e){
 				var btn = $( this );
-				var target = container.find( '.' + btn.attr( 'data-target' ) );
-				if( target.is(':visible') ){
-					target.slideUp();
-					btn.find( 'i' ).removeClass().addClass( 'fa fa-caret-right' );
-				} else {
-					target.slideDown();
-					btn.find( 'i' ).removeClass().addClass( 'fa fa-caret-down' );
+				if( !btn.hasClass('active') ){
+
+					btns.removeClass( 'active' );
+					btn.addClass( 'active' );
+					
+					infoTables.hide();
+					var target = container.find( '.' + btn.attr( 'data-target' ) );
+					target.fadeIn();
 				}
 			});
+			btns[0].click();
+//			container.find( '.btn-toggle-item' ).each( function(i,b){
+//				var btn = $( b );
+//				var target = container.find( '.' + btn.attr( 'data-target' ) );
+//				target.hide();
+//			});
+//			container.find( '.btn-toggle-item' ).click(function(){
+//				var btn = $( this );
+//				var target = container.find( '.' + btn.attr( 'data-target' ) );
+//				if( target.is(':visible') ){
+//					target.slideUp();
+//					btn.find( 'i' ).removeClass().addClass( 'fa fa-caret-right' );
+//				} else {
+//					target.slideDown();
+//					btn.find( 'i' ).removeClass().addClass( 'fa fa-caret-down' );
+//				}
+//			});
 		}
 		
 	});

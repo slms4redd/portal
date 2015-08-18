@@ -64,7 +64,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 	var liLegend = $( '<li></li>' );
 	ul.append( liLegend );
 	var btnLegend = $( '<button class="btn btn-default"><i class="fa fa-th-list"></i> </button>' );
-	btnLegend.append( i18n['legend_button'] );
+	btnLegend.append( i18n['dashboard_legend_button'] );
 	btnLegend.click( function(){
 		showLegend();
 	});
@@ -73,11 +73,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 	var liInfo = $( '<li></li>' );
 	ul.append( liInfo );
 	var btnInfo = $( '<button class="btn btn-default"><i class="fa fa-info-circle"></i> </button>' );
-	if( config.infoButtonMsg ){
-		btnInfo.append( i18n[config.infoButtonMsg] );
-	} else {
-		btnInfo.append( i18n['info_button'] );
-	}
+	btnInfo.append( i18n['dashboard_info_button'] );
 	btnInfo.click( function(){
 		showInfo();
 	});
@@ -86,7 +82,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 	var liStats = $( '<li></li>' );
 	ul.append( liStats );
 	var btnStats = $( '<button class="btn btn-default"><i class="fa fa-pie-chart"></i> </button>' );
-	btnStats.append( i18n['stats_button'] );
+	btnStats.append( i18n['dashboard_stats_button'] );
 	btnStats.click( function(){
 		showStats();
 	});
@@ -133,8 +129,6 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 	
 	
 	
-	
-	
 	// reset the dashboard to its origianl state
 	var resetDashboard = function(){
 		
@@ -162,14 +156,16 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 	};
 	
 	var showLegend = function(){
+		dashboardBtnBar.find( 'button' ).removeClass( 'active' );
+		btnLegend.addClass( 'active' );
+
 		if( !legend.is(":visible") ){
 			info.hide();
 			stats.hide();
 			legend.fadeIn( 350 );
+
+			dashboardContentRow.animate( { scrollTop: 0 } , 200  ,'easeInOutQuad' );	
 		}
-		
-		dashboardBtnBar.find( 'button' ).removeClass( 'active' );
-		btnLegend.addClass( 'active' );
 		
 	};
 	
@@ -182,8 +178,9 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 			legend.hide();
 			stats.hide();
 			info.fadeIn( 350 );
-		}
 
+			dashboardContentRow.animate( { scrollTop: 0 } , 200  ,'easeInOutQuad' );	
+		}
 	};
 	
 	var showStats = function(){
@@ -194,8 +191,9 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 			legend.hide();
 			info.hide();
 			stats.fadeIn( 350 );
+
+			dashboardContentRow.animate( { scrollTop: 0 } , 200  ,'easeInOutQuad' );	
 		}
-		
 	};
 	
 	resetDashboard();
@@ -239,7 +237,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 			
 		}
 	});
-	
+	//on windows resize
 	$( window ).resize(function() {
 //		var right = ( dashboard.hasClass( 'opened' ) ) ? "0" : "-"+(dashboard.width() ) +"px";
 		var right = ( dashboard.hasClass( 'opened' ) ) ? "0" : "-"+(dashboard.width() - dashboardToggle.width() + 1) +"px";
@@ -359,7 +357,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 				break;
 		};
 		return buttonType;
-	}
+	};
 	/**
 	 * Private method that returns the container for a dashboard element based on the TYPE and SOURCE
 	 * 
@@ -403,7 +401,9 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 		};
 		return container;
 	};
-	
+	/**
+	 * It removes all elements for the spcific TYPE and SOURCE
+	 */
 	bus.listen('dashboard-reset-type' , function(event ,TYPE, SOURCE){
 		//empty type
 		var elems = dashboard.find( '.dashboard-content-item.'+TYPE.toString() ).find('.dashboard-'+SOURCE.toString());
@@ -491,7 +491,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 			
 			dashboardContentRow.animate( { scrollTop: scrollTop } , 200  ,'easeInOutQuad' , highlightItem );			
 			
-		}, 250);
+		}, 150);
 		
 	});
 	

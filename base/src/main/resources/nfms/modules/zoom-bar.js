@@ -1,42 +1,34 @@
-define([ "jquery", "message-bus" , "layout" ], function($, bus , layout) {
+define([ "jquery", "message-bus" , "layout" , "i18n", "bootstrap"], function($, bus , layout , i18n) {
+	
+	var tooltipTemplate = '<div class="tooltip portal-tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>';
 	
 	var div		= $( '<div class="zoom-bar" />' );
 	layout.container.append( div );
 	
-	var zoomIn	= $( '<button class="btn btn-default"><i class="fa fa-plus"></i></button>' );
+	var zoomIn	= $( '<button class="btn btn-default" data-html="true"><i class="fa fa-plus"></i></button>' );
 	zoomIn.click(function() {
 		bus.send( "zoom-in" );
 		zoomIn.blur();
 	});
 	div.append( zoomIn );
+	zoomIn.tooltip( {title:i18n['zoombar_zoom_in'], container: 'body', placement:'top', template:tooltipTemplate , delay: { "show": 0, "hide": 20 }, html:true} );
 	
-	
-	var zoomOut	= $( '<button class="btn btn-default"><i class="fa fa-minus"></i></button>' );
+	var zoomOut	= $( '<button class="btn btn-default data-html="true""><i class="fa fa-minus"></i></button>' );
 	zoomOut.click(function() {
 		bus.send( "zoom-out" );
 		zoomOut.blur();
 	});
 	div.append( zoomOut );
+	zoomOut.tooltip( {title:i18n['zoombar_zoom_out'], container: 'body', placement:'top', template:tooltipTemplate , delay: { "show": 0, "hide": 20 }, html:true} );
 	
 	
-	var zoomFull	= $( '<button class="btn btn-default"><i class="fa fa-crosshairs"></i></button>' );
+	var zoomFull	= $( '<button class="btn btn-default data-html="true""><i class="fa fa-crosshairs"></i></button>' );
 	zoomFull.click(function() {
 		bus.send( "initial-zoom" );
 		zoomFull.blur();
 	});
 	div.append( zoomFull );
+	zoomFull.tooltip( {title:i18n['zoombar_zoom_default'], container: 'body', placement:'top', template:tooltipTemplate , delay: { "show": 0, "hide": 20 }, html:true});
 	
 	
-//	var btnZoomOut = $("<a/>").attr("id", "zoom_out").appendTo("body");
-//	btnZoomOut.click(function() {
-//		bus.send("zoom-out");
-//	});
-//	var btnZoomIn = $("<a/>").attr("id", "zoom_in").appendTo("body");
-//	btnZoomIn.click(function() {
-//		bus.send("zoom-in");
-//	});
-//	var btnZoomFull = $("<a/>").attr("id", "zoom_to_max_extent").appendTo("body");
-//	btnZoomFull.click(function() {
-//		bus.send("initial-zoom");
-//	});
 });
