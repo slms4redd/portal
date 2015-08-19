@@ -48,7 +48,7 @@
 			"imageFormat" : "image/png8",
 			"visible" : true,
 			"queryable" : false,
-			"wmsOptions" : { "singleTileaaaaa": true, "ratioaaa": 1}
+			"wmsOptions" : { "singleTile": true, "ratio": 1}
 		} 
 		, {
 			"id" : "country",

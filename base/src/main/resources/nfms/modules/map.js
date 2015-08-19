@@ -80,9 +80,7 @@ define([ "message-bus", "layout", "module", "openlayers" ], function(bus, layout
 						removeBackBufferDelay : 0,
 						isBaseLayer : false,
 						transparent : true,
-						format : wmsLayer.imageFormat || 'image/png',
-//						tilesorigin: map.maxExtent.left + ',' + map.maxExtent.bottom
-						singleTile: true
+						format : wmsLayer.imageFormat || 'image/png'
 					};
 				for (var paramName in wmsLayer.wmsParameters) {
 			        if ( wmsLayer.wmsParameters.hasOwnProperty(paramName) ) {
@@ -108,7 +106,6 @@ define([ "message-bus", "layout", "module", "openlayers" ], function(bus, layout
 			
 			if (map !== null) {
 				map.addLayer(layer);
-//				map.setLayerIndex(layer, wmsLayer.zIndex);
 				layer.setZIndex(wmsLayer.zIndex);
 			}
 			mapLayerArray.push(wmsLayer);
@@ -138,10 +135,6 @@ define([ "message-bus", "layout", "module", "openlayers" ], function(bus, layout
 		highlightLayer.id = "Highlighted Features";
 		map.addLayer(highlightLayer);
 		
-		
-		
-//		lon: 11675010.494753, lat: 2386740.8229121
-
 	});
 
 	bus.listen("layer-visibility", function(event, layerId, visibility) {

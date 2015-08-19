@@ -1,4 +1,4 @@
-define([ "jquery", "message-bus" , "layout" , "i18n", "bootstrap"], function($, bus , layout , i18n) {
+define([ "jquery", "message-bus" , "layout" , "i18n", "map", "bootstrap" ], function($, bus , layout , i18n,map) {
 	
 	var tooltipTemplate = '<div class="tooltip portal-tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>';
 	
@@ -30,5 +30,9 @@ define([ "jquery", "message-bus" , "layout" , "i18n", "bootstrap"], function($, 
 	div.append( zoomFull );
 	zoomFull.tooltip( {title:i18n['zoombar_zoom_default'], container: 'body', placement:'top', template:tooltipTemplate , delay: { "show": 0, "hide": 20 }, html:true});
 	
+	
+//	bus.listen('layers-loaded', function(){
+//		console.log( map );
+//	});
 	
 });

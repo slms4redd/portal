@@ -366,3 +366,7 @@ div.portal-tooltip.top div.tooltip-arrow {
     border-width: 5px 5px 0;
     border-top-color:  rgba(118, 120, 111, 1);
 }
+div.portal-tooltip.left div.tooltip-arrow {
+    border-width: 5px 0px 5px 5px;
+    border-left-color:  rgba(118, 120, 111, 1);
+}

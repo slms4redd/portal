@@ -1,5 +1,6 @@
 define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.actual.min"], function($, bus, i18n, dashboard ,highcharts) {
-	
+	var tooltipTemplate = '<div class="tooltip portal-tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>';
+
 //	var startYears 			= new Array();
 //	var endYears 			= new Array();
 //	var currentStartYear 	= null;
@@ -112,6 +113,16 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 					// first column is the class
 					var tdClass = $( '<td class="data-class"></td>' );
 					tdClass.html( (r+1) );
+					tdClass.addClass( 'nfi-class-' + (r+1) );
+					tdClass.tooltip({
+						title:i18n[ 'nfi-class-' + (r+1) ], 
+						container: 'body', 
+						placement:'left', 
+						template:tooltipTemplate , 
+						delay: { "show": 0, "hide": 20 }, 
+						html:true 
+					});
+					
 					tr.append( tdClass );
 					
 					for( var c = 0 ; c < rowData.length ; c++ ){
@@ -132,6 +143,15 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 					
 					var th = $(  '<th></th>' );
 					th.html( (r+1) );
+					th.addClass( 'nfi-class-' + (r+1) );
+					th.tooltip({
+						title:i18n[ 'nfi-class-' + (r+1) ], 
+						container: 'body', 
+						placement:'top', 
+						template:tooltipTemplate , 
+						delay: { "show": 0, "hide": 20 }, 
+						html:true 
+					});
 					trHead.append( th );
 				}
 				

@@ -107,7 +107,7 @@ function(bus, layout, i18n, $) {
   
 	var comments = 
 		'<div class="form-group">'+
-			'<label for="comments" class="col-md-4  control-label">Comments *</label>'+
+			'<label for="comments" class="col-md-4  control-label">' + i18n['Feedback.form.comments'] + ' *</label>'+
 			'<div class="col-md-7">'+
 				'<textarea class="form-control" rows="3" name="comments"></textarea>'+
 			'</div>'+
@@ -117,10 +117,10 @@ function(bus, layout, i18n, $) {
 	var buttons = 
 		$( '<div class="form-group" style="padding-top: 10px;">'+
 			'<div class="col-md-3 col-md-offset-3">'+
-				'<button type="reset" class="btn btn-default active">Reset</button>'+
+				'<button type="reset" class="btn btn-default active">' + i18n['Feedback.form.reset'] + '</button>'+
 			'</div>'+
 			'<div class="col-md-3">'+
-				' <button type="button" class="btn btn-default active feedback-submit-btn">Submit</button>'+
+				' <button type="button" class="btn btn-default active feedback-submit-btn">' + i18n['Feedback.form.submit'] + '</button>'+
 			'</div>'+
 		'</div>' );
 	fieldset.append( buttons );
