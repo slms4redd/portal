@@ -22,7 +22,14 @@
 				[
 					{ 
 						"name"		: "img" , 
-						"styles"	: {} ,
+						"styles"	: {"width": "140px",
+									    "left": "40px",
+									    "position": "absolute",
+									    "opacity": ".8",
+									    "border": "1px solid rgb(70, 159, 30)",
+									    "padding": "2px 14px",
+									    "background-color": "rgba(240, 240, 240, 1)"
+									    } ,
 						"label"		: "",
 						"attributes": {"src":"static/img/logo.png"},
 						"cssClasses": [],	
