@@ -2,24 +2,6 @@ define([ "jquery", "layout", "i18n", "message-bus", "module", "portal-ui" ], fun
 
 	var config = module.config();
 	
-	var addElements 	= function( parent , elements ){
-		$.each( elements , function( i , element ){
-			
-			var domElem = $( '<' + element.name + '/>' );
-			
-			// add styles
-			UI.parseStyle( domElem , element );
-			
-			//append to dom
-			parent.append( domElem );
-			
-			// append sub elements 
-			if( element.elements ){
-				addElements( domElem, element.elements);
-			}
-		});
-	}
-	
 	if( config.elements ){
 		var bannerRow = $( '<div class="row banner"></div>' ); 
 		layout.header.append( bannerRow );
@@ -27,7 +9,7 @@ define([ "jquery", "layout", "i18n", "message-bus", "module", "portal-ui" ], fun
 		var banner = $( '<div class="col-md-12"></div>' ); 
 		bannerRow.append( banner );
 		
-		addElements( banner, config.elements);
+		UI.parseElements( banner, config.elements);
 	}
 	
 });

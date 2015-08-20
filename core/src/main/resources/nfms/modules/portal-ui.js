@@ -16,6 +16,28 @@ define( ["jquery" , "i18n" ], function($ , i18n ) {
 		
 	};
 	
+	var addElements 	= function( parent , elements ){
+		$.each( elements , function( i , element ){
+			
+			var domElem = $( '<' + element.name + '/>' );
+			
+			// add styles
+			UI.parseStyle( domElem , element );
+			
+			//append to dom
+			parent.append( domElem );
+			
+			// append sub elements 
+			if( element.elements ){
+				addElements( domElem, element.elements);
+			}
+		});
+	}
+
+	UI.parseElements = function( parent , elements ){
+		addElements( parent, elements);
+	}
+	
 	/**
 	 * Parse a JSON object style to give to the domElem
 	 * The JSON style object has the format:
