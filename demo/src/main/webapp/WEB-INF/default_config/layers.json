@@ -76,6 +76,14 @@
 			"queryable" : true,
 			"wmsParameters" : { "styles" : "province_prap" }
 		}
+		, {
+			"id" 			: "province_center",
+			"baseUrl" 		: "http://redd.vnforest.gov.vn/diss_geoserver/wfs",
+			"type"			: "wfs",
+			"featureType"	: "province_center",
+			"featureNN"		:"http://www.nfms4redd.org",
+			"styleMap"		: "new OpenLayers.StyleMap({'strokeWidth' : 0,fillOpacity : 0})"
+		}
 		
 	],
 
@@ -142,6 +150,12 @@
 			"feedback" : false,
 			"legendFile" : "prap_legend.html"
 		}
+		, {
+			"id" : "province_center",
+			"active" : false,
+			"label" : "${redd_projects}",
+			"layers" : [ "province_center" ]
+		}
 		
 	],
 
@@ -171,7 +185,7 @@
 					"id" : "others",
 					"mutuallyExclusive" : true,
 					"label" : "${other_initiatives}",
-					"items": [ "province_fcpf_cf" ]
+					"items": [ "province_fcpf_cf" ,"province_center"]
 				}
 			]
 		}

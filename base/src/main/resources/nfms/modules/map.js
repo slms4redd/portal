@@ -62,14 +62,27 @@ define([ "message-bus", "layout", "module", "openlayers" ], function(bus, layout
 			if (wmsLayer.type == "osm") {
 				layer = new OpenLayers.Layer.OSM(wmsLayer.id, wmsLayer.osmUrls);
 			} else if (wmsLayer.type == "wfs") {
-				layer = new OpenLayers.Layer.Vector("WFS", {
-					strategies : [ new OpenLayers.Strategy.Fixed() ],
-					protocol : new OpenLayers.Protocol.WFS({
-						version : "1.0.0",
-						url : wmsLayer.baseUrl,
-						featureType : wmsLayer.featureType,
-					}),
-					projection : new OpenLayers.Projection("EPSG:4326")
+				
+				var wfsOptions = {
+						strategies : [ new OpenLayers.Strategy.Fixed() ],
+						protocol : new OpenLayers.Protocol.WFS({
+							version 	: "1.0.0",
+							url 		: wmsLayer.baseUrl,
+							featureType : wmsLayer.featureType,
+							featureNN 	: wmsLayer.featureNN
+						}),
+						projection : new OpenLayers.Projection("EPSG:4326")
+				};
+				if( wmsLayer.styleMap ){
+					var styleMap = eval( wmsLayer.styleMap );
+//					var styleMap = new OpenLayers.StyleMap({'strokeWidth' : 0,fillOpacity : 0});
+					wfsOptions.styleMap = styleMap;
+				}
+				layer = new OpenLayers.Layer.Vector( "WFS", wfsOptions );
+				
+				
+				layer.events.register("featureadded", event , function( ){
+					bus.send( 'wfs-feature-added' , arguments );
 				});
 			} else {
 				
@@ -78,7 +91,7 @@ define([ "message-bus", "layout", "module", "openlayers" ], function(bus, layout
 						buffer : 0,
 						transitionEffect : "resize",
 						removeBackBufferDelay : 0,
-						isBaseLayer : false,
+						isBaseLayer : true,
 						transparent : true,
 						format : wmsLayer.imageFormat || 'image/png'
 					};
@@ -103,7 +116,7 @@ define([ "message-bus", "layout", "module", "openlayers" ], function(bus, layout
 				layer = new OpenLayers.Layer.WMS( wmsLayer.id,  wmsLayer.baseUrl, wmsParams, options );
 			}
 			layer.id = wmsLayer.id;
-			
+
 			if (map !== null) {
 				map.addLayer(layer);
 				layer.setZIndex(wmsLayer.zIndex);

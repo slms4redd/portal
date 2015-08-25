@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.5/d3.min.js"></script>
+</head>
+
+<body>
+<div id="Carte">
+</div>
+<script>
+	// Définition de la taille de la carte
+  var width = 500;
+  var height = 600;
+	
+//-----------------------------------------------------FIN CONSTANTES-------------------------------
+
+//-----------------------------------------------------DEBUT SVG------------------------------------
+  // On crée un nouvel objet qui permet de manipuler les données géographiques
+  var path = d3.geo.path();
+ 
+  // On définit les propriétés de la projection à utiliser
+  var projection = d3.geo.mercator() // WGS 84
+      .center([110,12]) // On centre la carte
+      .scale(1900) // On définit l'échelle de zoom
+      .translate([410, 430]); // Defini la position des elements projétés (les provinces)(droite/gauche, haut/bas )
+  var geoPath = path.projection(projection);
+  
+  // On crée un nouvel objet dans lequel les données seront mises
+  var svg = d3.select('#Carte').append("svg")
+	  .attr("id","map")
+      .attr("width", width)
+      .attr("height", height);
+	  
+d3.json('Pig2008_2013.geojson', createMap);
+
+function createMap(geojson) {
+
+
+	// Nouvelle variable comprenant les propriétés du svg  
+  var Province2010 = svg
+      .append("g")
+      .attr("code", "pays");
+
+  // Nouvelle variable comprenant les propriétés de la variable Province2010 
+    var features = Province2010
+       .selectAll("path")
+       .data(geojson.features);
+	   
+features.enter()
+        .append("path")
+            .attr('class', 'pays')
+            .style('fill', "#e3e6eb")
+            .style('stroke', "white")
+	.attr("d", path) // Affiche la carte
+
+}
+</script>
+</body>
+</html>

@@ -2,7 +2,7 @@
  * 
  */
 define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "dashboard", "portal-string-utils" ], 
-		function(module, $, bus, map, i18n, customization, layerDashboard) {
+		function(module, $, bus, map, i18n, customization, layerDashboard ) {
 	
 	var config = module.config();
 	
@@ -11,6 +11,7 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 	
 	bus.listen('layers-loaded', function(e){
 
+		// load feature info
 		if( config.queryParams ){
 			var requestUrl		= serverUrl + wmsUri+ '?' + config.queryParams;
 
@@ -33,7 +34,10 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 			});
 		}
 		
+		
+		
 	});
+	
 	
 });
 	

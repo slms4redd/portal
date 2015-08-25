@@ -1,0 +1,57 @@
+@CHARSET "UTF-8";
+div.redd_project {
+	position: absolute;
+	z-index: 900;
+/* 	width: 70px; */
+/* 	height: 70px; */
+}
+
+div.redd_project div.popover {
+	background-color: rgba(4, 118, 210, 0.9);
+	display: block;
+    position: relative;
+    z-index: 900;
+    width: 170px;
+    
+/*     top: 140px; */
+/*     height: 0px; */
+/* 	bottom: 0px; */
+}
+div.redd_project  div.popover > .arrow {
+/* 	bottom: -6px !important; */
+/* 	border-width: 6px;	 */
+
+    bottom: -25px !important;
+    border-width: 13px;
+    border-top-color: rgba(4, 118, 210, 0.9);
+}
+div.redd_project  div.popover > .popover-content {
+	font-size: 10px;
+	padding: 5px 14px 15px 14px;
+	width: 100%;
+}
+div.redd_project  div.popover > .popover-content  >.project{
+	width: 100%;
+	display: none;
+}
+div.redd_project  div.popover.top > .arrow:after {
+/* 	 border-top: none; */
+}
+div.redd_project div.popover.top > .popover-title {
+	border: none;
+	background-color: rgba(4, 118, 210, 0);
+	
+	font-size: 11px;
+    font-weight: bold;
+    padding: 4px 0px 0px 0px;
+    text-align: center;
+}
+div.redd_project div.popover.top > .arrow {
+/*     border-top-color: rgba(4, 118, 210, 0.9); */
+}
+div.redd_project i {
+    font-size: 5px;
+    margin-top: .8em;
+    margin-left: -1.6em;
+    position: absolute;
+}

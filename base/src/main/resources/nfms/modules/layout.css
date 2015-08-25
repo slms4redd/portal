@@ -249,7 +249,9 @@ ul.dropdown-menu {
 	top : 90%;
 	min-width: 100%;
 }
-
+ul.dropdown-menu li:not(:first-child) {
+    border-top: 1px solid rgba(66, 66, 66, 0.3);
+}
 ul.dropdown-menu button, 
 ul.dropdown-menu button:focus {
 	border: none;

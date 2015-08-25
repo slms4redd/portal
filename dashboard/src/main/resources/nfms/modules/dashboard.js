@@ -192,7 +192,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 			info.hide();
 			stats.fadeIn( 350 );
 
-			dashboardContentRow.animate( { scrollTop: 0 } , 200  ,'easeInOutQuad' );	
+			dashboardContentRow.animate( { scrollTop: 0 } , 400  ,'easeInOutQuad' );	
 		}
 	};
 	
