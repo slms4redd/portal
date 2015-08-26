@@ -46,6 +46,9 @@
 		}, feature-info-control : {
 			"linkedLayers" : {
 				"province" : "country"
+			 } ,
+			 "vendorParams" :{
+			 	"buffer" : 1
 			 }
 		}, map : {
 			"options": { 

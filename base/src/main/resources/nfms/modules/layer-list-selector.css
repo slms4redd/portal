@@ -8,6 +8,10 @@ div.layers-container {
 	overflow		: auto;
 }
 
+div.panel-collapse {
+	margin-top: -.1em;
+}
+
 .layers-container .panel,
 .layers-container .panel-heading {
 	background-color: transparent;
@@ -23,7 +27,7 @@ div.layers-container {
 /* } */
 .layers-container .sub-group-heading {
 	padding			: 20px 0px 10px 18px;
-	font-size		: 14px;
+	font-size		: 13px;
 }
 .layers-container .group-panel-body {
 	padding: 10px 0px !important;
@@ -43,7 +47,7 @@ div.layers-container {
 .layers-container .panel-heading button.btn-default,
 .layers-container .panel-heading button.btn-default:active {
 	text-align			: left;
-	font-size			: 14px;
+	font-size			: 13px;
 	border				: 1px solid rgba(22, 22, 22, 0.25);
 }
 .layers-container .panel-heading button.btn-default:hover {

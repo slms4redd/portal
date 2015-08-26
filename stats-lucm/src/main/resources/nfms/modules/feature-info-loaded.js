@@ -1,16 +1,18 @@
 define([ "jquery", "message-bus" , "i18n" ], function($, bus, i18n) {
 
 	Features = {};
-	Features.onLoad = function( data ){
+	Features.appendLabels = function( data ){
 		var data = $( data );
+
+//		data.find( '.province_name' ).append( i18n['province_dien_bien'] );
 
 		data.find( '.btn-drivers' ).append( i18n['btn-drivers'] );
 		data.find( '.btn-interventions' ).append( i18n['btn-interventions'] );
 		data.find( '.btn-areas' ).append( i18n['btn-areas'] );
+		data.find( '.btn-projects' ).append( i18n['btn-projects'] );
 		
 		data.find( '.national_redd_action_program' ).append( i18n['national_redd_action_program'] );
 		data.find( '.province_approved_msg1' ).append( i18n['province_approved_msg1'] );
-		data.find( '.province_name' ).append( i18n['province_dien_bien'] );
 		data.find( '.province' ).append( i18n['province'] );
 		data.find( '.province_approved_msg2' ).append( i18n['province_approved_msg2'] );
 		data.find( '.province_deforestation_drivers' ).append( i18n['province_deforestation_drivers'] );
@@ -39,7 +41,26 @@ define([ "jquery", "message-bus" , "i18n" ], function($, bus, i18n) {
 		data.find( '.districts_in' ).append( i18n['districts_in'] );
 		data.find( '.province_with_siraps' ).append( i18n['province_with_siraps'] );
 		
+		data.find( '.redd_projects' ).append( i18n['redd_projects'] );
+		data.find( '.redd_project_duration' ).append( i18n['redd_project_duration'] );
+		data.find( '.redd_project_website' ).append( i18n['redd_project_website'] );
 		
+		data.find( '.redd_project_1_label' ).append( i18n['redd_project_1_label'] );
+		data.find( '.redd_project_2_label' ).append( i18n['redd_project_2_label'] );
+		data.find( '.redd_project_3_label' ).append( i18n['redd_project_3_label'] );
+		data.find( '.redd_project_4_label' ).append( i18n['redd_project_4_label'] );
+		data.find( '.redd_project_5_label' ).append( i18n['redd_project_5_label'] );
+		data.find( '.redd_project_6_label' ).append( i18n['redd_project_6_label'] );
+		data.find( '.redd_project_7_label' ).append( i18n['redd_project_7_label'] );
+		data.find( '.redd_project_8_label' ).append( i18n['redd_project_8_label'] );
+		data.find( '.redd_project_9_label' ).append( i18n['redd_project_9_label'] );
+		data.find( '.redd_project_10_label' ).append( i18n['redd_project_10_label'] );
+		data.find( '.redd_project_11_label' ).append( i18n['redd_project_11_label'] );
+		data.find( '.redd_project_12_label' ).append( i18n['redd_project_12_label'] );
+		data.find( '.redd_project_13_label' ).append( i18n['redd_project_13_label'] );
+		data.find( '.redd_project_14_label' ).append( i18n['redd_project_14_label'] );
+		data.find( '.redd_project_15_label' ).append( i18n['redd_project_15_label'] );
+		data.find( '.redd_project_16_label' ).append( i18n['redd_project_16_label'] );
 		
 //		data.find( '.collapsable' ).hide();
 //		data.find( '.btn-collapsable' ).click(function(){
@@ -70,6 +91,58 @@ define([ "jquery", "message-bus" , "i18n" ], function($, bus, i18n) {
 			}
 		});
 		btns[0].click();
+	};
+	
+	Features.processProvince = function( feature , data ){
+		data.find( '.province_name' ).append( feature.attributes.name );
+		
+		var provinceId 	= feature.attributes.province_c;
+		var province 	= REDDProjects.provinces[ provinceId ];
+		
+//		console.log( province );
+		if( province.prap ){
+			
+		} else {
+			data.filter('.prap').hide();
+		}
+		
+		if( province.drivers ){
+			
+		} else {
+			data.filter( '.header-btns' ).find('li.drivers').remove();
+		}
+		
+
+		if (province.interventions) {
+
+		} else {
+			data.filter('.header-btns').find('li.interventions').remove();
+		}
+
+		if (province.areas) {
+
+		} else {
+			data.filter('.header-btns').find('li.areas').remove();
+		}
+		
+		if( province.projects ){
+			for( var i in  province.projects ){
+				var proj = province.projects[ i ];
+//				console.log( proj );
+				var table = data.filter( '.info-table.projects' ).find( 'table' );
+				table.find( 'tr' ).hide();
+				
+				for( var p in proj ){
+					table.find( 'tr:nth-child('+(p-1)+')' ).show();
+				}
+			}
+		} else {
+			data.filter( '.header-btns' ).find('li.projects').remove();
+		}
+		
+		if( data.filter( '.header-btns' ).find('li').length <= 1 ){
+			data.filter( '.header-btns' ).hide();
+		}
 	};
 	
 

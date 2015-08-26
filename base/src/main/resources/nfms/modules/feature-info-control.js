@@ -63,7 +63,6 @@ define([ "map", "message-bus", "customization","module"  ], function(map, bus, c
 						}
 						
 						control.layers.push(layer);
-//						console.log( control.layers );
 					}
 					
 				}
@@ -84,8 +83,12 @@ define([ "map", "message-bus", "customization","module"  ], function(map, bus, c
 		}
 	});
 	
-	control.vendorParams['buffer'] = 1;
-	
+	if( config.vendorParams ){
+		for( var paramName in config.vendorParams){
+			control.vendorParams[ paramName ] = config.vendorParams[ paramName ];
+		}
+	}
+
 	bus.send("set-default-exclusive-control", [ control ]);
 	bus.send("activate-default-exclusive-control");
 

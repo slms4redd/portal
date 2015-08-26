@@ -29,7 +29,14 @@ define([ "jquery"], function($){
 	
 	REDDProjects.provinces = {
 	                          
-	                          '68'	:{ 'projects':['1','4','8','9','11','12','13'] }
+							  '11'	:{
+								  'projects':['5','6']
+									, 'prap' : true
+									, 'interventions' : []
+									, 'areas' : []
+									, 'drivers' : []
+							  	}
+	                          ,'68'	:{ 'projects':['1','4','8','9','11','12','13'] }
 	                          ,'10'	:{ 'projects':['2','14','15'] }
 	                          ,'6'	:{ 'projects':['2'] }
 	                          ,'42'	:{ 'projects':['2'] }
@@ -39,7 +46,6 @@ define([ "jquery"], function($){
 	                          ,'44'	:{ 'projects':['3','7'] }
 	                          ,'45'	:{ 'projects':['3','9'] }
 	                          ,'67'	:{ 'projects':['3'] }
-	                          ,'11'	:{ 'projects':['5','6'] }
 	                          ,'40'	:{ 'projects':['11'] }
 	                          ,'20'	:{ 'projects':['15'] }
 	                          ,'38'	:{ 'projects':['15'] }

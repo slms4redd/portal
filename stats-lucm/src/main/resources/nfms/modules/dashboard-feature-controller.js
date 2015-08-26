@@ -1,11 +1,31 @@
-define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "dashboard","feature-info-loaded" ], function(module, $, bus, map, i18n, customization, dashboard) {
+define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "dashboard","feature-info-loaded" ,"redd_projects"], function(module, $, bus, map, i18n, customization, dashboard) {
 	
 	var infoUrl = customization['info.queryUrl'] ;
 	
 	var infoQueryUrl = "proxy?url=" + infoUrl;
 	
 	var wmsNamePortalLayerName = {};
-
+	
+	var provinceHtmlTemplate = "";
+	var countryHtmlTemplate = "";
+	$.ajax({
+		url			: 'static/province_info_file.html' ,
+		data		: {bust : (new Date()).getTime()},
+		dataType 	: "html" ,
+		success		: function(data){
+			provinceHtmlTemplate		= $( data );
+		}
+	});
+	$.ajax({
+		url			: "static/loc/" + customization.languageCode + "/html/vietnam.html" ,
+		data		: {bust : (new Date()).getTime()},
+		dataType 	: "html" ,
+		success		: function(data){
+			countryHtmlTemplate		= $( data );
+		}
+	});
+	
+	
 	bus.listen("add-layer", function(event, layerInfo) {
 		var portalLayerName = layerInfo["label"];
 		$.each(layerInfo.wmsLayers, function(i, wmsLayer) {
@@ -24,22 +44,46 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 			}
 		}
 		
+		var featureName 	= feature.attributes.name ;
+		var zoneType		= feature.fid.substring( 0, feature.fid.indexOf('.') );
+		
+		var isProvince 		= ( zoneType == 'province' ); 
+		feature.isProvince = isProvince;
+		
+		var isCountry 		= ( zoneType == 'country' ); 
+		feature.isCountry = isCountry;
+		
+//		console.log( feature );
+//		console.log( layer );
 		
 		var hasDashboard = false;
-		if (feature.attributes.hasOwnProperty("legend_file") && StringUtils.isNotBlank(feature.attributes.legend_file)) {
-			hasDashboard = true;
+//		if (feature.attributes.hasOwnProperty("legend_file") && StringUtils.isNotBlank(feature.attributes.legend_file)) {
+//			hasDashboard = true;
+//		}
+		
+		if( feature.isProvince ){
+			
+			var provinceId 	= feature.attributes.province_c;
+			var province 	= REDDProjects.provinces[ provinceId ];
+			if( province != null ){
+				hasDashboard = true;
+			}
+			
+		} else {
+			
+			if (feature.attributes.hasOwnProperty("info_file") && StringUtils.isNotBlank(feature.attributes.info_file) ) {
+				hasDashboard = true;
+			}
+			
 		}
-		if (feature.attributes.hasOwnProperty("info_file") && StringUtils.isNotBlank(feature.attributes.info_file) ) {
-			hasDashboard = true;
-		}
+
 		if( hasDashboard){
 			featureIds.push( feature.fid );
 			features.push( feature );
 		}
 		
 		
-		var featureName 	= feature.attributes.name ;
-		var zoneType		= feature.fid.substring( 0, feature.fid.indexOf('.') );
+		
 
 		var data = 
 		    '<OR>'+
@@ -106,12 +150,13 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 				openSection = true ;
 			}
 			
-			bus.send( "dashboard-toggle-visibility" , true );
 			
 			features.sort( function(f1,f2){
 				return f1.fid.localeCompare(f2.fid);
 			});
 			
+			bus.send( "dashboard-toggle-visibility" , true );
+
 			bus.send( "dashboard-reset-type" , [dashboard.TYPE.INFO, dashboard.SOURCE.FEATURES] );
 			bus.send( "dashboard-reset-type" , [dashboard.TYPE.LEGEND, dashboard.SOURCE.FEATURES] );
 			bus.send( "dashboard-reset-type" , [dashboard.TYPE.STATS, dashboard.SOURCE.FEATURES] );
@@ -137,9 +182,35 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 	
 	var loadFeatureInfo = function( feature , openSection, expand ){
 		var fId = feature.fid.replace( '.' , '-' );
-	
+//		console.log( feature );
+
 		// open info
-		if ( feature.attributes.hasOwnProperty("info_file")  ) {
+		var data = '';
+		if( feature.isProvince || feature.isCountry ){
+			var data = ( feature.isProvince ) ? provinceHtmlTemplate.clone() : countryHtmlTemplate.clone();
+			
+			var dataClass 	=  "feature-info-" + fId ;
+			data.addClass( dataClass );
+			
+			if( feature.isProvince ){
+				Features.processProvince ( feature , data );
+			}
+			Features.appendLabels( data );
+			
+			bus.send( 'add-dashboard-element' , [fId , feature.attributes.name, data , true , dashboard.TYPE.INFO, dashboard.SOURCE.FEATURES]);
+			
+			if( openSection ){
+				bus.send( "dashboard-show-type" , [dashboard.TYPE.INFO, dashboard.SOURCE.FEATURES] );
+			} else {
+				bus.send( "dashboard-activate-type" , [dashboard.TYPE.INFO, dashboard.SOURCE.FEATURES] );
+			}
+			
+			if( !expand ){
+				bus.send( 'dashboard-element-toggle-state' , [dashboard.TYPE.INFO , fId , false] );
+			}
+			
+		}
+		else if ( feature.attributes.hasOwnProperty("info_file")  ) {
 			
 			var url =  "static/loc/" + customization.languageCode + "/html/" + feature.attributes.info_file;
 			$.ajax({
@@ -152,7 +223,7 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 					var dataClass 	=  "feature-info-" + fId ;
 					data.addClass( dataClass );
 					
-					Features.onLoad( data );
+					Features.appendLabels( data );
 					
 					bus.send( 'add-dashboard-element' , [fId , feature.attributes.name, data , true , dashboard.TYPE.INFO, dashboard.SOURCE.FEATURES]);
 					

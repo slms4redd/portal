@@ -15,24 +15,25 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization",  "po
 	var popoverHtml = $( '<div class="redd_project"><div class="popover fade top in popover_province" data-style="redd_projects_tooltip" role="tooltip">'
 			+'<div class="arrow"></div>'
 			+'<h3 class="popover-title"></h3>'
-			+'<div class="popover-content">'
+			+'<div class="popover-content collapsed"></div>'
+			+'<div class="popover-content expanded">'
 			
-			+'<div class="project project_1"><i class="fa fa-circle-thin"></i> '+i18n['redd_project_1_short_label']+'</div>'
-			+'<div class="project project_2"><i class="fa fa-circle-thin"></i> '+i18n['redd_project_2_short_label']+'</div>'
-			+'<div class="project project_3"><i class="fa fa-circle-thin"></i> '+i18n['redd_project_3_short_label']+'</div>'
-			+'<div class="project project_4"><i class="fa fa-circle-thin"></i> '+i18n['redd_project_4_short_label']+'</div>'
-			+'<div class="project project_5"><i class="fa fa-circle-thin"></i> '+i18n['redd_project_5_short_label']+'</div>'
-			+'<div class="project project_6"><i class="fa fa-circle-thin"></i> '+i18n['redd_project_6_short_label']+'</div>'
-			+'<div class="project project_7"><i class="fa fa-circle-thin"></i> '+i18n['redd_project_7_short_label']+'</div>'
-			+'<div class="project project_8"><i class="fa fa-circle-thin"></i> '+i18n['redd_project_8_short_label']+'</div>'
-			+'<div class="project project_9"><i class="fa fa-circle-thin"></i> '+i18n['redd_project_9_short_label']+'</div>'
-			+'<div class="project project_10"><i class="fa fa-circle-thin"></i> '+i18n['redd_project_10_short_label']+'</div>'
-			+'<div class="project project_11"><i class="fa fa-circle-thin"></i> '+i18n['redd_project_11_short_label']+'</div>'
-			+'<div class="project project_12"><i class="fa fa-circle-thin"></i> '+i18n['redd_project_12_short_label']+'</div>'
-			+'<div class="project project_13"><i class="fa fa-circle-thin"></i> '+i18n['redd_project_13_short_label']+'</div>'
-			+'<div class="project project_14"><i class="fa fa-circle-thin"></i> '+i18n['redd_project_14_short_label']+'</div>'
-			+'<div class="project project_15"><i class="fa fa-circle-thin"></i> '+i18n['redd_project_15_short_label']+'</div>'
-			+'<div class="project project_16"><i class="fa fa-circle-thin"></i> '+i18n['redd_project_16_short_label']+'</div>'
+			+'<div class="project project_1"><i class="fa fa-circle"></i> '+i18n['redd_project_1_short_label']+'</div>'
+			+'<div class="project project_2"><i class="fa fa-circle"></i> '+i18n['redd_project_2_short_label']+'</div>'
+			+'<div class="project project_3"><i class="fa fa-circle"></i> '+i18n['redd_project_3_short_label']+'</div>'
+			+'<div class="project project_4"><i class="fa fa-circle"></i> '+i18n['redd_project_4_short_label']+'</div>'
+			+'<div class="project project_5"><i class="fa fa-circle"></i> '+i18n['redd_project_5_short_label']+'</div>'
+			+'<div class="project project_6"><i class="fa fa-circle"></i> '+i18n['redd_project_6_short_label']+'</div>'
+			+'<div class="project project_7"><i class="fa fa-circle"></i> '+i18n['redd_project_7_short_label']+'</div>'
+			+'<div class="project project_8"><i class="fa fa-circle"></i> '+i18n['redd_project_8_short_label']+'</div>'
+			+'<div class="project project_9"><i class="fa fa-circle"></i> '+i18n['redd_project_9_short_label']+'</div>'
+			+'<div class="project project_10"><i class="fa fa-circle"></i> '+i18n['redd_project_10_short_label']+'</div>'
+			+'<div class="project project_11"><i class="fa fa-circle"></i> '+i18n['redd_project_11_short_label']+'</div>'
+			+'<div class="project project_12"><i class="fa fa-circle"></i> '+i18n['redd_project_12_short_label']+'</div>'
+			+'<div class="project project_13"><i class="fa fa-circle"></i> '+i18n['redd_project_13_short_label']+'</div>'
+			+'<div class="project project_14"><i class="fa fa-circle"></i> '+i18n['redd_project_14_short_label']+'</div>'
+			+'<div class="project project_15"><i class="fa fa-circle"></i> '+i18n['redd_project_15_short_label']+'</div>'
+			+'<div class="project project_16"><i class="fa fa-circle"></i> '+i18n['redd_project_16_short_label']+'</div>'
 			
 			+'</div>'
 			+'</div>'
@@ -49,6 +50,7 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization",  "po
 		map.events.register("moveend", this, function (e) {
 			$('.redd_project').stop().hide();
 			var layer = map.getLayer( 'province_center' );
+			console.log( layer );
 			layer.refresh( {force:true} );
 		});
 		
@@ -80,17 +82,15 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization",  "po
 
 			if( reddProjectsVisibile ){
 				var h =  popover.innerHeight() ;
-//				console.log( h );
 				
 				var popoverContent = popover.find('.popover');
-				popoverContent.css({top: h+'px',height: '0px' , bottom:'0px' });
-				popoverContent.stop().animate({"top": "0px", "height": h+"px" } , 500 ,'easeInOutElastic'); 
+				popoverContent.css( {top: h+'px',height: '0px' , bottom:'0px' } );
+				popoverContent.stop().animate( {"top": "0px", "height": h+"px" } , 500 ,'easeInOutBack' ); 
 
 				
 			} else {
 				popover.stop().hide();
 			}
-		
 			
 		}
 		
@@ -120,12 +120,83 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization",  "po
 				popover.find( '.project_' + proj ).show();
 			}
 			
-			$('body').append( popover );
-
-			var h =  popover.innerHeight() ;
-			popover.css( 'top' , ( point.y - (h-5) ) + 'px' );
-			popover.css( 'left' , ( point.x - 85 )+ 'px'  );
+			popover.find( '.popover-content.collapsed' ).html( province.projects.length + ' ' + i18n['projects'] );
+			popover.find( '.popover-content.expanded' ).hide();
 			
+			
+			$('body').append( popover );
+			
+			
+			var h =  popover.innerHeight();
+			var w =  popover.innerWidth();
+			popover.css( 'top' , ( point.y - (h-5) ) + 'px' );
+			popover.css( 'left' , ( point.x - (w/2-5) )+ 'px'  );
+			
+			
+			var bindEvents = function(){
+				var popoverContent = popover.find( '.popover' );
+				
+				var onmouseover =  function(e){
+					popover.css( {'z-index':'9200'} ) ;
+					popover.find( '.popover-content.collapsed' ).hide( 0 );
+					
+					popoverContent
+					.animate({
+						"height": (h+120)+"px" , 
+						"width": (w+100)+"px", 
+						"left":"-50px" , 
+						"top":"-120px" , 
+						"font-size":"12px" , 
+						'background-color': 'rgba(4, 118, 210, 1);'
+					} , 200 ,'easeInOutQuad' );
+					
+					
+					setTimeout( function(){
+						popover.find( '.popover-content.expanded' ).show( 0 );
+						popover.find('.popover').off('mouseover',onmouseover);
+						popover.find('.popover').on('mouseleave',onmouseout);
+					}, 100 );
+					
+				}; 
+				
+				var onmouseout 	= function(){
+					popover.find( '.popover-content.expanded' ).hide( 0 );
+					
+					popoverContent
+					.animate({
+						"height": (h)+"px" , 
+						"width": (w)+"px", 
+						"left":"0px" , 
+						"top":"0px" , 
+						"font-size":"11px" , 
+						'background-color': 'rgba(4, 118, 210, 0.6);'
+					} , 200 ,'easeInOutQuad' );
+					
+					
+					setTimeout( function(){
+						popover.find( '.popover-content.collapsed' ).show( 0 );
+						popover.css( {'z-index' : '900'} ) ;
+						popover.find('.popover').off('mouseleave',onmouseout);
+						popover.find('.popover').on('mouseover',onmouseover);
+					}, 100 );
+				};
+				
+				popover.find('.popover').on('mouseover',onmouseover);
+//				popover.find('.popover').mouseover(onmouseover);
+				
+				
+			};
+			bindEvents();
+			
+//			popoverContent.mouseout( function(e){
+//				popoverContent.stop().animate( {"height": h+"px" , "width": w+"px" } , 500 ,'easeInOutBack' );
+//				setTimeout( function(){
+//					popover.find( '.popover-content.collapsed' ).fadeIn( 150 );
+//					popover.find( '.popover-content.expanded' ).hide();
+//				}, 350 );
+//				
+//			});
+
 			return popover;
 		}
 	
