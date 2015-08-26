@@ -1,15 +1,13 @@
-languages = {"en": "English", "fr": "Fran\u00e7ais", "es": "Espa\u00f1ol"}
-geostore.url = http://localhost/diss_geostore/rest
-geostore.username = admin
-geostore.password = Unr3dd
+languages = {"en": "English", "vn": "Ti\u1EBFng Vi\u1EC7t"}
+languages.default = en
+
 recaptcha.publickey = 6Ld5ydQSAAAAAGtZJG67QkQM7Z13X6MGf72RtmDE
 recaptcha.privatekey = 6Ld5ydQSAAAAAJW3To_tN6czS7C-HCnsBVhENfD9
-
-######## Keys provided for the new version of the portal
-map.centerLonLat=80.747263, 7.688337
-info.queryUrl=http://178.33.8.121/diss_geostore/rest/resources/search/list?includeAttributes=true&includeData=true
-info.layerUrl=http://178.33.8.121/diss_geoserver/wms
+# info.queryUrl=http://redd.vnforest.gov.vn/diss_geoserver/wms
+info.queryUrl=http://178.33.8.123/diss_geostore/rest/resources/search/list?includeAttributes=true&includeData=true
+info.layerUrl=http://redd.vnforest.gov.vn/diss_geoserver/gwc/service/wms
 client.modules=
+map.centerLonLat=108.8057026, 16.3252485
 map.initialZoomLevel=6
 highlight-bounds=true
 feedback-db-table=integration_tests.comments
@@ -21,3 +19,4 @@ feedback-admin-mail-title=Nuevo comentario en el portal REDD
 feedback-admin-mail-text=Se ha introducido un comentario en el portal de REDD con c\u00f3digo de verificaci\u00f3n "$code"
 # milliseconds. CHANGE IT!! For example, use 600000 for 10 minutes 
 feedback-validation-check-delay=1000
+

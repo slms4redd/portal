@@ -9,7 +9,7 @@
 	<modules>
 		<module>core</module>
 		<module>base</module>
-		<module>portal-myanmar</module>
+		<module>portal-srilanka</module>
 		<module>jwebclient-analyzer</module>
 		<module>jwebclient-analyzer-maven-plugin</module>
 		<module>feedback</module>

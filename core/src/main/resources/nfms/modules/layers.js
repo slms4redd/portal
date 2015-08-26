@@ -106,6 +106,12 @@ define([ "jquery", "message-bus", "customization", "module" , "i18n" ], function
 				portalLayer.wmsLayers 	= layerInfoArray;
 
 				bus.send("add-layer", portalLayer);
+				
+				//popup sample
+				console.log("portalLayer.id: "+portalLayer.id);
+				if(portalLayer.id == "countryBoundaries")
+					bus.send("add-popup", portalLayer.id);
+				
 				bus.send("layer-visibility", [ portalLayer.id, portalLayer.active || false ]);
 			}
 			
@@ -135,5 +141,5 @@ define([ "jquery", "message-bus", "customization", "module" , "i18n" ], function
 		
 		bus.send("layers-loaded");
 	});
-
+	
 });

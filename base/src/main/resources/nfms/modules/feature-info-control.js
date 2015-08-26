@@ -1,4 +1,4 @@
-define([ "map", "message-bus", "customization","module"  ], function(map, bus, customization ,module) {
+define([ "map", "message-bus", "customization", "module", "openlayers" ], function(map, bus, customization ,module) {
 
 	var config = module.config();
 	
@@ -12,7 +12,7 @@ define([ "map", "message-bus", "customization","module"  ], function(map, bus, c
 		url : customization["info.queryUrl"],
 //		layerUrls : [ customization["info.layerUrl"] ],
 		title : 'Identify features by clicking',
-		queryVisible : false,
+		queryVisible : true,
 		infoFormat : 'application/vnd.ogc.gml',
 		hover : false,
 		drillDown : true,
@@ -30,6 +30,10 @@ define([ "map", "message-bus", "customization","module"  ], function(map, bus, c
 					
 					bus.send("info-features", [ evt.features, evt.xy.x, evt.xy.y ]);
 //					bus.send("info-features", [ features, evt.xy.x, evt.xy.y ]);
+					
+					// sending the message to the listener for the popup
+					bus.send("info-popup-getfeatureinfo", [ control, evt.xy.x, evt.xy.y, evt.text ]);
+					
 				}
 			},
 			beforegetfeatureinfo : function() {
@@ -83,7 +87,7 @@ define([ "map", "message-bus", "customization","module"  ], function(map, bus, c
 			featureNS : 'http://www.openplans.org/unredd'
 		}
 	});
-	
+	//console.log("url "+url);
 	control.vendorParams['buffer'] = 1;
 	
 	bus.send("set-default-exclusive-control", [ control ]);

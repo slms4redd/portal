@@ -44,8 +44,7 @@ define([ "message-bus", "layout", "module", "openlayers" ], function(bus, layout
 	    }
 	}
 	map = new OpenLayers.Map( mapId , mapOptions );
-	
-	    
+
 //	map.events.register('zoomend', map, function() {
 //		  var zoomInfo = 'Zoom level=' + map.getZoom() + '/' + (map.numZoomLevels + 1);
 //		  console.log( zoomInfo );
@@ -106,10 +105,13 @@ define([ "message-bus", "layout", "module", "openlayers" ], function(bus, layout
 			layer.id = wmsLayer.id;
 			
 			if (map !== null) {
+				
 				map.addLayer(layer);
 //				map.setLayerIndex(layer, wmsLayer.zIndex);
 				layer.setZIndex(wmsLayer.zIndex);
+								
 			}
+			
 			mapLayerArray.push(wmsLayer);
 		});
 		if (mapLayerArray.length > 0) {
@@ -195,5 +197,110 @@ define([ "message-bus", "layout", "module", "openlayers" ], function(bus, layout
 		}
 	});
 
+	
+	bus.listen("info-popup-getfeatureinfo", function(control, x, y, text) {
+		//console.log("sono qui");
+		alert("sono qui");
+	});
+	
+	
+	//popup sample
+	bus.listen("add-popup", function(portalLayerId) {
+		//console.log("sono qui");
+		var layer = "unredd:";
+		layer = layer+portalLayerId;		
+		console.log("add-popup: "+layer);
+		
+		map.events.register("click", map, function(e) {
+			var popup = new OpenLayers.Popup("chicken",
+					map.getLonLatFromPixel(event.xy),
+	                new OpenLayers.Size(200,200),
+	                "example popup",
+	                true);
+
+			map.addPopup(popup);
+		} 
+		
+		
+		
+		
+		//popup sample
+		/*var info = new OpenLayers.Control.WMSGetFeatureInfo({
+            url: 'http://178.33.8.121/diss_geoserver/wms', 
+            title: 'Identify features by clicking',
+            layers: layer,
+            queryVisible: true,
+            infoFormat: 'application/vnd.ogc.gml',
+            hover: false,
+            drillDown: true,
+            maxFeatures: 5,
+            handlerOptions: {
+                "click": {
+                    'single': true,
+                    'double': false
+                }
+            },
+            eventListeners: {
+                getfeatureinfo: function(event) {
+                	console.log("output getfeaturedinfo: "+showInfo(event, event.text));
+                    map.addPopup(new OpenLayers.Popup.FramedCloud(
+                        "chicken", 
+                        map.getLonLatFromPixel(event.xy),
+                        null,
+                        event.text,
+                        null,
+                        true
+                    ));
+                }
+            }
+        });
+        map.addControl(info);
+        info.activate();*/
+		//end popup sample
+		
+	});
+	
+	
+	//test
+	/**
+	 * Add a click handler to hide the popup.
+	 * @return {boolean} Don't follow the href.
+	 */
+	/**
+	 * Create an overlay to anchor the popup to the map.
+	 */
+/*	var container = document.getElementById('popup');
+	var content = document.getElementById('popup-content');
+	var closer = document.getElementById('popup-closer');
+	
+	var overlay = new OpenLayers.Overlay(({
+	  element: container,
+	  autoPan: true,
+	  autoPanAnimation: {
+	    duration: 250
+	  }
+	}));
+	
+	
+	closer.onclick = function() {
+	  overlay.setPosition(undefined);
+	  closer.blur();
+	  return false;
+	};*/
+	
+	
+	/**
+	 * Add a click handler to the map to render the popup.
+	 */
+/*	map.on('singleclick', function(evt) {
+	  var coordinate = evt.coordinate;
+	  var hdms = OpenLayers.coordinate.toStringHDMS(OpenLayers.proj.transform(
+	      coordinate, 'EPSG:3857', 'EPSG:4326'));
+
+	  content.innerHTML = '<p>You clicked here:</p><code>' + hdms +
+	      '</code>';
+	  overlay.setPosition(coordinate);
+	});*/
+	
 	return map;
 });
