@@ -1,11 +1,10 @@
 /**
  * 
  */
-define([ "module", "jquery", "message-bus", "map", "i18n", "customization",  "portal-string-utils", 'redd_projects' ,"jquery-easing"], 
+define([ "module", "jquery", "message-bus", "map", "i18n", "customization",  "portal-string-utils", 'redd_projects' ,"jquery-easing" , "features" ], 
 		function(module, $, bus, map, i18n, customization ) {
 	
 	var reddProjectsVisibile =  true;
-	
 	var config = module.config();
 	
 	var serverUrl 	= customization['info.serverUrl'] ;
@@ -14,9 +13,9 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization",  "po
 	// popover html content
 	var popoverHtml = $( '<div class="redd_project"><div class="popover fade top in popover_province" data-style="redd_projects_tooltip" role="tooltip">'
 			+'<div class="arrow"></div>'
-			+'<h3 class="popover-title"></h3>'
-			+'<div class="popover-content collapsed"></div>'
+			+'<div class="popover-content collapsed"><i class="fa fa-tree" ></i></div>'
 			+'<div class="popover-content expanded">'
+			+'<h3 class="popover-title"></h3>'
 			
 			+'<div class="project project_1"><i class="fa fa-circle"></i> '+i18n['redd_project_1_short_label']+'</div>'
 			+'<div class="project project_2"><i class="fa fa-circle"></i> '+i18n['redd_project_2_short_label']+'</div>'
@@ -39,21 +38,24 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization",  "po
 			+'</div>'
 			+'</div>' );
 
+	var markerHtml = $( '<div class="redd_project_marker"><img src="static/img/Map-Marker-Ball-Left-Azure-icon.png" width="20"/></div>' );
+//	var markerHtml = $( '<div class="redd_project_marker"><i class="fa fa-map-pin"></i></div>' );
 	
 	bus.listen('layers-loaded', function(e){
 
 		//redd project layers
 		map.events.register("movestart", this, function (e) {
 			$('.redd_project').stop().hide();
+			$('.redd_project_marker').stop().hide();
 		});
 
 		map.events.register("moveend", this, function (e) {
 			$('.redd_project').stop().hide();
+			$('.redd_project_marker').stop().hide();
 			var layer = map.getLayer( 'province_center' );
-			console.log( layer );
+
 			layer.refresh( {force:true} );
 		});
-		
 		
 	});
 	
@@ -61,6 +63,7 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization",  "po
 		if( layerId === 'province_center' ){
 			
 			$('.redd_project').stop().remove();
+			$('.redd_project_marker').stop().remove();
 			
 			reddProjectsVisibile = visible;
 			
@@ -79,17 +82,37 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization",  "po
 			$( '.feature_' + id ).stop().remove();
 
 			var popover = createPopover( feature );
+			var marker 	= createMarker( feature );
 
 			if( reddProjectsVisibile ){
-				var h =  popover.innerHeight() ;
+//				var h =  popover.innerHeight() ;
+//				
+//				var popoverContent = popover.find('.popover');
+//				popoverContent.css( {top: h+'px',height: '0px' , bottom:'0px' } );
+//				popoverContent.stop().animate( {"top": "0px", "height": h+"px" } , 500 ,'easeInOutBack' ); 
+				var i = marker.find( 'img' );
+				var h =  i.innerHeight() ;
+				console.log( h );
+				i.css( {top: h+'px',height: '0px' , bottom:'0px' } );
+				i.stop().animate( {"top": "0px", "height": h+"px" } , 500 ,'easeInOutBack' ); 
 				
-				var popoverContent = popover.find('.popover');
-				popoverContent.css( {top: h+'px',height: '0px' , bottom:'0px' } );
-				popoverContent.stop().animate( {"top": "0px", "height": h+"px" } , 500 ,'easeInOutBack' ); 
-
+				
+				
+//				h.css( {'height':'0px','width':'0px'} ) ;
+				
+//				popoverContent
+//				.css({
+//					"height": (h+140)+"px" , 
+//					"width": (w+100)+"px", 
+//					"left":"-50px" , 
+//					"top":"-140px" , 
+//					"font-size":"12px" , 
+//					'background-color': 'rgba(4, 118, 210, 1);'
+//				});
+				
 				
 			} else {
-				popover.stop().hide();
+				marker.stop().hide();
 			}
 			
 		}
@@ -100,6 +123,33 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization",  "po
 	var hasPopover = function( id ){
 		var province = REDDProjects.provinces[id];
 		return province != null;
+	};
+	
+	var createMarker = function( feature ){
+		var id = feature.attributes.province_c;
+		
+		var province = REDDProjects.provinces[id];
+		if( province ){
+			var marker = markerHtml.clone();
+			
+			var geom 	= feature.geometry;
+			var point 	= map.getViewPortPxFromLonLat( new OpenLayers.LonLat(geom.x, geom.y) );
+			
+			marker.addClass( 'feature_'+id );
+			
+			$('body').append( marker );
+			
+			var h =  marker.innerHeight();
+			var w =  marker.innerWidth();
+			marker.css( 'top' , ( point.y - (20) ) + 'px' );
+			marker.css( 'left' , ( point.x - (10) )+ 'px'  );
+			
+			marker.on('mouseenter',function(e){
+				showPopover( e , id );
+			});
+			
+			return marker;
+		}
 	};
 	
 	var createPopover = function( feature ){
@@ -120,7 +170,7 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization",  "po
 				popover.find( '.project_' + proj ).show();
 			}
 			
-			popover.find( '.popover-content.collapsed' ).html( province.projects.length + ' ' + i18n['projects'] );
+//			popover.find( '.popover-content.collapsed' ).html( province.projects.length + ' ' + i18n['projects'] );
 			popover.find( '.popover-content.expanded' ).hide();
 			
 			
@@ -129,64 +179,38 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization",  "po
 			
 			var h =  popover.innerHeight();
 			var w =  popover.innerWidth();
-			popover.css( 'top' , ( point.y - (h-5) ) + 'px' );
-			popover.css( 'left' , ( point.x - (w/2-5) )+ 'px'  );
+			popover.css( 'top' , ( point.y - (h-45) ) + 'px' );
+//			popover.css( 'top' , ( point.y - (h-5) ) + 'px' );
+			popover.css( 'left' , ( point.x +5 )+ 'px'  );
 			
+			popover.hide();
+//			var bindEvents = function(){
+//				var popoverContent = popover.find( '.popover' );
+				
+				
+//				var arrow = popover.find('.popover .arrow');
+//				arrow.on('mouseenter', onmouseover);
+//				arrow.on('mouseleave', onmouseout);
+			popover.find('.popover').on('mouseleave', function(e){
+				hidePopover( e , id );
+			});
 			
-			var bindEvents = function(){
-				var popoverContent = popover.find( '.popover' );
+			popover.find('.popover').on('click', function(e){
 				
-				var onmouseover =  function(e){
-					popover.css( {'z-index':'9200'} ) ;
-					popover.find( '.popover-content.collapsed' ).hide( 0 );
-					
-					popoverContent
-					.animate({
-						"height": (h+120)+"px" , 
-						"width": (w+100)+"px", 
-						"left":"-50px" , 
-						"top":"-120px" , 
-						"font-size":"12px" , 
-						'background-color': 'rgba(4, 118, 210, 1);'
-					} , 200 ,'easeInOutQuad' );
-					
-					
-					setTimeout( function(){
-						popover.find( '.popover-content.expanded' ).show( 0 );
-						popover.find('.popover').off('mouseover',onmouseover);
-						popover.find('.popover').on('mouseleave',onmouseout);
-					}, 100 );
-					
-				}; 
+				Features.getFeatureInfo(  
+						true,
+						'unredd:country,unredd:province', 
+						'(name,area,info_file)(name,area,info_file,province_c)',
+						Math.round( point.x ), Math.round( point.y ), map.size.h , map.size.w ,
+						 map.getExtent().toBBOX()
+				 );
 				
-				var onmouseout 	= function(){
-					popover.find( '.popover-content.expanded' ).hide( 0 );
-					
-					popoverContent
-					.animate({
-						"height": (h)+"px" , 
-						"width": (w)+"px", 
-						"left":"0px" , 
-						"top":"0px" , 
-						"font-size":"11px" , 
-						'background-color': 'rgba(4, 118, 210, 0.6);'
-					} , 200 ,'easeInOutQuad' );
-					
-					
-					setTimeout( function(){
-						popover.find( '.popover-content.collapsed' ).show( 0 );
-						popover.css( {'z-index' : '900'} ) ;
-						popover.find('.popover').off('mouseleave',onmouseout);
-						popover.find('.popover').on('mouseover',onmouseover);
-					}, 100 );
-				};
-				
-				popover.find('.popover').on('mouseover',onmouseover);
+			});
 //				popover.find('.popover').mouseover(onmouseover);
 				
 				
-			};
-			bindEvents();
+//			};
+//			bindEvents();
 			
 //			popoverContent.mouseout( function(e){
 //				popoverContent.stop().animate( {"height": h+"px" , "width": w+"px" } , 500 ,'easeInOutBack' );
@@ -200,6 +224,80 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization",  "po
 			return popover;
 		}
 	
+	};
+	
+	var showPopover =  function(e, id){
+		e.preventDefault();
+		e.stopPropagation();
+		$('.redd_project').stop().hide();
+		var popover = $( 'body' ).find('.redd_project.feature_'+id);
+		var popoverContent = popover.find( '.popover' );
+//		popover.find('.popover').off('mouseenter',onmouseover);
+//		popover.find('.popover').on('mouseleave',onmouseout);
+		
+//		popover.find('.popover').off('mouseover',onmouseover);
+//		popover.find('.popover').on('mouseout',onmouseout);
+		
+		popover.css( {'z-index':'2200','height':'0px','width':'0px'} ) ;
+		popover.show( 5 );
+		popover.find( '.popover-content.collapsed' ).hide( 0 );
+		
+//		popoverContent
+//		.css({
+//			"height": (h+140)+"px" , 
+//			"width": (w+100)+"px", 
+//			"left":"-50px" , 
+//			"top":"-140px" , 
+//			"font-size":"12px" , 
+//			'background-color': 'rgba(4, 118, 210, 1);'
+//		});
+		popoverContent
+		.animate({
+			"height": (170)+"px" , 
+			"width": (140)+"px", 
+			"left":"-70px" , 
+			"top":"-170px" , 
+			'background-color': 'rgba(4, 118, 210, .95);'
+		} , 200 );
+//				} , 200 ,'easeInOutElastic' );
+		
+		
+//		setTimeout( function(){
+			popover.find( '.popover-content.expanded' ).show(  );
+			
+//		}, 100 );
+		
+	}; 
+	
+	var hidePopover 	= function(e , id){
+		e.preventDefault();
+		var popover = $( 'body' ).find('.redd_project.feature_'+id);
+		var popoverContent = popover.find( '.popover' );
+
+//		popover.find('.popover').off('mouseleave',onmouseout);
+//		popover.find('.popover').on('mouseenter',onmouseover);
+//		popover.find('.popover').off('mouseout',onmouseout);
+//		popover.find('.popover').on('mouseover',onmouseover);
+		
+		
+//		popover.find( '.popover-content.expanded' ).hide( 0 );
+//		
+		popoverContent
+		.animate({
+			"height": "0px" , 
+			"width": "0px", 
+			"left":"0px" , 
+			"top":"0px" , 
+			'background-color': 'rgba(4, 118, 210, 0.6);'
+		} , 150 );
+//		} , 70 ,'easeInOutQuad' );
+		
+		popover.fadeOut( 100 );
+//		setTimeout( function(){
+//			popover.find( '.popover-content.collapsed' ).show( 70 );
+			popover.css( {'z-index' : '900'} ) ;
+			
+//		}, 100 );
 	};
 	
 });

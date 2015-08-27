@@ -1,10 +1,65 @@
-define([ "jquery", "message-bus" , "i18n" ], function($, bus, i18n) {
+define([ "jquery", "message-bus" , "i18n" , "customization" , "portal-string-utils" ], function($, bus, i18n , customization) {
 
 	Features = {};
+	
+	var serverUrl 	= customization['info.serverUrl'] ;
+	var wmsUri 		= customization['info.wmsUri'] ;
+	
+	var getParams 		= function( layers , properties , x , y , h , w ,bbox ){
+		var params 				= {};
+
+		params.layers			= layers;
+		params.query_layers		= layers;
+		params.service 			= 'wms';
+		params.version 			= '1.1.1';
+		params.styles 			= '';
+		params.request 			= 'GetFeatureInfo';
+		params.bbox 			= bbox ;
+//		params.bbox 			= map.getExtent().toBBOX() ;
+		params.feature_count 	= '10';
+		params.height 			= h;
+		params.width 			= w;
+		params.format 			= 'image/png';
+		params.info_format 		= 'application/json';
+		params.srs 				= 'epsg:900913';
+		params.x 				= x;
+		params.y 				= y;
+		params.buffer			= 1;
+		params.propertyname		= properties;
+		
+		return decodeURIComponent( $.param(params) );
+	};
+	
+	Features.getFeatureInfo	= function( openSection, layers , properties , x , y , h , w ,bbox ){
+		UI.lock();
+		
+		var params 			= getParams( layers , properties , x , y , h , w ,bbox );
+		var requestUrl		= serverUrl + wmsUri+ '?' + params;
+//		console.log( requestUrl );
+
+		var sameOrigin = StringUtils.startsWith( window.location.origin , serverUrl );
+		if( !sameOrigin ){
+			requestUrl 	= "proxy?url=" + encodeURIComponent( requestUrl );
+		} 
+//		console.log( requestUrl );
+		
+		bus.send("ajax", {
+			type 	: 'GET',
+			url 	: requestUrl,
+			success : function(data, textStatus, jqXHR) {
+				var features = data.features;
+				$.each( features, function(i, feature){
+					feature.fid = feature.id;
+					feature.attributes = feature.properties;
+				});
+				bus.send( "info-features", [ features , openSection ] );
+			}
+		});
+		
+	};
+	
 	Features.appendLabels = function( data ){
 		var data = $( data );
-
-//		data.find( '.province_name' ).append( i18n['province_dien_bien'] );
 
 		data.find( '.btn-drivers' ).append( i18n['btn-drivers'] );
 		data.find( '.btn-interventions' ).append( i18n['btn-interventions'] );
@@ -126,16 +181,14 @@ define([ "jquery", "message-bus" , "i18n" ], function($, bus, i18n) {
 		}
 		
 		if( province.projects ){
+			var tbody = data.filter( '.info-table.projects' ).find( 'table tbody' );
+			tbody.find( 'tr' ).hide();
+			
 			for( var i in  province.projects ){
 				var proj = province.projects[ i ];
-//				console.log( proj );
-				var table = data.filter( '.info-table.projects' ).find( 'table' );
-				table.find( 'tr' ).hide();
-				
-				for( var p in proj ){
-					table.find( 'tr:nth-child('+(p-1)+')' ).show();
-				}
+				tbody.find( 'tr:nth-child('+(proj)+')' ).show();
 			}
+			
 		} else {
 			data.filter( '.header-btns' ).find('li.projects').remove();
 		}

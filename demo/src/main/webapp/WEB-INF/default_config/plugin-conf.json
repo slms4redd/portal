@@ -44,8 +44,9 @@
 		}, dashboard : {
 			"open" 	: true
 		}, feature-info-control : {
-			"linkedLayers" : {
-				"province" : "country"
+			"disabled" 		: true,
+			"linkedLayers" 	: {
+				"province" 	: "country"
 			 } ,
 			 "vendorParams" :{
 			 	"buffer" : 1

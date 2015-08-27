@@ -1,4 +1,4 @@
-define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "dashboard","feature-info-loaded" ,"redd_projects"], function(module, $, bus, map, i18n, customization, dashboard) {
+define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "dashboard","features" ,"redd_projects"], function(module, $, bus, map, i18n, customization, dashboard) {
 	
 	var infoUrl = customization['info.queryUrl'] ;
 	
@@ -121,6 +121,11 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 		}
 	}
 	
+	var unlockUi = function(){
+		setTimeout(function(){
+			UI.unlock();
+		}, 200);
+	};
 	
 	bus.listen( "info-features", function(event, eventFeatures, openSection) {
 		if( eventFeatures && eventFeatures.length > 0 ){
@@ -128,13 +133,14 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 			var features 	= new Array();
 			var featureIds 	= new Array();
 			checkHasDashbaord( eventFeatures , features , featureIds , 0 , function(){
-				UI.unlock();
+//				UI.unlock();
 				
 				bus.send( "open-dashboard-info-feature" , [ features ,openSection ] );
 
 			} );
 		} else {
-			UI.unlock();
+//			UI.unlock();
+			unlockUi();
 		}
 		
 	
@@ -177,6 +183,8 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 					bus.send( "add-feature-stats" , [ feature , openSection , expand ] );
 				}
 			}
+			
+			unlockUi();
 		}
 	});
 	
