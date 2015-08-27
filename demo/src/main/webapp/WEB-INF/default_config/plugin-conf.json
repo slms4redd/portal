@@ -15,9 +15,7 @@
 					 }
 				]
 		},
-		"error-management" : {
-			"div-id" : null
-		}, footer : {
+		footer : {
 			"elements" : 
 				[
 					{ 
@@ -44,21 +42,13 @@
 		}, dashboard : {
 			"open" 	: true
 		}, feature-info-control : {
-			"disabled" 		: true,
-			"linkedLayers" 	: {
-				"province" 	: "country"
-			 } ,
-			 "vendorParams" :{
-			 	"buffer" : 1
-			 }
+			"disabled" 		: true
 		}, map : {
 			"options": { 
 				"minScale"		: 50000, 
 				"maxScale"		: 10000000, 
 				"numZoomLevels" : 13
 			}
-		}, feature-info-startup: {
-			"queryParams" : "LAYERS=unredd:country&QUERY_LAYERS=unredd:country&STYLES=&SERVICE=WMS&VERSION=1.1.1&REQUEST=GetFeatureInfo&BBOX=10815463.885992,921454.138336,13186287.946754,2763384.37371&FEATURE_COUNT=10&HEIGHT=801&WIDTH=1031&FORMAT=image/png8&INFO_FORMAT=application/json&SRS=EPSG:900913&X=291&Y=154&BUFFER=1&propertyName=name,area,info_file";
 		}
 	}
 }
