@@ -212,14 +212,16 @@ define([ "message-bus", "layout", "module", "openlayers" ], function(bus, layout
 		console.log("add-popup: "+layer);
 		
 		map.events.register("click", map, function(e) {
-			var popup = new OpenLayers.Popup("chicken",
+			var popup = new OpenLayers.Popup(
+					"popup",
 					map.getLonLatFromPixel(event.xy),
 	                new OpenLayers.Size(200,200),
-	                "example popup",
-	                true);
+	                '<div class="markerContent">'+"Example Popup with Div"+'</div>',
+	                true, 
+	                null);
 
 			map.addPopup(popup);
-		} 
+		});
 		
 		
 		
