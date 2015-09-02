@@ -157,7 +157,6 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 				}
 			});
 			
-			layerDashboard.showInfo();
 		
 		}
 	};

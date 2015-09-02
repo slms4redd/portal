@@ -21,7 +21,8 @@
       "imageFormat": "image/png8",
       "visible": true,
       "sourceLink": "http://www.diva-gis.org/gdata",
-      "sourceLabel": "diva-gis.org/gdata"
+      "sourceLabel": "diva-gis.org/gdata",
+      "queryable" : true
     },{
       "id": "districts",
       "baseUrl": "http://178.33.8.121/diss_geoserver/wms",

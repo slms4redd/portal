@@ -1,5 +1,7 @@
 define([ "message-bus", "layout", "module", "openlayers" ], function(bus, layout, module) {
 	
+	var infoControl;
+	
 	var config = module.config();
 	/*
 	 * keep the information about wms layers that will be necessary for
@@ -10,7 +12,11 @@ define([ "message-bus", "layout", "module", "openlayers" ], function(bus, layout
 	var map = null;
 	var currentControl = null;
 	var defaultExclusiveControl = null;
-
+	
+	//AA popup
+	var queryableLayersGetFeatureInfo = new Array();
+	var control;
+	
 	var activateExclusiveControl = function(event, control) {
 		if (currentControl != null) {
 			currentControl.deactivate();
@@ -200,18 +206,83 @@ define([ "message-bus", "layout", "module", "openlayers" ], function(bus, layout
 	
 	bus.listen("info-popup-getfeatureinfo", function(control, x, y, text) {
 		//console.log("sono qui");
-		alert("sono qui");
+		//alert("sono qui");
 	});
 	
 	
-	//popup sample
-	bus.listen("add-popup", function(portalLayerId) {
-		//console.log("sono qui");
-		var layer = "unredd:";
-		layer = layer+portalLayerId;		
-		console.log("add-popup: "+layer);
+	//AA popup sample
+	//bus.listen("add-popup", function(portalLayer) {
+	bus.listen("get-feature-info", function(evt, layerInfo) {
 		
-		map.events.register("click", map, function(e) {
+		console.log("sono qui");
+		console.log("layerInfo: "+layerInfo);
+		
+		$.each(layerInfo.wmsLayers, function(index, wmsLayer) {
+			if (wmsLayer.queryable) {
+				
+				console.log("layer name: "+ wmsLayer.wmsName);
+				queryableLayersGetFeatureInfo.push( wmsLayer );
+				
+			}
+		});
+		
+		if(queryableLayersGetFeatureInfo != null) {
+			
+			console.log("queryableLayersGetFeatureInfo is NOT null");
+
+			control = new OpenLayers.Control.WMSGetFeatureInfo({
+				
+				//console.log("qui 1");
+				
+				url : 'http://178.33.8.121/diss_geoserver/wms',
+				layers: queryableLayersGetFeatureInfo,
+				title : 'Identify features by clicking',
+				queryVisible : true,
+				infoFormat : 'application/vnd.ogc.gml',
+				maxFeatures : 5,
+				handlerOptions : {
+					"click" : {
+						'single' : true,
+						'double' : false
+					}
+				},
+				eventListeners : {
+					getfeatureinfo : function(evt) {
+						console.log("qui 2");
+						if (evt.features && evt.features.length) {
+							console.log("evt.features: "+evt.features);					
+							/*var popup = new OpenLayers.Popup(
+									"popup",
+									map.getLonLatFromPixel(evt.xy),
+					                new OpenLayers.Size(200,200),
+					                '<div class="markerContent">'+"Example Popup with Div"+'</div>',
+					                true, 
+					                null);
+							map.addPopup(popup);*/
+														
+						}
+					}
+				},
+				formatOptions : {
+					//console.log("qui 3");
+					typeName : 'XXX',
+					featureNS : 'http://www.openplans.org/unredd'
+				}
+			});
+			
+			console.log("done");
+			
+			map.addControl(control);
+			control.activate();
+			
+			console.log("done 1");
+			
+		}
+		else console.log("queryableLayersGetFeatureInfo is null");
+		
+		console.log("done 2");
+		
+		/*map.events.register("click", map, function(e) {
 			var popup = new OpenLayers.Popup(
 					"popup",
 					map.getLonLatFromPixel(event.xy),
@@ -221,88 +292,9 @@ define([ "message-bus", "layout", "module", "openlayers" ], function(bus, layout
 	                null);
 
 			map.addPopup(popup);
-		});
-		
-		
-		
-		
-		//popup sample
-		/*var info = new OpenLayers.Control.WMSGetFeatureInfo({
-            url: 'http://178.33.8.121/diss_geoserver/wms', 
-            title: 'Identify features by clicking',
-            layers: layer,
-            queryVisible: true,
-            infoFormat: 'application/vnd.ogc.gml',
-            hover: false,
-            drillDown: true,
-            maxFeatures: 5,
-            handlerOptions: {
-                "click": {
-                    'single': true,
-                    'double': false
-                }
-            },
-            eventListeners: {
-                getfeatureinfo: function(event) {
-                	console.log("output getfeaturedinfo: "+showInfo(event, event.text));
-                    map.addPopup(new OpenLayers.Popup.FramedCloud(
-                        "chicken", 
-                        map.getLonLatFromPixel(event.xy),
-                        null,
-                        event.text,
-                        null,
-                        true
-                    ));
-                }
-            }
-        });
-        map.addControl(info);
-        info.activate();*/
-		//end popup sample
-		
-	});
-	
-	
-	//test
-	/**
-	 * Add a click handler to hide the popup.
-	 * @return {boolean} Don't follow the href.
-	 */
-	/**
-	 * Create an overlay to anchor the popup to the map.
-	 */
-/*	var container = document.getElementById('popup');
-	var content = document.getElementById('popup-content');
-	var closer = document.getElementById('popup-closer');
-	
-	var overlay = new OpenLayers.Overlay(({
-	  element: container,
-	  autoPan: true,
-	  autoPanAnimation: {
-	    duration: 250
-	  }
-	}));
-	
-	
-	closer.onclick = function() {
-	  overlay.setPosition(undefined);
-	  closer.blur();
-	  return false;
-	};*/
-	
-	
-	/**
-	 * Add a click handler to the map to render the popup.
-	 */
-/*	map.on('singleclick', function(evt) {
-	  var coordinate = evt.coordinate;
-	  var hdms = OpenLayers.coordinate.toStringHDMS(OpenLayers.proj.transform(
-	      coordinate, 'EPSG:3857', 'EPSG:4326'));
+		});*/
 
-	  content.innerHTML = '<p>You clicked here:</p><code>' + hdms +
-	      '</code>';
-	  overlay.setPosition(coordinate);
-	});*/
+	});
 	
 	return map;
 });

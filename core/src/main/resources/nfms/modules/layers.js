@@ -107,12 +107,14 @@ define([ "jquery", "message-bus", "customization", "module" , "i18n" ], function
 
 				bus.send("add-layer", portalLayer);
 				
-				//popup sample
-				console.log("portalLayer.id: "+portalLayer.id);
-				if(portalLayer.id == "countryBoundaries")
-					bus.send("add-popup", portalLayer.id);
-				
 				bus.send("layer-visibility", [ portalLayer.id, portalLayer.active || false ]);
+				
+				//AA call get feature info function
+				console.log("call get feature info");
+				console.log("portalLayer.id: "+portalLayer.id);
+				console.log("portalLayer.wmsLayers: "+portalLayer.wmsLayers);
+				console.log("portalLayer.groupId: "+portalLayer.groupId);				
+				bus.send("get-feature-info", portalLayer);
 			}
 			
 		}
