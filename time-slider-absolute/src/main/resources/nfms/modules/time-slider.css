@@ -1,0 +1,56 @@
+div.time-slider-container {
+	position: absolute;
+	top 	: 90%;
+	z-index : 1000;
+	
+	padding: 15px 10px 35px 10px !important;
+	border: 1px solid rgba(22, 22, 22, 0.30) !important;
+    background-color: rgba(61, 65, 70, 0.90) !important;
+
+    width: 30%;
+    left: 35%;
+}
+
+.time-slider-label {
+	padding: 5px 0px 0px 20px !important;
+	font-size: 10px;
+}
+.time-slider-label span {
+	padding-left: 3px;
+	font-size: 10px;
+}
+.time-slider-label i {
+	font-size: 12px;
+}
+
+
+div.ui-slider .ui-slider-handle {
+    border-radius: 0px !important;
+    cursor: pointer;
+    background: rgba(50, 153, 187, 1) !important;
+    width: 12px !important;
+    height: 12px !important;
+    position: absolute !important;
+    top: -4px !important;
+    border: 1px solid rgba(50, 153, 187, 0.7) !important;
+    margin-left: -8px !important;
+}
+div.ui-slider label {
+    font-size: 11px !important;
+    top: 9px !important;
+    color: rgba(233, 233, 233, 0.6) !important;
+    margin-left: -20px !important;
+    padding: 30px 5px 6px 5px;
+    margin-top: -25px !important;
+    letter-spacing: 0px !important;
+}
+div.ui-slider label.active {
+    color: rgba(233, 233, 233, 0.95) !important;
+    background-color: rgba(50, 153, 187, .5);
+    border: 1px solid rgba(50, 153, 187, 0.3) !important;
+    
+     -webkit-transition: all 0.4s ease-out;
+    -moz-transition: all 0.4s ease-out;
+    -o-transition: all 0.4s ease-out;
+    transition: all 0.4s ease-out;
+}

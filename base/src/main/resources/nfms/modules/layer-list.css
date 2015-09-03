@@ -13,6 +13,7 @@ div.dashboard-btn button.btn-transparent {
 }
 div.panel-heading div.dashboard-btn button.btn-transparent {
   	right: 1%;
+  	position: absolute;
 }
 div.settings button.btn-transparent {
 	padding: 20% 20%;

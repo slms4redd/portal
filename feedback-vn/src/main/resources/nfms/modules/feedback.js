@@ -1,5 +1,20 @@
-define([ "message-bus", "layout" , "i18n", "jquery", "portal-string-utils" , "portal-ui"],//
-function(bus, layout, i18n, $) {
+define([ "message-bus", "layout" , "i18n", "jquery", "toolbar" , "tutorial" , "portal-string-utils" , "portal-ui"],//
+function(bus, layout, i18n, $, toolbar) {
+	
+	
+	var col		= $( '<div class="btn-container feedback-btn-container" />');
+	toolbar.append( col );
+
+	var btn 	= $( '<button class="btn btn-default"><i class="fa fa-bullhorn"></i>&nbsp;&nbsp;' + i18n['Feedback.btn'] + '</button>' );
+	col.append( btn );
+	btn.click( function(){
+		if( feedback.hasClass( 'closed' ) ){
+			openFeedback();
+		} else {
+			closeFeedback();
+		}
+		btn.blur();
+	});	
 	
 	var container		= $( '<div class="feedback-container" />' );
 	layout.container.append( container );
@@ -11,12 +26,13 @@ function(bus, layout, i18n, $) {
 	var rowButton = $(  '<div class="row feedback-btn no-margin" />' );
 	feedback.append( rowButton );
 	
-	rowButton.append( '<div class="col-md-4 feedback-btn-bottom-border height100" />' );
-	var colButton = $(  '<div class="col-md-4 no-padding height100" />' );
+//	rowButton.append( '<div class="col-md-12 feedback-btn-bottom-border height100" />' );
+	var colButton = $(  '<div class="col-md-12 no-padding height100" />' );
 	rowButton.append( colButton );
-	rowButton.append( '<div class="col-md-4 feedback-btn-bottom-border height100" />' );
+//	rowButton.append( '<div class="col-md-4 feedback-btn-bottom-border height100" />' );
 	
-	var feedbackToggleBtn = $( '<button class="btn btn-default height100"><i class="fa fa-bullhorn"></i>  Feedback</button>' );
+	var feedbackToggleBtn = $( '<button class="btn btn-default"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;' + i18n['Feedback.close-btn'] + '</button>' );
+//	var feedbackToggleBtn = $( '<button class="btn btn-default height100"><i class="fa fa-bullhorn"></i>  Feedback</button>' );
 	colButton.append( feedbackToggleBtn );
 
 	feedbackToggleBtn.click( function(){
@@ -25,15 +41,17 @@ function(bus, layout, i18n, $) {
 		} else {
 			closeFeedback();
 		}
+		feedbackToggleBtn.blur();
 	});	
 	
 	var openFeedback = function(){
-		container.animate( {'top': '40%' }, 400 );
+		container.animate( {'top': '0%' }, 400 );
+//		container.animate( {'top': '40%' }, 400 );
 		feedback.removeClass().addClass( 'feedback opened' );
 	};
 
 	var closeFeedback = function(){
-		container.animate( {'top': '95%' }, 400 );
+		container.animate( {'top': '-60%' }, 400 );
 		feedback.removeClass().addClass( 'feedback closed' );
 		
 		feedbackForm.find( 'button[type=reset]' ).click();

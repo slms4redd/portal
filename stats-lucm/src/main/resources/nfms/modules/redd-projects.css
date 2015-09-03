@@ -40,11 +40,12 @@ div.redd_project  div.popover > .arrow {
 div.redd_project  div.popover > .popover-content {
 	font-size: 11px;
 /* 	padding: 5px 14px 15px 14px; */
-    padding: 1px 1px 1px 10px;
-	
+/*     padding: 1px 1px 1px 10px; */
+    padding: 10px 20px;
 }
 div.redd_project .popover-content.expanded  {
 	width: 100%;
+	height: 100%;
 }
 div.redd_project  .popover-content.collapsed {
 /*     width: 35px; */

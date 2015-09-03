@@ -30,7 +30,7 @@ define([ "jquery", "message-bus" , "i18n" , "customization" , "portal-string-uti
 		return decodeURIComponent( $.param(params) );
 	};
 	
-	Features.getFeatureInfo	= function( openSection, layers , properties , x , y , h , w ,bbox ){
+	Features.getFeatureInfo	= function( openSection, layers , properties , x , y , h , w ,bbox,section ){
 		UI.lock();
 		
 		var params 			= getParams( layers , properties , x , y , h , w ,bbox );
@@ -52,7 +52,7 @@ define([ "jquery", "message-bus" , "i18n" , "customization" , "portal-string-uti
 					feature.fid = feature.id;
 					feature.attributes = feature.properties;
 				});
-				bus.send( "info-features", [ features , openSection ] );
+				bus.send( "info-features", [ features , openSection , section ] );
 			}
 		});
 		
@@ -135,26 +135,28 @@ define([ "jquery", "message-bus" , "i18n" , "customization" , "portal-string-uti
 		
 		var btns =  data.filter( '.header-btns' ).find('button');
 		btns.click( function(e){
-			var btn = $( this );
-			if( !btn.hasClass('active') ){
+			var btn 	= $( this );
+			var target 	= data.filter( '.' + btn.attr( 'data-target' ) );
+			if(!target.is(':visible')){
 				btns.removeClass( 'active' );
 				btn.addClass( 'active' );
 				
 				infoTables.hide();
-				var target = data.filter( '.' + btn.attr( 'data-target' ) );
 				target.fadeIn();
 			}
 		});
 		btns[0].click();
 	};
 	
-	Features.processProvince = function( feature , data ){
+	Features.processProvince = function( feature , data , section ){
+		
+		data.filter( '.info-table' ).hide();
+		
 		data.find( '.province_name' ).append( feature.attributes.name );
 		
 		var provinceId 	= feature.attributes.province_c;
 		var province 	= REDDProjects.provinces[ provinceId ];
 		
-//		console.log( province );
 		if( province.prap ){
 			
 		} else {
@@ -172,6 +174,7 @@ define([ "jquery", "message-bus" , "i18n" , "customization" , "portal-string-uti
 
 		} else {
 			data.filter('.header-btns').find('li.interventions').remove();
+			
 		}
 
 		if (province.areas) {
@@ -195,6 +198,14 @@ define([ "jquery", "message-bus" , "i18n" , "customization" , "portal-string-uti
 		
 		if( data.filter( '.header-btns' ).find('li').length <= 1 ){
 			data.filter( '.header-btns' ).hide();
+		}
+		
+		if( section ){
+			var btn =  data.filter( '.header-btns' ).find('button[data-target='+section+']');
+			btn.click();
+		} else {
+			var btns =  data.filter( '.header-btns' ).find('button');
+			btns[0].click();
 		}
 	};
 	

@@ -31,7 +31,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.fao.unredd</groupId>
-			<artifactId>feedback-vn</artifactId>
+			<artifactId>feedback</artifactId>
 			<version>3.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -59,11 +59,7 @@
 			<artifactId>dashboard-layer-controller</artifactId>
 			<version>3.1-SNAPSHOT</version>
 		</dependency>
-		<dependency>
-			<groupId>org.fao.unredd</groupId>
-			<artifactId>stats-lucm</artifactId>
-			<version>3.1-SNAPSHOT</version>
-		</dependency>
+		
 		<!-- Other deployments may access other databases, so it is responsibility 
 			of the application to include the necessary drivers -->
 		<dependency>

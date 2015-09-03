@@ -1,7 +1,8 @@
 {
 	"wmsLayers" : [
+
 		{
-			"id" : "ne2",
+			"id" : "world_borders",
 			"baseUrl" : "http://redd.vnforest.gov.vn/diss_geoserver/wms",
 			"wmsName" : "unredd:NE2_HR_LC_SR_W_DR",
 			"imageFormat" : "image/png8",
@@ -125,14 +126,13 @@
 			"layers" : [ "jica" ],
 			"feedback" : true,
 			"legendFile" : "jica_legend.html",
-			"openDashboard" : true,
-			"showTimeSlider" : false
+			"openDashboard" : true
 		}
 		, {
 			"id" : "ne2",
 			"active" : true,
 			"label" : "${natural_earth}",
-			"layers" : [ "ne2" ],
+			"layers" : [ "world_borders"  ],
 			"feedback" : false
 		}
 		, {
@@ -172,13 +172,11 @@
 			"label" : "${admin_areas}",
 			"items" : [ "country" , "ecoregion" , "province" , "district", "commune" ],
 			"legendFile" : "admin.html",
-			"open"	: true ,
-			"helpMsg": "click_province"
+			"open"	: true 
 		}
 		, {
 			"id" : "redd_registry",
 			"label" : "${redd_registry}",
-			"helpMsg": "click_province",
 			"items" : [
 				"province_prap" ,
 				{

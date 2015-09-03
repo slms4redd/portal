@@ -1,5 +1,7 @@
 div.layers-container {
-	background-color: rgba(66, 66, 66, 0.85);
+/* 	background-color: rgba(66, 66, 66, 0.85); */
+/* 	background-color: rgba(57, 59, 62, 0.85); */
+	background-color: rgba(61, 65, 70, 0.85);
 	opacity 		: 0.92;
 	position		: relative;
 	z-index			: 1100;	
@@ -9,7 +11,7 @@ div.layers-container {
 }
 
 div.panel-collapse {
-	margin-top: -.1em;
+/* 	margin-top: -.1em; */
 }
 
 .layers-container .panel,
@@ -27,7 +29,7 @@ div.panel-collapse {
 /* } */
 .layers-container .sub-group-heading {
 	padding			: 20px 0px 10px 18px;
-	font-size		: 13px;
+	font-size		: 12px;
 }
 .layers-container .group-panel-body {
 	padding: 10px 0px !important;
@@ -47,7 +49,7 @@ div.panel-collapse {
 .layers-container .panel-heading button.btn-default,
 .layers-container .panel-heading button.btn-default:active {
 	text-align			: left;
-	font-size			: 13px;
+	font-size			: 12px;
 	border				: 1px solid rgba(22, 22, 22, 0.25);
 }
 .layers-container .panel-heading button.btn-default:hover {
@@ -73,7 +75,9 @@ div.panel-collapse {
   	position: relative;
 }
 
-
+div.layer button {
+    font-size: 11px !important;
+}
 /* /* // OLD */ */
 /* #layers_container { */
 /* 	display: none; */

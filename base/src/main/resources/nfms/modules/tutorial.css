@@ -1,23 +1,4 @@
-.tutorial-btn-container {
-	z-index: 1001;
-	position: relative;
-	float: left;
-	padding: 15px 10px;
-}
 
-button.tutorial-btn ,
-button.tutorial-btn:focus {
-	padding: 6px 12px;
-  border-radius: 18px;
-  /* border: 1px solid rgba(50, 153, 187, 0.6); */
-  /* border: 1px solid rgba(233, 233, 233, 0.1); */
-  color: rgba(233, 233, 233, 0.7);
-}
-button.tutorial-btn:hover, 
-button.tutorial-btn:active {
-/*   	border: 1px solid rgba(233, 233, 233, 0.3); */
-  	color: rgba(233, 233, 233, 0.7);
-}
 .tutorial {
 	display: none;
 	margin: 0px !important;

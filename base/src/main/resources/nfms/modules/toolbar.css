@@ -1,2 +1,21 @@
 .toolbar {
+	padding: 15px 10px;
+}
+
+.toolbar .btn-container {
+	z-index: 1001;
+	position: relative;
+	float: left;
+}
+
+.toolbar .btn-container button,
+.toolbar .btn-container button:focus {
+	padding: 6px 12px;
+  	border-radius: 18px;
+  	color: rgba(233, 233, 233, 0.7);
+}
+
+.toolbar .btn-container button:hover, 
+.toolbar .btn-container button:active {
+  	color: rgba(233, 233, 233, 0.95);
 }

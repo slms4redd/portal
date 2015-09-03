@@ -101,7 +101,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 					});
 					settingsBtn.hide();
 					
-					col					= $( '<div class="col-md-10 group-dropdown"></div>' );
+					col					= $( '<div class="col-md-10 group-dropdown layer"></div>' );
 					row.append( col );
 					
 					var btnGroup = $( '<div class="btn-group width100"><button type="button" class="btn label-btn">'+ i18n['none'] +'</button>'+

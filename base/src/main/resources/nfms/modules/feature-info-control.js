@@ -30,9 +30,8 @@ define([ "map", "message-bus", "customization","module"  ], function(map, bus, c
 					getfeatureinfo : function(evt) {
 						
 						if (evt.features) {
-							
 							bus.send("info-features", [ evt.features, evt.xy.x, evt.xy.y ]);
-		//					bus.send("info-features", [ features, evt.xy.x, evt.xy.y ]);
+							UI.unlock();
 						}
 					},
 					beforegetfeatureinfo : function() {
@@ -55,26 +54,11 @@ define([ "map", "message-bus", "customization","module"  ], function(map, bus, c
 							
 							var layer = getLayer( layerId );
 							if( layer ){
-								if( config.linkedLayers[layerId] ){
-									var linkedLayerId = config.linkedLayers[layerId];
-									if( linkedLayerId ){
-										var linkedLayer = getLayer( linkedLayerId );
-										if( linkedLayer ){
-											control.layers.push(linkedLayer);
-										}
-									}
-								}
 								
 								control.layers.push(layer);
 							}
 							
 						}
-		//				
-		//				if (lastTimestamp != null) {
-		//					control.vendorParams = {
-		//						"time" : lastTimestamp.toISO8601String()
-		//					};
-		//				}
 					},
 					nogetfeatureinfo : function(evt){
 						UI.unlock();

@@ -127,7 +127,7 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 		}, 200);
 	};
 	
-	bus.listen( "info-features", function(event, eventFeatures, openSection) {
+	bus.listen( "info-features", function(event, eventFeatures, openSection , section) {
 		if( eventFeatures && eventFeatures.length > 0 ){
 			
 			var features 	= new Array();
@@ -135,7 +135,7 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 			checkHasDashbaord( eventFeatures , features , featureIds , 0 , function(){
 //				UI.unlock();
 				
-				bus.send( "open-dashboard-info-feature" , [ features ,openSection ] );
+				bus.send( "open-dashboard-info-feature" , [ features ,openSection ,section ] );
 
 			} );
 		} else {
@@ -148,7 +148,7 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 	
 	
 	
-	bus.listen( "open-dashboard-info-feature" , function( event, features , openSection  ){
+	bus.listen( "open-dashboard-info-feature" , function( event, features , openSection , section ){
 		
 		if( features.length > 0 ){
 			
@@ -173,7 +173,7 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 				var expand = ( i == features.length-1 ) ? true : false;
 				
 				// open info
-				loadFeatureInfo( feature , openSection , expand );
+				loadFeatureInfo( feature , openSection , expand , section );
 				
 				// add stats
 				var fakeData = getFakeStatsData();
@@ -188,7 +188,7 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 		}
 	});
 	
-	var loadFeatureInfo = function( feature , openSection, expand ){
+	var loadFeatureInfo = function( feature , openSection, expand ,section ){
 		var fId = feature.fid.replace( '.' , '-' );
 //		console.log( feature );
 
@@ -200,10 +200,10 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 			var dataClass 	=  "feature-info-" + fId ;
 			data.addClass( dataClass );
 			
-			if( feature.isProvince ){
-				Features.processProvince ( feature , data );
-			}
 			Features.appendLabels( data );
+			if( feature.isProvince ){
+				Features.processProvince ( feature , data ,section );
+			}
 			
 			bus.send( 'add-dashboard-element' , [fId , feature.attributes.name, data , true , dashboard.TYPE.INFO, dashboard.SOURCE.FEATURES]);
 			

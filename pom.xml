@@ -18,10 +18,13 @@
 		<module>integration-tests</module>
 		<module>time-slider</module>
 		<module>language-buttons</module>
-    <module>stats-lucm</module>
-    <module>feedback-vn</module>
-    <module>dashboard</module>
-    <module>dashboard-layer-controller</module>
+    	<module>stats-lucm</module>
+    	<module>feedback-vn</module>
+    	<module>dashboard</module>
+    	<module>dashboard-layer-controller</module>
+   	 	<module>time-slider-absolute</module>
+   	 	<module>portal-vn</module>
+   	 	
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

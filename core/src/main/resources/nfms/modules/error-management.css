@@ -56,21 +56,25 @@ div.popover {
 	font-weight: 100 !important;
     color: #E9E9E9 !important;
     font-family: 'Roboto', sans-serif !important;
+	font-size: 13px;
 }
 
 div.popover > .arrow {
-	bottom: -6px !important;
+	bottom: -5px !important;
 	border-width: 6px;	
 }
-div.popover.top > .arrow:after {
-	 border-top: none;
-}
+/* div.popover.top > .arrow:after { */
+/* 	 border-top: none; */
+/* } */
 /* custom popover styles */
 [data-style=error] + .popover {
 	background-color: rgba(210, 4, 52, 0.9);
 }
 [data-style=error] + .popover.top > .arrow {
     border-top-color:  rgba(210, 4, 52, 0.9);
+}
+[data-style=error] + .popover.top > .arrow:after {
+    border-top-color:  rgba(210, 4, 52, 0.1);
 }
 
 
@@ -79,4 +83,7 @@ div.popover.top > .arrow:after {
 }
 [data-style=info] + .popover.top > .arrow {
     border-top-color: rgba(4, 118, 210, 0.9);
+}
+[data-style=info] + .popover.top > .arrow:after {
+    border-top-color: rgba(4, 118, 210, 0.1);
 }

@@ -57,7 +57,7 @@ define([ "message-bus", "module", "jquery" , "layout" ], function(bus, module, $
 		
 		targetElem.on('shown.bs.popover' , function(){
 			setTimeout( function(){
-				targetElem.popover('destroy');
+				targetElem.popover( 'destroy' );
 			} , 3000 );
 		});
 		
