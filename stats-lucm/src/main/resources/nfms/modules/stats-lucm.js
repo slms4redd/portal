@@ -269,8 +269,8 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 			
 			
 			// add charts
-			createForestAreaChangeChart( colCollapsableFA , null );
-			createLandCoverChangeChart( colCollapsableLC , null );
+			createForestAreaChart( colCollapsableFA , null );
+			createForestChangeChart( colCollapsableLC , null );
 			
 			// bind events
 			var infoTables = container.find( '.info-table' );
@@ -383,7 +383,7 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 		}
 	};
 	
-	var createForestAreaChangeChart = function( container , data ){
+	var createForestAreaChart = function( container , data ){
 		container.css('height','550px');
 		
 		container.highcharts({
@@ -444,10 +444,10 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 	            tickColor : 'rgba(233, 233, 233, 0.25)'
 	        },
 	        legend: {
-	        	backgroundColor: 'rgba(66, 66, 66, 0.85)',
+	        	backgroundColor: 'rgba(61, 65, 70, 0.90)',
 	            style : {
 	            },
-	            padding: 15,
+	            padding: 22,
 	            itemStyle : {
 	            	fontFamily: 'Roboto',
 	            	color : "#E9E9E9",
@@ -533,7 +533,25 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 	    });
 	};
 	
-	var createLandCoverChangeChart = function( container , data ){
+	var createForestChangeChart = function( container , data ){
+		
+		var dataYears 	= [ [40,70,170,720] , [50,80,180,640] , [90,120,190,560] , [10,30,310,595] ];
+		var dataClasses = [ [] , [] , [] , [] ];
+		
+		for( var i in dataYears ){
+			var dataYear 	= dataYears[i];
+			
+			var totalArea 	= 0; 
+			for( var j in dataYear ){
+				totalArea += dataYear[ j ];
+			}
+			for( var j in dataYear ){
+				dataClasses[ j ][ i ] = +( dataYear[ j ] / totalArea * 100 ).toFixed(2);
+			}
+		}
+		
+//		console.log( dataClasses );
+		
 		container.css('height','400px');
 	
 		container.highcharts({
@@ -586,7 +604,10 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 	            	style: {
 	            		fontFamily: 'Roboto',
 	            		color: "#E9E9E9"
-	            	}
+	            	},
+		            formatter: function() {
+		            	return this.value + ' %';
+		            }
 	            },
 	            gridLineColor : 'rgba(233, 233, 233, 0.25)',
 	            lineColor : 'rgba(233, 233, 233, 0.25)',
@@ -598,7 +619,7 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 	        tooltip: {
 	            formatter: function () {
 	                return '<b>' + this.x + '</b><br/>' +
-	                    this.series.name + ': ' + this.y 
+	                    this.series.name + ': ' + this.y + '%'
 //	                    + '<br/>' 
 //	                    +
 //	                    'Total: ' + this.point.stackTotal
@@ -622,8 +643,8 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 	            }
 	        },
 	        legend: {
-	        	backgroundColor: 'rgba(66, 66, 66, 0.85)',
-	            padding: 15,
+	        	backgroundColor: 'rgba(61, 65, 70, 0.90)',
+	            padding: 22,
 	            itemStyle : {
 	            	fontFamily: 'Roboto',
 	            	color : "#E9E9E9",
@@ -635,25 +656,29 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 	            itemHiddenStyle: {
 	            	color: 'rgba(40, 34, 34, 0.7)'
 	            },
-	            itemDistance: 40
+//	            itemDistance: 140
+	            layout: 'vertical'
 	        },
-	        colors:[ 'rgba(213, 9, 33, 0.5)' ,'rgba(119, 227, 39, 0.5)','rgba(119, 227, 160, 0.5)','rgba(50, 40, 20, 0.4)'],
+	        colors:[ 'rgba(213, 9, 33, 0.5)' ,'rgba(202, 204, 0, 0.5)','rgba(119, 227, 39, 0.5)','rgba(50, 40, 20, 0.4)'],
 	        
 	        series: [{
-	            name: 'D',
-	            data: [40, 50, 90, 10],
+	            name: i18n[ 'forest_change_d' ],
+	            data: dataClasses[0],
 	            stack: '1'
 	        }, {
-	            name: 'A/R',
-	            data: [70, 80, 120, 30],
+	        	name: i18n[ 'forest_change_ar' ],
+	        	data: dataClasses[1],
+//	            data: [70, 80, 120, 30],
 	            stack: '2'
 	        }, {
-	            name: 'FrF',
-	            data: [170, 180, 190, 310],
+	        	name: i18n[ 'forest_change_frf' ],
+//	            data: [170, 180, 190, 310],
+	        	data: dataClasses[2],
 	            stack: '3'
 	        }, {
-	            name: 'NonF',
-	            data: [720, 640, 560, 595],
+	        	name: i18n[ 'forest_change_nf' ],
+//	            data: [720, 640, 560, 595],
+	            data: dataClasses[3],
 	            stack: '4'
 	        }]
 	    });
