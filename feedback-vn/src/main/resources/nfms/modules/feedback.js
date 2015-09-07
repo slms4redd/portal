@@ -169,8 +169,6 @@ function(bus, layout, i18n, $, toolbar) {
 
 	// add feedback layer
 //	var feedbackLayers 	= new Array();
-//	var feedbackLayer 	= new OpenLayers.Layer.Vector( "Feedback" );
-//	var drawingToolbar 	= new OpenLayers.Control.PortalToolbar(feedbackLayer, {
 //		div : document.getElementById( "dr_tools" )
 //	});
 	

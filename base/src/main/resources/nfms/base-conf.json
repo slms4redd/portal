@@ -12,7 +12,6 @@
 	"requirejs" : {
 		"paths" : {
 			"jquery-ui-slider" 	: "../jslib/jquery-ui-slider-1.11.4",
-			"openlayers" 		: "../jslib/OpenLayers/OpenLayers.debug",
 			"mustache" 			: "../jslib/jquery.mustache",
 			"jquery-color"		: "../jslib/jquery.color-2.1.2.min",
 			"jquery-easing"		: "../jslib/jquery.easing.1.3"

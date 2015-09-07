@@ -1,0 +1,9 @@
+{
+
+	"requirejs" : {
+		"paths" : {
+			"openlayers" 		: "../jslib/OpenLayers/OpenLayers.debug"
+		}
+	}
+
+}
