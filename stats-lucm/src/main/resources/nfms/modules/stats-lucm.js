@@ -475,7 +475,7 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 	                stacking: 'normal',
 	                borderColor : 'rgba(233, 233, 233, 0.20)',
 	                dataLabels: {
-	                    enabled: true,
+	                    enabled: false,
 	                    color: '#E9E9E9',
 	                    style: {
 	                        textShadow: '0 0 2px rgba(66, 66, 66, 0.2)',
@@ -633,12 +633,15 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 	                stacking: 'normal',
 	                borderColor : 'rgba(233, 233, 233, 0.20)',
 	                dataLabels: {
-	                    enabled: true,
+	                    enabled: false,
 	                    color: '#E9E9E9',
 	                    style: {
 	                        textShadow: '0 0 2px rgba(66, 66, 66, 0.2)',
 	                        fontWeight: 100
-	                    }
+	                    }, formatter: function(){
+//		                	console.log( this );
+		                	return this.y + ' %';
+		                }
 	                }
 	            }
 	        },
@@ -668,20 +671,23 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 	        }, {
 	        	name: i18n[ 'forest_change_ar' ],
 	        	data: dataClasses[1],
-//	            data: [70, 80, 120, 30],
 	            stack: '2'
 	        }, {
 	        	name: i18n[ 'forest_change_frf' ],
-//	            data: [170, 180, 190, 310],
 	        	data: dataClasses[2],
 	            stack: '3'
 	        }, {
 	        	name: i18n[ 'forest_change_nf' ],
-//	            data: [720, 640, 560, 595],
 	            data: dataClasses[3],
 	            stack: '4'
 	        }]
 	    });
+		
+		$( window ).resize( function(e){
+			if( container ){
+				container.highcharts().redraw();
+			}
+		});
 	
 	};
 });

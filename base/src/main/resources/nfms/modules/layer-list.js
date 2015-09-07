@@ -67,7 +67,6 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 		if( groupInfo.visible === false ){
 			// nothing
 		} else {
-				
 			
 			if( groupInfo.hasOwnProperty("parentId") ){
 				
@@ -91,7 +90,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 					row.addClass( layerRowDropdownPrefix + groupInfo.id );
 					subGroupPanel.append( row );
 
-					var settings				= $( '<div class="col-md-1 settings no-padding" />' );
+					var settings		= $( '<div class="col-md-1 settings no-padding" />' );
 					row.append( settings );
 					var settingsBtn     = $( '<button class="btn btn-transparent"><i class="fa fa-sliders"></i></button>');
 					settings.append( settingsBtn );
@@ -109,15 +108,24 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 						       '<span class="caret"></span>'+
 						      '</button>'+
 						      '<ul class="dropdown-menu" role="menu">'+
-						        '<li><button class="btn btn-default none">' + i18n['none'] + '</button></li>'+
+//						        '<li><button class="btn btn-default none">' + i18n['none'] + '</button></li>'+
 						        '</ul>'+
 						    '</div>' );
 					col.append( btnGroup );
 					
-					btnGroup.find( 'button.none' ).click( function(){
-						bus.send( "layer-dropdown-select" , [groupInfo , null] );
+//					btnGroup.find( 'button.none' ).click( function(){
+//						bus.send( "layer-dropdown-select" , [groupInfo , null] );
+//					});
+//					btnGroup.find( 'button.none' ).prop( 'disabled' , true );
+					var btnLabel = btnGroup.find( 'button.label-btn' );
+					btnLabel.click( function(e){
+						e.preventDefault();
+						var portalLayer = null;
+						if( !btnLabel.hasClass('active') ){
+							portalLayer = activeDropDownLayers[ groupInfo.id ];
+						}
+						bus.send( "layer-dropdown-select" , [groupInfo , portalLayer ] );
 					});
-					btnGroup.find( 'button.none' ).prop( 'disabled' , true );
 					
 					var dashboard			= $( '<div class="col-md-1 no-padding dashboard-btn" />' );
 					row.append( dashboard );
@@ -220,7 +228,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 				if( mutuallyExclusive ){
 					var dropDownDiv = groupContainerBody.find( '.group-dropdown' );
 					var dropDown	= dropDownDiv.find( 'ul.dropdown-menu' );
-					
+
 					var li 			= $( '<li></li>' );
 					dropDown.append( li );
 
@@ -228,6 +236,16 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 					btnLi.addClass( portalLayer.id );
 					btnLi.html( portalLayer.label );
 					li.append( btnLi );
+					
+					// if it's first child
+					if( dropDown.children().length == 1 ){
+						// add first item to the drop down
+						activeDropDownLayers[ portalLayer.groupInfo.id ] = portalLayer;
+						var btnLabel	= dropDownDiv.find( 'button.label-btn' );
+						btnLabel.html( portalLayer.label );
+						
+						btnLi.hide();
+					}
 					
 					btnLi.click( function(){
 //						console.log( portalLayer );
@@ -374,6 +392,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 		
 		var activeLayer = activeDropDownLayers[ group.id ];
 		if( activeLayer ){
+			// hide current active layer
 			bus.send( "layer-visibility" , [activeLayer.id , false] );
 			bus.send( "layer-update-active-count" , [activeLayer.id , false, group] );
 			bus.send( "layer-toggle-settings" , [activeLayer.id , false] );
@@ -387,8 +406,8 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 	
 		// reset dropdown menu
 		var layerBtns		= btnGroup.find( 'ul li button' );
-		layerBtns.prop( 'disabled' , false );
-		activeDropDownLayers[ group.id ] = null;
+//		layerBtns.prop( 'disabled' , false );
+//		activeDropDownLayers[ group.id ] = null;
 		
 		row.find( 'div.settings button' ).hide();
 		row.find( 'div.dashboard-btn button' ).hide();
@@ -405,17 +424,19 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 			btnLabel.html( layer.label );
 			
 			var layerBtn	= btnGroup.find( 'ul li button.' + layer.id );
-			layerBtn.prop(  'disabled' , true );
+//			layerBtn.prop(  'disabled' , true );
+			layerBtns.show();
+			layerBtn.hide();
 			
 			row.find( 'div.settings button' ).fadeIn( 200 );
 			if( layer.hasDashboard ){
 				row.find( 'div.dashboard-btn button' ).fadeIn( 200 );
 			}
 		} else {
-			btnLabel.html( i18n['none'] );
+//			btnLabel.html( i18n['none'] );
 			
-			var emptyBtn	= btnGroup.find( 'ul li button.none' );
-			emptyBtn.prop(  'disabled' , true );
+//			var emptyBtn	= btnGroup.find( 'ul li button.none' );
+//			emptyBtn.prop(  'disabled' , true );
 		}
 	});
 	

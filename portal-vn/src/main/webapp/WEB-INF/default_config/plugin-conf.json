@@ -6,8 +6,8 @@
 					{ 
 						"name"		: "div" , 
 						"styles"	: {"position": "absolute" , "color" : "rgba(233, 233, 233, 0.5)", "font-size" : "60px",
-										"z-index" : "1001" , "text-align" : "center" , "left" : "30%" ,
-										"width": "40%" , "background-color": "rgba(61, 65, 70, 0.85)"} ,
+										"z-index" : "1001" , "text-align" : "center" , "left" : "35%" ,
+										"width": "30%" , "background-color": "rgba(61, 65, 70, 0.85)"} ,
 						"label"		: "demo",
 						"attributes": {},	
 						"cssClasses": ["test","test2"],	
