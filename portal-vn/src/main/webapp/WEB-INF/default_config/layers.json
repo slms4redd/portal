@@ -73,8 +73,7 @@
 			"wmsName" : "unredd:ecoregion",
 			"imageFormat" : "image/png8",
 			"visible" : true,
-			"queryable" : false,
-			"wmsOptions" : { "singleTile": true, "ratio": 1}
+			"queryable" : false
 		} 
 		, {
 			"id" : "country",
@@ -116,6 +115,15 @@
 			"type"			: "wfs",
 			"visible" 		: true,
 			"featureType"	: "province_center",
+			"featureNN"		:"http://www.nfms4redd.org",
+			"styleMap"		: "new OpenLayers.StyleMap({'strokeWidth' : 0,fillOpacity : 0})"
+		}
+		, {
+			"id" 			: "ecoregion_label",
+			"baseUrl" 		: "http://redd.vnforest.gov.vn/diss_geoserver/wfs",
+			"type"			: "wfs",
+			"visible" 		: true,
+			"featureType"	: "ecoregion_center",
 			"featureNN"		:"http://www.nfms4redd.org",
 			"styleMap"		: "new OpenLayers.StyleMap({'strokeWidth' : 0,fillOpacity : 0})"
 		}
@@ -215,6 +223,11 @@
 			"active" : true,
 			"layers" : [ "province_label" ]
 		}
+		, {
+			"id" : "ecoregion_label",
+			"active" : true,
+			"layers" : [ "ecoregion_label" ]
+		}
 		
 	],
 
@@ -223,7 +236,7 @@
 			"id" : "base",
 			"label" : "${base_layers}",
 			"visible" : false,
-			"items" : [ "oceans", "ne2" ,"province_placeholder" ,"ne_10m_minor_islands" ,"province_label"]
+			"items" : [ "oceans", "ne2" ,"province_placeholder" ,"ne_10m_minor_islands" ,"province_label" , "ecoregion_label"]
 			
 		}
 		, {
