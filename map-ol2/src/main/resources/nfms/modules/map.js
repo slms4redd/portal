@@ -40,9 +40,7 @@ define([ "message-bus", "layout", "module", "openlayers" ], function(bus, layout
 		for (var optName in config.options) {
 	        if ( config.options.hasOwnProperty(optName) ) {
 	        	var configValue = eval( config.options[ optName.toString() ]);
-//	        	console.log( configValue );
 	        	mapOptions[ optName ] = configValue;
-//	        	mapOptions[ optName ] = config.options[ optName ];
 	        }
 	    }
 	}
@@ -72,7 +70,6 @@ define([ "message-bus", "layout", "module", "openlayers" ], function(bus, layout
 				};
 				if( wmsLayer.styleMap ){
 					var styleMap = eval( wmsLayer.styleMap );
-//					var styleMap = new OpenLayers.StyleMap({'strokeWidth' : 0,fillOpacity : 0});
 					wfsOptions.styleMap = styleMap;
 				}
 				layer = new OpenLayers.Layer.Vector( "WFS", wfsOptions );

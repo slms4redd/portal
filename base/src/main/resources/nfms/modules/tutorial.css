@@ -11,16 +11,18 @@
 	-webkit-box-shadow: 0px 15px 32px 4px rgba(102, 102, 102, 0.8);
 	-moz-box-shadow: 0px 15px 32px 4px rgba(102, 102, 102, 0.8);
 	box-shadow: 0px 15px 32px 4px rgba(102, 102, 102, 0.8);
-	border: 1px solid rgba(66, 66, 66, 0.40);
+	border: 1px solid rgba(158, 151, 157, 0.18);
 	font-size: 14px;
 }
 
 .tutorial-header {
-/* 	cursor: move; */
-	margin: 0px !important;
-	background-color: rgba(68, 66, 63, 0.65);
-	padding: 10px 0px 10px 0px;
-	height: 8%;
+    /* cursor: move; */
+    margin: 0px !important;
+    background-color: rgba(61, 65, 70, 0.96);
+    padding: 10px 0px 10px 0px;
+    height: 8%;
+    font-weight: bold;
+    font-size: 15px;
 }
 
 .tutorial-header div {

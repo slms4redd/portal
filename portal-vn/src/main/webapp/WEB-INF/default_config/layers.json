@@ -110,6 +110,15 @@
 			"queryable" : true,
 			"wmsParameters" : { "styles" : "province_prap" }
 		}
+		, {
+			"id" 			: "province_label",
+			"baseUrl" 		: "http://redd.vnforest.gov.vn/diss_geoserver/wfs",
+			"type"			: "wfs",
+			"visible" 		: true,
+			"featureType"	: "province_center",
+			"featureNN"		:"http://www.nfms4redd.org",
+			"styleMap"		: "new OpenLayers.StyleMap({'strokeWidth' : 0,fillOpacity : 0})"
+		}
 		
 		
 	],
@@ -201,6 +210,11 @@
 			"feedback" : false,
 			"legendFile" : "prap_legend.html"
 		}
+		, {
+			"id" : "province_label",
+			"active" : true,
+			"layers" : [ "province_label" ]
+		}
 		
 	],
 
@@ -209,7 +223,7 @@
 			"id" : "base",
 			"label" : "${base_layers}",
 			"visible" : false,
-			"items" : [ "oceans", "ne2" ,"province_placeholder" ,"ne_10m_minor_islands" ]
+			"items" : [ "oceans", "ne2" ,"province_placeholder" ,"ne_10m_minor_islands" ,"province_label"]
 			
 		}
 		, {
