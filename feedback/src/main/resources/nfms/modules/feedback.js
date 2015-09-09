@@ -1,6 +1,16 @@
 define([ "message-bus", "layout" , "url-parameters", "map", "toolbar", "i18n", "jquery", "openlayers", "edit-controls" ],//
 function(bus, layout, urlParameters, map, toolbar, i18n, $) {
 	
+	var col		= $( '<div class="btn-container feedback-btn-container" />');
+	toolbar.append( col );
+
+	var btn 	= $( '<button class="btn btn-default"><i class="fa fa-bullhorn"></i>&nbsp;&nbsp;' + i18n['Feedback.btn'] + '</button>' );
+	col.append( btn );
+	btn.click( function(e){
+		toggleFeedback();
+		btn.blur();
+	});	
+	
 	var container		= $( '<div class="feedback-container" />' );
 	layout.container.append( container );
 		
@@ -8,41 +18,61 @@ function(bus, layout, urlParameters, map, toolbar, i18n, $) {
 	container.append( feedback );	
 	
 	
-	var rowButton = $(  '<div class="row feedback-btn" />' );
+	var rowButton = $(  '<div class="row feedback-btn no-margin" />' );
 	feedback.append( rowButton );
 	
-	rowButton.append( '<div class="col-md-4 feedback-btn-bottom-border height100" />' );
-	var colButton = $(  '<div class="col-md-4 no-padding height100" />' );
+//	rowButton.append( '<div class="col-md-4 feedback-btn-bottom-border height100" />' );
+	var colButton = $(  '<div class="col-md-12 no-padding height100" />' );
 	rowButton.append( colButton );
-	rowButton.append( '<div class="col-md-4 feedback-btn-bottom-border height100" />' );
+//	rowButton.append( '<div class="col-md-4 feedback-btn-bottom-border height100" />' );
 	
-	var btn = $( '<button class="btn btn-default height100"><i class="fa fa-bullhorn"></i>  Feedback</button>' );
-	colButton.append( btn );
+//	var btn = $( '<button class="btn btn-default height100"><i class="fa fa-bullhorn"></i>  Feedback</button>' );
+//	colButton.append( btn );
+	var feedbackToggleBtn = $( '<button class="btn btn-default"><i class="fa fa-times-circle"></i>&nbsp;&nbsp;' + i18n['Feedback.close-btn'] + '</button>' );
+	colButton.append( feedbackToggleBtn );
 
-	btn.click( function(){
-//		top: 50%;
-		var top 		= '95%';
-		var cssClass 	= 'closed';
-		if( feedback.hasClass( 'closed' ) ){
-			top 		= '50%';
-			cssClass 	= 'opened';
-			
-			bus.send( "activate-exclusive-control", drawingToolbar );
-			map.addLayer( feedbackLayer );
-			
-		} else {
-			// remove feedback
-			feedbackLayer.removeAllFeatures();
-			bus.send( "activate-default-exclusive-control" );
-			map.removeLayer( feedbackLayer );
-			// reset form
-			feedbackForm.find( 'button[type=reset]' ).click();
-//			feedbackForm.find( 'input,textarea' ).val( '' );
-//			feedbackForm.find( 'textarea' ).html( '' );
-		}
-		container.animate( {'top': top }, 400 );
-		feedback.removeClass().addClass( 'feedback ' + cssClass );
+	feedbackToggleBtn.click( function(e){
+		toggleFeedback();
+		feedbackToggleBtn.blur();
 	});	
+	
+	var toggleFeedback = function(){
+		if( feedback.hasClass( 'closed' ) ){
+			openFeedback();
+		} else {
+			closeFeedback();
+		}		
+	};
+
+	var openFeedback = function(){
+		container.show();
+		container.animate( {'top': '0%' }, 400 );
+
+		feedback.removeClass().addClass( 'feedback opened' );
+		
+		bus.send( "activate-exclusive-control", drawingToolbar );
+		map.addLayer( feedbackLayer );
+	};
+
+	var closeFeedback = function(){
+		container.animate( {'top': '-60%' }, 400 , function(){
+			container.hide();
+		});
+
+		feedback.removeClass().addClass( 'feedback closed' );
+		
+		feedbackLayer.removeAllFeatures();
+		bus.send( "activate-default-exclusive-control" );
+		map.removeLayer( feedbackLayer );
+		
+		feedbackForm.find( 'button[type=reset]' ).click();
+	};
+
+	$( window ).resize( function(e){
+		console.log( 'feedback' ) ;
+		var top = feedback.hasClass( 'closed' ) ? '-60%' : '0%';
+		container.animate( {'top': top } , 0 );
+	});
 	
 	var rowForm = $(  '<div class="row feedback-form" />' );
 	feedback.append( rowForm );

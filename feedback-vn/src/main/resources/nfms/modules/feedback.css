@@ -10,6 +10,8 @@
 	height: 60%;
 	background: none;
 	width: 40%;
+	
+	display: none;
 }
 
 .feedback {
@@ -18,15 +20,10 @@
 	position: absolute;
 
 	background-color: rgba(61, 65, 70, 0.96);
-/* 	background-color: rgba(47, 47, 47, 0.95); */
 	border-bottom: 1px solid rgba(22, 22, 22, 0.30) !important;
 	border-left: 1px solid rgba(22, 22, 22, 0.30) !important;
 	border-right: 1px solid rgba(22, 22, 22, 0.30) !important;
 	
-/* 	background-color: rgba(47, 53, 60, 0.95); */
-/*     border-bottom: 1px solid rgba(115, 157, 206, 0.40); */
-/*     border-left: 1px solid rgba(115, 157, 206, 0.40); */
-/*     border-right: 1px solid rgba(115, 157, 206, 0.40); */
 }
 
 .feedback-btn {
@@ -34,8 +31,6 @@
 	padding-top: 10px;
 }
 .feedback-btn button.btn-default {
-/* 	border-radius: 0px; */
-/* 	border: none !important; */
 	width: 20%;
 	margin-left: 20px;
 	padding: 6px 12px;
@@ -44,7 +39,6 @@
 	background-color: transparent;
   	border-radius: 0px;
 	border: none;
-/* 	border: 1px solid rgba(115, 157, 206, 0.25); */
 }
 .feedback-btn button.btn-default:hover , 
 .feedback-btn button.btn-default:active , 
@@ -53,7 +47,6 @@
 	background-color: transparent;
 	color: rgba(233, 233, 233, 0.9);
 	border: none;
-/* 	border: 1px solid rgba(115, 157, 206, 0.50); */
 }
 .feedback-btn button.btn-default i{
 	font-size: 14px;

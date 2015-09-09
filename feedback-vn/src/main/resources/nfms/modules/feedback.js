@@ -1,18 +1,13 @@
 define([ "message-bus", "layout" , "i18n", "jquery", "toolbar" , "tutorial" , "portal-string-utils" , "portal-ui"],//
 function(bus, layout, i18n, $, toolbar) {
 	
-	
 	var col		= $( '<div class="btn-container feedback-btn-container" />');
 	toolbar.append( col );
 
 	var btn 	= $( '<button class="btn btn-default"><i class="fa fa-bullhorn"></i>&nbsp;&nbsp;' + i18n['Feedback.btn'] + '</button>' );
 	col.append( btn );
-	btn.click( function(){
-		if( feedback.hasClass( 'closed' ) ){
-			openFeedback();
-		} else {
-			closeFeedback();
-		}
+	btn.click( function(e){
+		toggleFeedback();
 		btn.blur();
 	});	
 	
@@ -21,7 +16,6 @@ function(bus, layout, i18n, $, toolbar) {
 		
 	var feedback = $(  '<div class="feedback closed" />' );
 	container.append( feedback );	
-	
 	
 	var rowButton = $(  '<div class="row feedback-btn no-margin" />' );
 	feedback.append( rowButton );
@@ -35,23 +29,31 @@ function(bus, layout, i18n, $, toolbar) {
 //	var feedbackToggleBtn = $( '<button class="btn btn-default height100"><i class="fa fa-bullhorn"></i>  Feedback</button>' );
 	colButton.append( feedbackToggleBtn );
 
-	feedbackToggleBtn.click( function(){
+	feedbackToggleBtn.click( function(e){
+		toggleFeedback();
+		feedbackToggleBtn.blur();
+	});	
+	
+	var toggleFeedback = function(){
 		if( feedback.hasClass( 'closed' ) ){
 			openFeedback();
 		} else {
 			closeFeedback();
-		}
-		feedbackToggleBtn.blur();
-	});	
+		}		
+	};
 	
 	var openFeedback = function(){
+		container.show();
 		container.animate( {'top': '0%' }, 400 );
 //		container.animate( {'top': '40%' }, 400 );
 		feedback.removeClass().addClass( 'feedback opened' );
 	};
 
 	var closeFeedback = function(){
-		container.animate( {'top': '-60%' }, 400 );
+		
+		container.animate( {'top': '-60%' }, 400 , function(){
+			container.hide();
+		});
 		feedback.removeClass().addClass( 'feedback closed' );
 		
 		feedbackForm.find( 'button[type=reset]' ).click();
@@ -59,6 +61,12 @@ function(bus, layout, i18n, $, toolbar) {
 		locationOther.prop( 'disabled' , 'disabled' );
 
 	};
+
+	$( window ).resize( function(e){
+		console.log( 'feedback' ) ;
+		var top = feedback.hasClass( 'closed' ) ? '-60%' : '0%';
+		container.animate( {'top': top } , 0 );
+	});
 	
 	var rowForm = $(  '<div class="row feedback-form no-margin" />' );
 	feedback.append( rowForm );
