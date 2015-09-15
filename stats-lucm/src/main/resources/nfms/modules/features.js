@@ -5,7 +5,7 @@ define([ "jquery", "message-bus" , "i18n" , "customization" , "portal-string-uti
 	var serverUrl 	= customization['info.serverUrl'] ;
 	var wmsUri 		= customization['info.wmsUri'] ;
 	
-	var getParams 		= function( layers , properties , x , y , h , w ,bbox ){
+	Features.getParams 		= function( layers , properties , x , y , h , w ,bbox ){
 		var params 				= {};
 
 		params.layers			= layers;
@@ -30,18 +30,23 @@ define([ "jquery", "message-bus" , "i18n" , "customization" , "portal-string-uti
 		return decodeURIComponent( $.param(params) );
 	};
 	
-	Features.getFeatureInfo	= function( openSection, layers , properties , x , y , h , w ,bbox,section ){
-		UI.lock();
+	Features.getRequestUrl = function( params ){
+		var requestUrl = serverUrl + wmsUri+ '?' + params;
 		
-		var params 			= getParams( layers , properties , x , y , h , w ,bbox );
-		var requestUrl		= serverUrl + wmsUri+ '?' + params;
-//		console.log( requestUrl );
-
 		var sameOrigin = StringUtils.startsWith( window.location.origin , serverUrl );
 		if( !sameOrigin ){
 			requestUrl 	= "proxy?url=" + encodeURIComponent( requestUrl );
 		} 
-//		console.log( requestUrl );
+		
+		return requestUrl;
+	};
+	
+	Features.getFeatureInfo	= function( openSection, layers , properties , x , y , h , w , bbox, section ){
+		UI.lock();
+		
+		var params 			= Features.getParams( layers , properties , x , y , h , w ,bbox );
+		var requestUrl		= Features.getRequestUrl( params );
+		
 		
 		bus.send("ajax", {
 			type 	: 'GET',

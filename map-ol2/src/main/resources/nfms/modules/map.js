@@ -59,7 +59,7 @@ define([ "message-bus", "layout", "module", "openlayers" ], function(bus, layout
 			} else if (wmsLayer.type == "wfs") {
 				
 				var wfsOptions = {
-						strategies : [ new OpenLayers.Strategy.Fixed() ],
+						strategies : [ new OpenLayers.Strategy.BBOX() ],
 						protocol : new OpenLayers.Protocol.WFS({
 							version 	: "1.0.0",
 							url 		: wmsLayer.baseUrl,

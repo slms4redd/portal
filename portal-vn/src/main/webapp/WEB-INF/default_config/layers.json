@@ -110,6 +110,15 @@
 			"wmsParameters" : { "styles" : "province_prap" }
 		}
 		, {
+			"id" 			: "ecoregion_label",
+			"baseUrl" 		: "http://redd.vnforest.gov.vn/diss_geoserver/wfs",
+			"type"			: "wfs",
+			"visible" 		: true,
+			"featureType"	: "ecoregion_center",
+			"featureNN"		:"http://www.nfms4redd.org",
+			"styleMap"		: "new OpenLayers.StyleMap({'strokeWidth' : 0,fillOpacity : 0})"
+		}
+		, {
 			"id" 			: "province_label",
 			"baseUrl" 		: "http://redd.vnforest.gov.vn/diss_geoserver/wfs",
 			"type"			: "wfs",
@@ -119,14 +128,24 @@
 			"styleMap"		: "new OpenLayers.StyleMap({'strokeWidth' : 0,fillOpacity : 0})"
 		}
 		, {
-			"id" 			: "ecoregion_label",
+			"id" 			: "district_label",
 			"baseUrl" 		: "http://redd.vnforest.gov.vn/diss_geoserver/wfs",
 			"type"			: "wfs",
 			"visible" 		: true,
-			"featureType"	: "ecoregion_center",
+			"featureType"	: "district_center",
 			"featureNN"		:"http://www.nfms4redd.org",
 			"styleMap"		: "new OpenLayers.StyleMap({'strokeWidth' : 0,fillOpacity : 0})"
 		}
+		, {
+			"id" 			: "commune_label",
+			"baseUrl" 		: "http://redd.vnforest.gov.vn/diss_geoserver/wfs",
+			"type"			: "wfs",
+			"visible" 		: true,
+			"featureType"	: "commune_center",
+			"featureNN"		:"http://www.nfms4redd.org",
+			"styleMap"		: "new OpenLayers.StyleMap({'strokeWidth' : 0,fillOpacity : 0})"
+		}
+		
 		
 		
 	],
@@ -219,14 +238,24 @@
 			"legendFile" : "prap_legend.html"
 		}
 		, {
+			"id" : "ecoregion_label",
+			"active" : true,
+			"layers" : [ "ecoregion_label" ]
+		}
+		, {
 			"id" : "province_label",
 			"active" : true,
 			"layers" : [ "province_label" ]
 		}
 		, {
-			"id" : "ecoregion_label",
-			"active" : true,
-			"layers" : [ "ecoregion_label" ]
+			"id" : "district_label",
+			"active" : false,
+			"layers" : [ "district_label" ]
+		}
+		, {
+			"id" : "commune_label",
+			"active" : false,
+			"layers" : [ "commune_label" ]
 		}
 		
 	],
@@ -236,7 +265,7 @@
 			"id" : "base",
 			"label" : "${base_layers}",
 			"visible" : false,
-			"items" : [ "oceans", "ne2" ,"province_placeholder" ,"ne_10m_minor_islands" ,"province_label" , "ecoregion_label"]
+			"items" : [ "oceans", "ne2" ,"province_placeholder" ,"ne_10m_minor_islands" , "ecoregion_label" ,"province_label" , "district_label" , "commune_label"]
 			
 		}
 		, {

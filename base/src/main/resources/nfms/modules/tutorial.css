@@ -13,28 +13,30 @@
 	box-shadow: 0px 15px 32px 4px rgba(102, 102, 102, 0.8);
 	border: 1px solid rgba(158, 151, 157, 0.18);
 	font-size: 14px;
+	background-color: rgba(229, 229, 229, 0.95);
+	color: rgba(22, 22, 22, 0.99);
 }
 
 .tutorial-header {
     /* cursor: move; */
     margin: 0px !important;
-    background-color: rgba(61, 65, 70, 0.96);
+/*     background-color: rgba(61, 65, 70, 0.96); */
     padding: 10px 0px 10px 0px;
-    height: 8%;
+    height: 5%;
     font-weight: bold;
     font-size: 15px;
 }
 
 .tutorial-header div {
 	text-align: center;
-	color: #E9E9E9;
+/* 	color: #E9E9E9; */
 }
 
 .tutorial-header button, .tutorial-header button:hover, .tutorial-header button:active
 	{
 	background: none;
 	border: none;
-	color: #E9E9E9;
+/* 	color: #E9E9E9; */
 	width: 100%;
 	height: 100%;
 	padding: 0px !important;
@@ -43,10 +45,10 @@
 
 .tutorial-body {
 	margin: 0px !important;
-	background-color: rgba(229, 229, 229, 0.95);
-	color: rgba(22, 22, 22, 0.99);
+/* 	background-color: rgba(229, 229, 229, 0.95); */
+/* 	color: rgba(22, 22, 22, 0.99); */
 	padding: 13px 5px 13px 5px;
-	height: 92%;
+	height: 90%;
 	overflow: auto;
 }
 
