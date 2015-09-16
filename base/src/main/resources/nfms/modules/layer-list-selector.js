@@ -11,15 +11,14 @@ define([ "jquery", "message-bus", "layout", "customization", "i18n", "bootstrap"
 //	var container	= $( '<div class="col-md-3 col-sm-3 col-xs-3 panel-group layers-container open" id="group-accordion" role="tablist" aria-multiselectable="true"></div>' );
 //	row.append( container );
 	
-	var col	= $( '<div class="col-md-3 col-sm-3 col-xs-3 height100"></div>' );
+	var col	= $( '<div class="col-md-3 col-sm-4 col-xs-5 height100"></div>' );
 	row.append( col );
 	var rowContainer = $( '<div class="row height100" style="  overflow: hidden;"></div>' );
 	col.append( rowContainer );
 	var container	= $( '<div class="col-md-12 col-sm-12 col-xs-12 layers-container no-padding open" role="tablist" aria-multiselectable="true"></div>' );
-//	var container	= $( '<div class="col-md-12 col-sm-12 col-xs-12 layers-container no-padding open" id="group-accordion" role="tablist" aria-multiselectable="true"></div>' );
 	rowContainer.append( container );
 	
-	var dashboardCol = $( '<div class="col-md-5 col-md-offset-4 col-sm-5 col-sm-offset-4 col-xs-4 height100"></div>' );
+	var dashboardCol = $( '<div class="col-md-5 col-md-offset-4 col-sm-6 col-sm-offset-2 hidden-xs height100"></div>' );
 	row.append( dashboardCol );
 	
 	$( window ).resize(function() {
@@ -31,7 +30,7 @@ define([ "jquery", "message-bus", "layout", "customization", "i18n", "bootstrap"
 	var addToggleLayersSection = function(){
 		var row = $( '<div class="row no-margin" />' );
 		container.append( row );
-		var col	= $( '<div class="col-md-1 col-md-offset-11 no-padding" />' );
+		var col	= $( '<div class="col-md-1 col-md-offset-11 col-sm-2 col-sm-offset-10 col-xs-4 col-xs-offset-8 no-padding" />' );
 		row.append( col );
 		var btnDiv	= $( '<div class="toggle-layers" />' );
 		col.append( btnDiv );

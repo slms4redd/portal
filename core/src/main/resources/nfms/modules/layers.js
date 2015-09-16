@@ -114,9 +114,9 @@ define([ "jquery", "message-bus", "customization", "module" , "i18n" ], function
 		if( group.helpMsg ){
 			var groupDiv 	= $( "#group-collapse-" + group.id );
 			var panel 		= groupDiv.find( '.panel-body:first-child' );
-			var row 		= $( '<div class="row row-group-help-msg">' );
+			var row 		= $( '<div class="row row-group-help-msg hidden-xs">' );
 			panel.append( row );
-			var col 		= $( '<div class="col-md-10 col-md-offset-1">' ) ;
+			var col 		= $( '<div class="col-md-10 col-sm-12 col-md-offset-1">' ) ;
 			row.append( col );
 			col.html( i18n[ group.helpMsg ] );
 		}

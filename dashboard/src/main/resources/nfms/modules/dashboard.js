@@ -22,7 +22,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 	layerListSelector.layersDashboardContainer.append( dashboard );
 	
 	// dashbaord toggle 
-	var dashboardToggle = $( '<div class="col-md-1 dashboard-toggle no-padding "></div>' )
+	var dashboardToggle = $( '<div class="col-md-1 col-sm-2 dashboard-toggle no-padding "></div>' )
 	dashboard.append( dashboardToggle );
 	
 	var dashboardToggleBtn = $( '<div class="dashboard-toggle-btn"></div>' )
@@ -39,7 +39,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 	
 	
 	// main dashbaord container
-	var dashboardContainer	= $( '<div class="col-md-11 height100 dashboard-container"></div>' );
+	var dashboardContainer	= $( '<div class="col-md-11 col-sm-10 height100 dashboard-container"></div>' );
 	dashboard.append( dashboardContainer );
 		
 	dashboard.css( 'right' , '-' + (dashboard.width() ) +'px' );

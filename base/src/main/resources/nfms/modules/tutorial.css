@@ -1,4 +1,3 @@
-
 .tutorial {
 	display: none;
 	margin: 0px !important;
@@ -33,20 +32,16 @@
 }
 
 .tutorial-header button, .tutorial-header button:hover, .tutorial-header button:active
-	{
+{
 	background: none;
 	border: none;
-/* 	color: #E9E9E9; */
 	width: 100%;
 	height: 100%;
 	padding: 0px !important;
 	font-size: 17px;
 }
-
 .tutorial-body {
 	margin: 0px !important;
-/* 	background-color: rgba(229, 229, 229, 0.95); */
-/* 	color: rgba(22, 22, 22, 0.99); */
 	padding: 13px 5px 13px 5px;
 	height: 90%;
 	overflow: auto;

@@ -15,32 +15,6 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 	
 	var defaultLayersOpenDashboard   = new Array();
 	
-	// OLD
-	var layerActions 	= new Array();
-	var temporalLayers 	= new Array();
-	var divLayers 		= null;
-	bus.listen("register-layer-action", function (event, action) {
-		layerActions.push(action);
-	});
-
-	divLayers = $("<div/>").attr("id", "all_layers");
-	divLayers.addClass("ui-accordion-icons");
-//	divLayers.accordion({
-//		"animate" : false,
-//		"heightStyle" : "content",
-//		/*
-//		 * Collapse all content since otherwise the accordion sets the 'display'
-//		 * to 'block' instead than to 'table'
-//		 */
-//		"collapsible" : true,
-//		"active" : false
-//	});
-	layerListSelector.registerLayerPanel("all_layers_selector", i18n.layers, divLayers);
-	//	END OLD
-	
-	
-	
-	
 	bus.listen("add-group", function(event, groupInfo) {
 		
 		
@@ -90,7 +64,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 					row.addClass( layerRowDropdownPrefix + groupInfo.id );
 					subGroupPanel.append( row );
 
-					var settings		= $( '<div class="col-md-1 settings no-padding" />' );
+					var settings		= $( '<div class="col-md-1 col-sm-2 settings no-padding hidden-xs" />' );
 					row.append( settings );
 					var settingsBtn     = $( '<button class="btn btn-transparent"><i class="fa fa-sliders"></i></button>');
 					settings.append( settingsBtn );
@@ -100,7 +74,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 					});
 					settingsBtn.hide();
 					
-					col					= $( '<div class="col-md-10 group-dropdown layer"></div>' );
+					col					= $( '<div class="col-md-10 col-sm-8 col-xs-12 group-dropdown layer"></div>' );
 					row.append( col );
 					
 					var btnGroup = $( '<div class="btn-group width100"><button type="button" class="btn label-btn">'+ i18n['none'] +'</button>'+
@@ -153,7 +127,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 				
 				var rowHeading = $( '<div class="row"/>' );
 				heading.append( rowHeading );
-				var colBtn 		= $( '<div class="col-md-10 col-md-offset-1 panel-title no-padding" />' );
+				var colBtn 		= $( '<div class="col-md-10 col-md-offset-1 col-xs-12 col-sm-12 panel-title no-padding" />' );
 				rowHeading.append( colBtn );
 	
 				var collapseId 	= groupCollapsePrefix + groupInfo.id;
@@ -169,7 +143,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 				colBtn.append( btn );
 				
 				if( groupInfo.hasDashboard ){
-						var colDashbaord 		= $( '<div class="col-md-1 dashboard-btn no-padding" />' );
+						var colDashbaord 		= $( '<div class="col-md-1 hidden-xs hidden-sm dashboard-btn no-padding" />' );
 						rowHeading.append( colDashbaord );
 					
 						var dashboardBtn = $( '<button class="btn btn-transparent"><i class="fa fa-arrow-circle-right"></i></button>' );
@@ -258,13 +232,13 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 					row.attr( 'id' , layerRowPrefix + portalLayer.id );
 					groupContainerBody.append( row );
 					
-					var settings				= $( '<div class="col-md-1 settings no-padding" />' );
+					var settings				= $( '<div class="col-md-1 settings no-padding hidden-xs hidden-sm" />' );
 					row.append( settings );
 					
-					var layer				= $( '<div class="col-md-10 layer" />' );
+					var layer				= $( '<div class="col-md-10 col-sm-12 col-xs-12 layer" />' );
 					row.append( layer );
 					
-					var dashboard			= $( '<div class="col-md-1 no-padding dashboard-btn" />' );
+					var dashboard			= $( '<div class="col-md-1 hidden-xs hidden-sm no-padding dashboard-btn" />' );
 					row.append( dashboard );
 					
 					if ( portalLayer.isPlaceholder ){

@@ -1,7 +1,7 @@
 define([ "message-bus", "layout" , "i18n", "jquery", "toolbar" , "tutorial" , "portal-string-utils" , "portal-ui"],//
 function(bus, layout, i18n, $, toolbar) {
 	
-	var col		= $( '<div class="btn-container feedback-btn-container" />');
+	var col		= $( '<div class="btn-container feedback-btn-container hidden-xs" />');
 	toolbar.append( col );
 
 	var btn 	= $( '<button class="btn btn-default"><i class="fa fa-bullhorn"></i>&nbsp;&nbsp;' + i18n['Feedback.btn'] + '</button>' );
@@ -11,7 +11,7 @@ function(bus, layout, i18n, $, toolbar) {
 		btn.blur();
 	});	
 	
-	var container		= $( '<div class="feedback-container" />' );
+	var container		= $( '<div class="feedback-container hidden-xs" />' );
 	layout.container.append( container );
 		
 	var feedback = $(  '<div class="feedback closed" />' );

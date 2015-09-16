@@ -52,7 +52,7 @@ public class ClientContentServlet extends HttpServlet {
 		}
 		// Set content type
 		String type = null;
-		if (pathInfo.endsWith("css")) {
+		if (pathInfo.endsWith("css") || pathInfo.endsWith("less")) {
 			type = "text/css";
 		} else if (pathInfo.endsWith("js")) {
 			type = "application/javascript";

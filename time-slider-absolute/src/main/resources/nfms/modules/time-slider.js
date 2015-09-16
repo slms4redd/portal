@@ -29,9 +29,14 @@ define([ "jquery", "message-bus", "toolbar", "jquery-ui-slider","layout" , "modu
 			
 			UI.parseStyle( row , config );
 			
-			var colSlider = $( '<div class="col-md-10 col-md-offset-1 time-slider"></div>' );
+			var viewPortWidth =  $( window ).width() ;
+			if( viewPortWidth < 768 ){
+				row.css( {width:'50%' , left :'50%' , top : '80%'} );
+			}
+			
+			var colSlider = $( '<div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1  time-slider"></div>' );
 			row.append( colSlider );
-			var colLabel = $( '<div class="col-md-3 time-slider-label"><i class="fa fa-calendar"></i><span></span></div>' );
+//			var colLabel = $( '<div class="col-md-3 time-slider-label"><i class="fa fa-calendar"></i><span></span></div>' );
 //			row.append( colLabel );
 			
 			colSlider.slider({
@@ -47,11 +52,11 @@ define([ "jquery", "message-bus", "toolbar", "jquery-ui-slider","layout" , "modu
 					
 				},
 				slide : function(event, ui) {
-					var span = colLabel.find( 'span' );
-					colLabel.animate( {opacity:'0'} , 100 , function(e){
-						span.text( Date.getFullYear(timestamps[ui.value]) );
-						colLabel.animate( {opacity:'1'} , 200 );
-					});
+//					var span = colLabel.find( 'span' );
+//					colLabel.animate( {opacity:'0'} , 100 , function(e){
+//						span.text( Date.getFullYear(timestamps[ui.value]) );
+//						colLabel.animate( {opacity:'1'} , 200 );
+//					});
 				},
 				max : lastTimestampIndex,
 				value : lastTimestampIndex
@@ -81,7 +86,7 @@ define([ "jquery", "message-bus", "toolbar", "jquery-ui-slider","layout" , "modu
 			
 			;
 
-			colLabel.find( 'span' ).text( Date.getFullYear(timestamps[lastTimestampIndex]) );
+//			colLabel.find( 'span' ).text( Date.getFullYear(timestamps[lastTimestampIndex]) );
 
 
 			// Send time-slider.selection message to show the date on the layer selection pane

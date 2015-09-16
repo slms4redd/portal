@@ -7,7 +7,7 @@ define([ "toolbar", "customization", "i18n", "module","drags" ], function(toolba
 		
 		var link 	= "static/loc/" + customization.languageCode + "/html/" + config.href;
 		
-		var col		= $( '<div class="btn-container" />');
+		var col		= $( '<div class="btn-container hidden-xs" />');
 		toolbar.append( col );
 	
 //		var btn 	= $( '<button class="btn tutorial-btn"><i class="fa fa-question-circle"></i>&nbsp;&nbsp;</button>' );

@@ -2,7 +2,7 @@ define([ "jquery", "message-bus" , "layout" , "i18n", "map", "bootstrap" ], func
 	
 	var tooltipTemplate = '<div class="tooltip portal-tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>';
 	
-	var div		= $( '<div class="zoom-bar" />' );
+	var div		= $( '<div class="zoom-bar hidden-xs" />' );
 	layout.container.append( div );
 	
 	var zoomIn	= $( '<button class="btn btn-default" data-html="true"><i class="fa fa-plus"></i></button>' );
