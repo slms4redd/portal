@@ -12,7 +12,6 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 	// map of active dropdown layers
 	var activeDropDownLayers		= {};
 	
-	
 	var defaultLayersOpenDashboard   = new Array();
 	
 	bus.listen("add-group", function(event, groupInfo) {
@@ -132,9 +131,6 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 	
 				var collapseId 	= groupCollapsePrefix + groupInfo.id;
 				var btn			= $( '<button class="btn btn-default" data-toggle="collapse" aria-expanded="true" />' );
-//				if( groupInfo.independent === false ){
-//						btn.attr( 'data-parent' , '#group-accordion' );
-//				}
 				btn.attr( 'href' , "#" + collapseId );
 				btn.attr( 'aria-controls' , collapseId );
 				btn.append( '<i class="fa fa-caret-right" style="padding: 0 5px 3px 0; font-size:10px;opacity: 0.5;"></i>' );
@@ -182,8 +178,6 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 		if( portalLayer.groupInfo.hasOwnProperty("parentGroupInfo") ){
 			visible = portalLayer.groupInfo.parentGroupInfo.visible;
 			mutuallyExclusive = portalLayer.groupInfo.mutuallyExclusive;
-			
-//			console.log( portalLayer.groupInfo.parentGroupInfo );
 		} else {
 			visible = portalLayer.groupInfo.visible;
 		}
@@ -485,37 +479,6 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 			}, 500 );
 		}
 	});
-	
-//	bus.listen("time-slider.selection", function(event, date) {
-//		for (var i = 0; i < temporalLayers.length; i++) {
-//			var layer = temporalLayers[i];
-//			var timestamps = layer.timestamps;
-//			var closestPrevious = null;
-//			timestamps.sort();
-//			for (var j = 0; j < timestamps.length; j++) {
-//				var timestampString = timestamps[j];
-//				var timestamp = new Date();
-//				timestamp.setISO8601(timestampString);
-//				if (timestamp <= date) {
-//					closestPrevious = timestamp;
-//				} else {
-//					break;
-//				}
-//			}
-//
-//			if (closestPrevious == null) {
-//				closestPrevious = new Date();
-//				closestPrevious.setISO8601(timestamps[0]);
-//			}
-//
-//			var tdLayerName = $("#layer-row-" + layer.id + " .layer_name");
-//			tdLayerName.find("span").remove();
-//			$("<span/>").html(" (" + closestPrevious.getUTCFullYear() + ")").appendTo(tdLayerName);
-//
-//			bus.send("layer-timestamp-selected", [ layer.id, closestPrevious ]);
-//		}
-//	});
-	
 	
 	// returns settings layer
 	return {

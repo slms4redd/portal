@@ -2,7 +2,7 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 	
 	var infoUrl = customization['info.queryUrl'] ;
 	
-	var infoQueryUrl = "proxy?url=" + infoUrl;
+	var infoQueryUrl = "proxy?url=" + encodeURIComponent ( infoUrl );
 	
 	var wmsNamePortalLayerName = {};
 	
@@ -43,9 +43,9 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 				break;
 			}
 		}
-		
 		var featureName 	= feature.attributes.name ;
 		var zoneType		= feature.fid.substring( 0, feature.fid.indexOf('.') );
+//		console.log( "CHECKING " + featureName );
 		
 		var isProvince 		= ( zoneType == 'province' ); 
 		feature.isProvince = isProvince;
@@ -61,6 +61,21 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 //			hasDashboard = true;
 //		}
 		
+		var statsQueryData = 
+//		    '<OR>'+
+//		    '<AND>'+
+//		        '<ATTRIBUTE><name>zone_type</name><operator>EQUAL_TO</operator><type>STRING</type><value>country</value></ATTRIBUTE>'+
+//		    '</AND>'+
+		    '<AND>'+
+		        '<ATTRIBUTE><name>zone_type</name><operator>EQUAL_TO</operator><type>STRING</type><value>'+ zoneType +'</value></ATTRIBUTE>';
+		        
+//		        '<ATTRIBUTE><name>zone_name</name><operator>EQUAL_TO</operator><type>STRING</type><value>'+ featureName +'</value></ATTRIBUTE>'+
+		    
+//		        +
+//		    '</OR>'
+		        ;
+		
+		
 		if( feature.isProvince ){
 			
 			var provinceId 	= feature.attributes.province_c;
@@ -69,6 +84,8 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 				hasDashboard = true;
 			}
 			
+			statsQueryData += '<ATTRIBUTE><name>zone_id</name><operator>EQUAL_TO</operator><type>STRING</type><value>'+ provinceId +'</value></ATTRIBUTE>' ;
+			
 		} else {
 			
 			if (feature.attributes.hasOwnProperty("info_file") && StringUtils.isNotBlank(feature.attributes.info_file) ) {
@@ -76,49 +93,50 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 			}
 			
 		}
-
-		if( hasDashboard){
-			featureIds.push( feature.fid );
-			features.push( feature );
-		}
+		
+		statsQueryData += '</AND>';
 		
 		
-		
-
-		var data = 
-		    '<OR>'+
-		    '<AND>'+
-		        '<ATTRIBUTE><name>zone_type</name><operator>EQUAL_TO</operator><type>STRING</type><value>country</value></ATTRIBUTE>'+
-		    '</AND>'+
-		    '<AND>'+
-		        '<ATTRIBUTE><name>zone_type</name><operator>EQUAL_TO</operator><type>STRING</type><value>'+ zoneType +'</value></ATTRIBUTE>'+
-//		        '<ATTRIBUTE><name>zone_id</name><operator>EQUAL_TO</operator><type>NUMBER</type><value>11</value></ATTRIBUTE>'+
-		        '<ATTRIBUTE><name>zone_name</name><operator>EQUAL_TO</operator><type>STRING</type><value>'+ featureName +'</value></ATTRIBUTE>'+
-		    '</AND>'+
-		    '</OR>';
-		
-		
+//		console.log( infoQueryUrl );
+//		var url = 'http://redd.vnforest.gov.vn/diss_geostore/rest/resources/resource/50?full=true';
+//		url = encodeURIComponent( url );
 		$.ajax({
+//			url			: 'proxy?url=' + url ,
 			url			: infoQueryUrl ,
 			type		: "POST" ,
-			data		: data,
+			data		: statsQueryData,
 			dataType 	: "json" ,
 			contentType: "text/xml",
 			beforeSend	: function( xhr ){
 				xhr.setRequestHeader('Accept', 'application/json');
 			}, 
 			success		: function(data){
-//				console.log( " =========== RESOURCES LOADED for " + featureName + " : " );
-//				console.log( data );
-//				console.log( " =========== END RESOURCES LOADED " );
+				console.log( data );
+				if( data.ResourceList ){
+					hasDashboard = true;
+					console.log( " =========== RESOURCES LOADED for " + featureName + " : " );
+					console.log( data );
+					
+					feature.attributes['ResourceList'] = data.ResourceList;
+					
+					console.log( " =========== END RESOURCES LOADED " );
+				}
+				
+				if( hasDashboard){
+					featureIds.push( feature.fid );
+					features.push( feature );
+				}
+				
+				if( i == eventFeatures.length ){
+					functionCallback();
+				} else {
+					checkHasDashbaord( eventFeatures , features , featureIds , i , functionCallback );
+				}
+				
 			}
 		
 		});		
-		if( i == eventFeatures.length ){
-			functionCallback();
-		} else {
-			checkHasDashbaord( eventFeatures , features , featureIds , i , functionCallback );
-		}
+		
 	}
 	
 	var unlockUi = function(){
@@ -176,9 +194,9 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 				loadFeatureInfo( feature , openSection , expand , section );
 				
 				// add stats
-				var fakeData = getFakeStatsData();
+//				var fakeData = getFakeStatsData();
 				
-				feature.attributes['ResourceList'] = fakeData.ResourceList;
+//				feature.attributes['ResourceList'] = fakeData.ResourceList;
 				if( feature.attributes['ResourceList'] ){
 					bus.send( "add-feature-stats" , [ feature , openSection , expand ] );
 				}

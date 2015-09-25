@@ -35,7 +35,7 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization","feat
 		refreshLayer( 'district_label' , 6 , districtVisible );
 	};
 	var refreshCommune = function(){
-		refreshLayer( 'commune_label' , 10 , communeVisible );
+		refreshLayer( 'commune_label' , 9 , communeVisible );
 	};
 	
 	var refreshLayer = function( layerId , zoom , visibility ){
@@ -59,7 +59,8 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization","feat
 	};
 	
 	bus.listen("layer-visibility", function(event, layerId, visible) {
-		
+		$( '.admin-unit-label-' + layerId ).remove();
+
 		switch ( layerId ) {
 		case 'ecoregion':
 			ecoRegionVisible = visible;

@@ -69,7 +69,7 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 				
 				var startYear  	= getAttributeByName( attributes , 'start_period').value;
 				var endYear  	= getAttributeByName( attributes , 'end_period').value ;
-				var data 		= $.parseJSON( resource.store.data );
+				var data 		= $.parseJSON( resource.data.data );
 				
 				if( startYears.indexOf(startYear) < 0 ){
 					startYears.push( startYear );
@@ -127,10 +127,13 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 					
 					for( var c = 0 ; c < rowData.length ; c++ ){
 						var value = rowData[ c ];
+						vale = (  + value.toFixed(2) ) ;
+//						console.log( value.toLocaleString() );
+						var valueStr = ( +value.toFixed(2) ).toLocaleString();
 //						console.log( "row " + r + " - col " + c + " value " + value );
 						
 						var td = $( '<td></td>' );
-						td.html( value );
+						td.html( valueStr );
 						tr.append( td );
 						td.addClass( (r+1) + '-' + (c+1) );
 					}
@@ -166,7 +169,7 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 					var startYear = startYears[ i ];
 					var btn = $( '<button class="btn btn-default"></button>' );
 					btn.html( startYear );
-					btn.addClass( startYear );
+					btn.addClass( startYear+'' );
 					btn.click(function(){
 						changeStartYear( startYear );
 					});
@@ -179,7 +182,7 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 					var endYear = endYears[ i ];
 					var btn = $( '<button class="btn btn-default"></button>' );
 					btn.html( endYear );
-					btn.addClass( endYear );
+					btn.addClass( endYear+'' );
 					btn.click(function(){
 						changeEndYear( endYear );
 					});
@@ -444,7 +447,8 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 	            tickColor : 'rgba(233, 233, 233, 0.25)'
 	        },
 	        legend: {
-	        	backgroundColor: 'rgba(61, 65, 70, 0.90)',
+	        	backgroundColor: 'rgba(233, 233, 233, 0.10)',
+//	        	backgroundColor: 'rgba(61, 65, 70, 0.90)',
 	            style : {
 	            },
 	            padding: 22,
@@ -546,11 +550,11 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 				totalArea += dataYear[ j ];
 			}
 			for( var j in dataYear ){
-				dataClasses[ j ][ i ] = +( dataYear[ j ] / totalArea * 100 ).toFixed(2);
+				dataClasses[ j ][ i ] =  dataYear[ j ] ;
+//				dataClasses[ j ][ i ] = +( dataYear[ j ] / totalArea * 1000 ).toFixed(2);
+//				dataClasses[ j ][ i ] = +( dataYear[ j ] / totalArea * 100 ).toFixed(2);
 			}
 		}
-		
-//		console.log( dataClasses );
 		
 		container.css('height','400px');
 	
@@ -615,22 +619,24 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 	            minorTickColor : 'rgba(233, 233, 233, 0.25)',
 	            tickColor : 'rgba(233, 233, 233, 0.25)'
 	        },
-
 	        tooltip: {
-	            formatter: function () {
-	                return '<b>' + this.x + '</b><br/>' +
-	                    this.series.name + ': ' + this.y + '%'
-//	                    + '<br/>' 
-//	                    +
-//	                    'Total: ' + this.point.stackTotal
-	                    ;
-	            }
+	        	backgroundColor	: 'rgba(233, 233, 233, 0.90)',
+	        	borderColor: 'rgba(61, 65, 70, 0.90)',
+	        	borderRadius	: 1,
+	        	headerFormat	: '<span style="width:100%; text-align:center; font-weight:bold; padding: 5px 0px;">{point.key}</span><br/>',
+	            pointFormat		: '<span style="color:{series.color}; font-weight:bold">{series.name}: </span><b>{point.percentage:.0f}% ({point.y})</b><br/>',
+	            shared: true
 	        },
-
+//	        tooltip: {
+//	            formatter: function () {
+//	                return '<b>' + this.x + '</b><br/>' +
+//	                    this.series.name + ': ' + this.y + '%'
+//	                    ;
+//	            }
+//	        },
 	        plotOptions: {
 		        column: {
-	//            	color: '#E9E9E9',
-	                stacking: 'normal',
+	                stacking: 'percent',
 	                borderColor : 'rgba(233, 233, 233, 0.20)',
 	                dataLabels: {
 	                    enabled: false,
@@ -646,7 +652,8 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 	            }
 	        },
 	        legend: {
-	        	backgroundColor: 'rgba(61, 65, 70, 0.90)',
+//	        	backgroundColor: 'rgba(61, 65, 70, 0.90)',
+	        	backgroundColor: 'rgba(233, 233, 233, 0.10)',
 	            padding: 22,
 	            itemStyle : {
 	            	fontFamily: 'Roboto',
@@ -659,28 +666,32 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 	            itemHiddenStyle: {
 	            	color: 'rgba(40, 34, 34, 0.7)'
 	            },
-//	            itemDistance: 140
+	            itemDistance: 140,
 	            layout: 'vertical'
 	        },
-	        colors:[ 'rgba(213, 9, 33, 0.5)' ,'rgba(202, 204, 0, 0.5)','rgba(119, 227, 39, 0.5)','rgba(50, 40, 20, 0.4)'],
+
+//	        colors:[ 'rgba(213, 9, 33, 0.5)' ,'rgba(202, 204, 0, 0.5)','rgba(96, 204, 16, 0.5)','rgba(40, 34, 34, 0.5)'],
+//	        colors:[ 'rgba(213, 9, 33, 0.5)','rgba(96, 204, 16, 0.5)','rgba(56, 126, 8, 0.5)','rgba(40, 34, 34, 0.5)'],
+//	        colors:[ 'rgba(213, 9, 33, 0.5)','rgba(96, 204, 16, 0.5)','rgba(56, 126, 8, 0.5)','rgba(56, 56, 54, 0.5)'],
+	        colors:[ 'rgba(96, 204, 16, 0.5)','rgba(56, 126, 8, 0.5)','rgba(213, 9, 33, 0.5)','rgba(56, 56, 54, 0.5)'],
 	        
-	        series: [{
-	            name: i18n[ 'forest_change_d' ],
-	            data: dataClasses[0],
-	            stack: '1'
-	        }, {
-	        	name: i18n[ 'forest_change_ar' ],
-	        	data: dataClasses[1],
-	            stack: '2'
-	        }, {
-	        	name: i18n[ 'forest_change_frf' ],
-	        	data: dataClasses[2],
-	            stack: '3'
-	        }, {
-	        	name: i18n[ 'forest_change_nf' ],
-	            data: dataClasses[3],
-	            stack: '4'
-	        }]
+	        series: [
+		        {
+		        	name: i18n[ 'forest_change_ar' ],
+		        	data: dataClasses[1]
+		        }, {
+		        	name: i18n[ 'forest_change_frf' ],
+		        	data: dataClasses[2]
+		        }
+		        ,{
+		            name: i18n[ 'forest_change_d' ],
+		            data: dataClasses[0]
+		        }
+		        , {
+		        	name: i18n[ 'forest_change_nf' ],
+		            data: dataClasses[3]
+		        }
+	        ]
 	    });
 		
 		$( window ).resize( function(e){

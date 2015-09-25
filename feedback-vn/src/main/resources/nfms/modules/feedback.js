@@ -63,9 +63,8 @@ function(bus, layout, i18n, $, toolbar) {
 	};
 
 	$( window ).resize( function(e){
-		console.log( 'feedback' ) ;
 		var top = feedback.hasClass( 'closed' ) ? '-60%' : '0%';
-		container.animate( {'top': top } , 0 );
+		container.animate( {'top': top} , 0 );
 	});
 	
 	var rowForm = $(  '<div class="row feedback-form no-margin" />' );
