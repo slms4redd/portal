@@ -25,8 +25,8 @@ define([ "message-bus", "module", "jquery" , "layout" ], function(bus, module, $
 		
 		divContainer.stop().fadeIn( 300 , function(){
 			setTimeout( function(){
-				divContainer.fadeOut( 3000 );
-			} , 5000 );
+				divContainer.fadeOut( 6000 );
+			} , 7000 );
 		});
 	};
 	

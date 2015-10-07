@@ -1,8 +1,13 @@
 define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "dashboard","features" ,"redd_projects"], function(module, $, bus, map, i18n, customization, dashboard) {
 	
-	var infoUrl = customization['info.queryUrl'] ;
+	var infoQueryUrl 	= customization['info.queryUrl'] ;
+	var serverUrl 		= customization['info.serverUrl'] ;
+	var sameOrigin = StringUtils.startsWith( window.location.origin , serverUrl );	
+	if( !sameOrigin ){
+		infoQueryUrl 	= "proxy?url=" + encodeURIComponent( infoQueryUrl );
+	} 
 	
-	var infoQueryUrl = "proxy?url=" + encodeURIComponent ( infoUrl );
+//	var infoQueryUrl = "proxy?url=" + encodeURIComponent ( infoUrl );
 	
 	var wmsNamePortalLayerName = {};
 	
@@ -45,46 +50,32 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 		}
 		var featureName 	= feature.attributes.name ;
 		var zoneType		= feature.fid.substring( 0, feature.fid.indexOf('.') );
-//		console.log( "CHECKING " + featureName );
 		
 		var isProvince 		= ( zoneType == 'province' ); 
-		feature.isProvince = isProvince;
+		feature.isProvince 	= isProvince;
+		
+		var isEcoregion 	= ( zoneType == 'ecoregion' ); 
+		feature.isEcoregion = isEcoregion;
 		
 		var isCountry 		= ( zoneType == 'country' ); 
 		feature.isCountry = isCountry;
 		
-//		console.log( feature );
-//		console.log( layer );
 		
 		var hasDashboard = false;
-//		if (feature.attributes.hasOwnProperty("legend_file") && StringUtils.isNotBlank(feature.attributes.legend_file)) {
-//			hasDashboard = true;
-//		}
 		
-		var statsQueryData = 
-//		    '<OR>'+
-//		    '<AND>'+
-//		        '<ATTRIBUTE><name>zone_type</name><operator>EQUAL_TO</operator><type>STRING</type><value>country</value></ATTRIBUTE>'+
-//		    '</AND>'+
-		    '<AND>'+
-		        '<ATTRIBUTE><name>zone_type</name><operator>EQUAL_TO</operator><type>STRING</type><value>'+ zoneType +'</value></ATTRIBUTE>';
-		        
-//		        '<ATTRIBUTE><name>zone_name</name><operator>EQUAL_TO</operator><type>STRING</type><value>'+ featureName +'</value></ATTRIBUTE>'+
-		    
-//		        +
-//		    '</OR>'
-		        ;
-		
+		var statsQueryData = '<AND><ATTRIBUTE><name>zone_type</name><operator>EQUAL_TO</operator><type>STRING</type><value>'+ zoneType +'</value></ATTRIBUTE>';
 		
 		if( feature.isProvince ){
-			
 			var provinceId 	= feature.attributes.province_c;
 			var province 	= REDDProjects.provinces[ provinceId ];
 			if( province != null ){
 				hasDashboard = true;
 			}
-			
 			statsQueryData += '<ATTRIBUTE><name>zone_id</name><operator>EQUAL_TO</operator><type>STRING</type><value>'+ provinceId +'</value></ATTRIBUTE>' ;
+			
+		} else if( feature.isEcoregion ){
+			var ecoregionId 	= feature.attributes.eco_zone_c;
+			statsQueryData += '<ATTRIBUTE><name>zone_id</name><operator>EQUAL_TO</operator><type>STRING</type><value>'+ ecoregionId +'</value></ATTRIBUTE>' ;
 			
 		} else {
 			
@@ -96,12 +87,7 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 		
 		statsQueryData += '</AND>';
 		
-		
-//		console.log( infoQueryUrl );
-//		var url = 'http://redd.vnforest.gov.vn/diss_geostore/rest/resources/resource/50?full=true';
-//		url = encodeURIComponent( url );
 		$.ajax({
-//			url			: 'proxy?url=' + url ,
 			url			: infoQueryUrl ,
 			type		: "POST" ,
 			data		: statsQueryData,
@@ -111,15 +97,18 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 				xhr.setRequestHeader('Accept', 'application/json');
 			}, 
 			success		: function(data){
-				console.log( data );
+//				if( feature.isEcoregion ){
+//				console.log( data );
+//				console.log( statsQueryData );
+//				}
 				if( data.ResourceList ){
 					hasDashboard = true;
-					console.log( " =========== RESOURCES LOADED for " + featureName + " : " );
-					console.log( data );
+//					console.log( " =========== RESOURCES LOADED for " + featureName + " : " );
+//					console.log( data );
+//					console.log( " =========== END RESOURCES LOADED " );
 					
 					feature.attributes['ResourceList'] = data.ResourceList;
 					
-					console.log( " =========== END RESOURCES LOADED " );
 				}
 				
 				if( hasDashboard){
@@ -185,20 +174,32 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 			bus.send( "dashboard-reset-type" , [dashboard.TYPE.LEGEND, dashboard.SOURCE.FEATURES] );
 			bus.send( "dashboard-reset-type" , [dashboard.TYPE.STATS, dashboard.SOURCE.FEATURES] );
 			
+//			console.log( features );
+			
 			for( var i = 0 ; i < features.length ; i++ ){
-				var feature = features[ i ];
+				var feature 	= features[ i ];
 				
-				var expand = ( i == features.length-1 ) ? true : false;
+				var expandInfo 	= true;
+				var expandStats	= true;
+				for( var j = i+1 ; j < features.length ; j++ ){
+					var nextFeature = features[ j ];
+					if(  nextFeature.isProvince || nextFeature.isCountry ){
+						expandInfo = false;
+					}
+					if( nextFeature.attributes['ResourceList']  ){
+						expandStats = false;
+					}
+				}
 				
 				// open info
-				loadFeatureInfo( feature , openSection , expand , section );
+				loadFeatureInfo( feature , openSection , expandInfo , section );
 				
 				// add stats
 //				var fakeData = getFakeStatsData();
 				
 //				feature.attributes['ResourceList'] = fakeData.ResourceList;
 				if( feature.attributes['ResourceList'] ){
-					bus.send( "add-feature-stats" , [ feature , openSection , expand ] );
+					bus.send( "add-feature-stats" , [ feature , openSection , expandStats ] );
 				}
 			}
 			

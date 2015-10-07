@@ -36,9 +36,9 @@
 		, {
 			"id": "jica",
 			"label": "Jica",
-			"baseUrl": "http://178.33.8.123/stg_geoserver/wms",
-			"wmsTime": "1990-01-01T00:00:00.000Z,1995-01-01T00:00:00.000Z,2000-01-01T00:00:00.000Z,2005-01-01T00:00:00.000Z,2010-01-01T00:00:00.000Z",
-			"wmsName": "unredd:jica",
+			"baseUrl": "http://redd.vnforest.gov.vn/diss_geoserver/wms",
+			"wmsTime": "1995-01-01T00:00:00.000Z,2000-01-01T00:00:00.000Z,2005-01-01T00:00:00.000Z,2010-01-01T00:00:00.000Z,2015-01-01T00:00:00.000Z",
+			"wmsName": "unredd:nfi",
 			"imageFormat": "image/png8",
 			"visible": true,
 			"queryable" : false

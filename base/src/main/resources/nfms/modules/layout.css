@@ -82,6 +82,9 @@ input.form-control[disabled], input.form-control[readonly], fieldset[disabled] i
 .height85 {
 	height: 85% !important;
 }
+.height95 {
+	height: 95% !important;
+}
 .height100 {
 	height: 100% !important;
 }

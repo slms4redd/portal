@@ -27,11 +27,11 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "features" ],
             );
         }, 
         onClick: function(e) {
-        	console.log( map.getExtent().toBBOX() );
+//        	console.log( map.getExtent().toBBOX() );
 			Features.getFeatureInfo(  
 				true,
-				'unredd:country,unredd:province', 
-				'(name,area,info_file)(name,area,info_file,province_c)',
+				'unredd:country,unredd:ecoregion,unredd:province', 
+				'(name,area,info_file)(name,eco_zone_c)(name,area,info_file,province_c)',
 				e.xy.x ,   e.xy.y , map.size.h , map.size.w ,
 				 map.getExtent().toBBOX()
 			);

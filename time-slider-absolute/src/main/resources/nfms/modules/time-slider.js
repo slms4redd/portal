@@ -1,7 +1,6 @@
 define([ "jquery", "message-bus", "toolbar", "jquery-ui-slider","layout" , "module" , "portal-ui"], function($, bus, toolbar, ui ,layout , module ) {
 	
 	var config = module.config();
-
 	var timestampSet = {};
 	
 	bus.listen("add-layer", function(event, layerInfo) {
@@ -91,7 +90,8 @@ define([ "jquery", "message-bus", "toolbar", "jquery-ui-slider","layout" , "modu
 
 			// Send time-slider.selection message to show the date on the layer selection pane
 			// right after page load
-			colSlider.slider( "value" , lastTimestampIndex );
+			var index = (config.defaultItemIndex) ? config.defaultItemIndex : lastTimestampIndex;
+			colSlider.slider( "value" , index );
 		}
 	});
 });

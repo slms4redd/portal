@@ -6,6 +6,8 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 //	var currentStartYear 	= null;
 //	var currentEndYear 		= null;
 	
+	var charts = [];
+	
 	bus.listen( "add-feature-stats" , function( event , feature , openSection , expand ){
 		var resources = parseResources( feature );
 		
@@ -62,6 +64,9 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 			var colEndYearBtns = $( '<div class="col-md-8 period-btns end-period-btns"></div>' );
 			rowEndYear.append( colEndYearBtns );
 			
+			// forest change data 
+			var forestChangeData = [];
+			
 			for( var i = 0 ; i < resources.length ; i++ ){
 				var resource 	= resources[ i ];
 				
@@ -105,6 +110,41 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 
 				var tBody = $('<tbody></tbody>');
 				table.append( tBody );
+				
+				
+				// add headers
+				var th = $(  '<th></th>' );
+				trHead.append( th );
+				for( var r = 0 ; r < data[0].length ; r++ ){
+					
+					var th = $(  '<th></th>' );
+					th.html( (r+1) );
+					th.addClass( 'nfi-class-' + (r+1) );
+					th.tooltip({
+						title:i18n[ 'nfi-class-' + (r+1) ], 
+						container: 'body', 
+						placement:'top', 
+						template:tooltipTemplate , 
+						delay: { "show": 0, "hide": 20 }, 
+						html:true 
+					});
+					trHead.append( th );
+				}
+				var thTot = $(  '<th></th>' );
+				thTot.html( i18n['total'] );
+				trHead.append( thTot );
+				
+				// init total variables
+				var total = 0;
+				var colTot = new Array();
+				for( var k = 0 ; k< data[0].length ; k++ ){
+					colTot[k] = 0;
+				}
+				
+				
+				var forestChange = [ 0 , 0 , 0 , 0 ];
+				
+				// add row
 				for( var r = 0 ; r < data.length ; r++ ){
 					var rowData = data[ r ];
 					var tr = $( '<tr></tr>' );
@@ -124,39 +164,74 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 					});
 					
 					tr.append( tdClass );
-					
+					var rowTot= 0;
+					// add column
 					for( var c = 0 ; c < rowData.length ; c++ ){
 						var value = rowData[ c ];
-						vale = (  + value.toFixed(2) ) ;
+						// row total
+						rowTot += value;
+						// column total
+						colTot[ c ] = colTot[ c ] +   value;
+						// total
+						total += value;
+						
 //						console.log( value.toLocaleString() );
-						var valueStr = ( +value.toFixed(2) ).toLocaleString();
+						var valueStr = ( +value.toFixed(0) ).toLocaleString();
 //						console.log( "row " + r + " - col " + c + " value " + value );
 						
 						var td = $( '<td></td>' );
 						td.html( valueStr );
 						tr.append( td );
 						td.addClass( (r+1) + '-' + (c+1) );
+						
+						// 13 : 17 --> 1 : 12
+						// 1 : 12 --> 1:12
+						// 1:12 --> 13:17
+						//  13:17 -->  13:17
+						// NO DATA Exlcuded
+						if( c <= 17 && r<= 17 ){
+							
+							if( c<= 12 ){
+								//  forest
+								if( r <= 12 ){
+									forestChange[ 1 ] += value;
+								} else {
+									forestChange[ 0 ] += value;
+								}
+							} else {
+								//  non forest
+								if( r <= 12 ){
+									forestChange[ 2 ] += value;
+								} else {
+									forestChange[ 3 ] += value;
+								}
+							}
+						}
+						
 					}
+					var tdTot = $( '<td></td>' );
+					tdTot.html(  (+ rowTot.toFixed(0)).toLocaleString() );
+					tr.append( tdTot );
+//					td.addClass( (r+1) + '-' + (c+1) );
 				}
 				
-				// add fake headers
-				var th = $(  '<th></th>' );
-				trHead.append( th );
-				for( var r = 0 ; r < data.length ; r++ ){
-					
-					var th = $(  '<th></th>' );
-					th.html( (r+1) );
-					th.addClass( 'nfi-class-' + (r+1) );
-					th.tooltip({
-						title:i18n[ 'nfi-class-' + (r+1) ], 
-						container: 'body', 
-						placement:'top', 
-						template:tooltipTemplate , 
-						delay: { "show": 0, "hide": 20 }, 
-						html:true 
-					});
-					trHead.append( th );
+				forestChangeData[ startYear + '~' + endYear ] = forestChange;
+				
+				// add total rows
+				var trTot = $(  '<tr></tr>' );
+				tBody.append( trTot );
+				trTot.append( '<td>' + i18n['total'] + '</td>' );
+				for( var c = 0 ; c < colTot.length ; c++ ){
+					var valueStr = ( +colTot[c].toFixed(0) ).toLocaleString();
+					var td = $(  '<td></td>' );
+					td.html( valueStr );
+					trTot.append( td );
+
 				}
+				var tdTot = $(  '<td></td>' );
+				tdTot.html( ( +total.toFixed(0) ).toLocaleString() );
+				trTot.append( tdTot );
+				
 				
 				//give table celles a style
  				styleTableCells( table );
@@ -197,7 +272,6 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 			
 			
 			var toggleLUCM = function(){
-//				console.log( currentStartYear +'   ' + currentEndYear);
 				if( currentStartYear && currentEndYear){
 					colCollapsableMatrix.find( '.row-matrix' ).hide();
 					var matrix = container.find( '.row-matrix.'+currentStartYear+'-'+currentEndYear);
@@ -273,7 +347,7 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 			
 			// add charts
 			createForestAreaChart( colCollapsableFA , null );
-			createForestChangeChart( colCollapsableLC , null );
+			createForestChangeChart( colCollapsableLC , forestChangeData );
 			
 			// bind events
 			var infoTables = container.find( '.info-table' );
@@ -322,43 +396,48 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 				var cssClasses = $( this ).get( 0 ).className.split( '-' );
 				var row = parseInt( cssClasses[ 0 ] );
 				var col = parseInt( cssClasses[ 1 ] );
-//				console.log( row + '   '  + col ); 
-				if( row <= 10 && col == 11 ){
-//					return 'rgba( 220 , 72 , 72 ,0.5)';
-//					return 'rgba( 224 , 13 , 38 ,0.5)';
-					return 'rgba( 213 , 59 , 53 ,0.5)';
-				} else if( row >=12 && col <= 10 ){
-					// reforestation
-					return 'rgba( 119 , 227 , 160 ,0.5)';
-				} else if( row >= 12 && col == 11 ){
-					// reforestation of plantation 
-					return 'rgba( 202 , 204 , 0 ,0.5)';
-				} else if ( row <= 11 && col >=12 ){
-					return 'rgba( 213 , 9 , 33 ,0.5)';
-				} 
-				
-				else if( col >= 12 && row >= 12 ){
-					return 'rgba(50,40,20,0.5)';
-				} else if( row == col ){
-					return 'rgba( 255 , 255 , 255 ,0.5)';
-				}
-				
-				
-				
-				//randon values
-				else if(  row <= 4 && col <= 4){
-					//degradation
-					return 'rgba( 240 , 133 , 39 ,0.5)';
-				} else if( row >= 4 && col <= 7 ) {
-					//restoration
-					return 'rgba( 119 , 227 , 39 ,0.5)';
-				} else if( col >= 8 ){
-					//degradation
-					return 'rgba( 240 , 133 , 39 ,0.5)';
+
+				if( isNaN(row) && isNaN(col) ){
+					return '';
 				} else {
-					//restoration
-					return 'rgba( 119 , 227 , 39 ,0.5)';
+					if( row <= 10 && col == 11 ){
+//						return 'rgba( 220 , 72 , 72 ,0.5)';
+//						return 'rgba( 224 , 13 , 38 ,0.5)';
+						return 'rgba( 213 , 59 , 53 ,0.5)';
+					} else if( row >=12 && col <= 10 ){
+						// reforestation
+						return 'rgba( 119 , 227 , 160 ,0.5)';
+					} else if( row >= 12 && col == 11 ){
+						// reforestation of plantation 
+						return 'rgba( 202 , 204 , 0 ,0.5)';
+					} else if ( row <= 11 && col >=12 ){
+						return 'rgba( 213 , 9 , 33 ,0.5)';
+					} 
+					
+					else if( col >= 12 && row >= 12 ){
+						return 'rgba(50,40,20,0.5)';
+					} else if( row == col ){
+						return 'rgba( 255 , 255 , 255 ,0.5)';
+					}
+					
+					
+				
+					//random values
+					else if(  row <= 4 && col <= 4){
+						//degradation
+						return 'rgba( 240 , 133 , 39 ,0.5)';
+					} else if( row >= 4 && col <= 7 ) {
+						//restoration
+						return 'rgba( 119 , 227 , 39 ,0.5)';
+					} else if( col >= 8 ){
+						//degradation
+						return 'rgba( 240 , 133 , 39 ,0.5)';
+					} else {
+						//restoration
+						return 'rgba( 119 , 227 , 39 ,0.5)';
+					}
 				}
+//				
 			} );
 	};
 
@@ -387,17 +466,24 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 	};
 	
 	var createForestAreaChart = function( container , data ){
-		container.css('height','550px');
-		
-		container.highcharts({
+		var h = getChartHeight();
+		container.css( 'height',  h + 'px' );
+		var chartId = 'chart-fa-'+$.now();
+		container.attr( 'id'  ,  chartId );
+			
+		var chart = new Highcharts.Chart({
 	        chart: {
+	        	renderTo : chartId,
 	            type: 'column',
-	            width : container.actual('width'),
+	            //width : container.actual('width'),
 	            backgroundColor : 'none',
 	            style: {
 	                fontFamily: 'Roboto',
 	                color: "#E9E9E9"
-	            }
+	            },
+	            width: $('.dashboard').width()*0.75 ,
+	            height: h,
+	            marginLeft : 50
 	        },
 	        plotBorderColor : 'rgba(233, 233, 233, 0.3)',
 	        credits: {
@@ -535,11 +621,26 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 	        
 	        ]
 	    });
+		
+		charts[ chartId ] = chart ;
+		//resizeChart( chart , container , $('.dashboard').width()*0.80 , $( window ).height() *0.5 );
 	};
 	
 	var createForestChangeChart = function( container , data ){
+		// 13 : 17 --> 1 : 12
+		// 1 : 12 --> 1:12
+		// 1:12 --> 13:17
+		//  13:17 -->  13:17
 		
-		var dataYears 	= [ [40,70,170,720] , [50,80,180,640] , [90,120,190,560] , [10,30,310,595] ];
+		var dataYears 	= [];
+		var categories 	= [];
+		var l = 0;
+		for( var i in data ){
+			dataYears[ l ] = data[ i ];
+			categories[ l ] =  i ;
+			
+			l++;
+		}
 		var dataClasses = [ [] , [] , [] , [] ];
 		
 		for( var i in dataYears ){
@@ -556,18 +657,27 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 			}
 		}
 		
-		container.css('height','400px');
+		var h = getChartHeight();
+		container.css( 'height', h + 'px' );
+
+		var chartId = 'chart-fc'+$.now();
+		container.attr( 'id'  ,  chartId );
 	
-		container.highcharts({
+		var chart = new Highcharts.Chart({
 
 			chart: {
-	            type: 'column',
-	            width : container.actual('width'),
+				
+				renderTo 	: chartId,
+	            type		: 'column',
+	          //  width 		: container.actual('width'),
 	            backgroundColor : 'none',
 	            style: {
 	                fontFamily: 'Roboto',
 	                color: "#E9E9E9"
-	            }
+	            },
+	            width: $('.dashboard').width()*0.75 ,
+	            height: h,
+	            marginLeft : 50
 	        },
 	        plotBorderColor : 'rgba(233, 233, 233, 0.3)',
 	        credits: {
@@ -578,7 +688,7 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 	            margin: 0
 	        },
 	        xAxis: {
-	        	categories: [ '90~95', '95~00', '00~05', '05~10' ],
+	        	categories: categories,
 	            labels: { 
 	            	style: {
 	            		fontFamily: 'Roboto',
@@ -654,7 +764,7 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 	        legend: {
 //	        	backgroundColor: 'rgba(61, 65, 70, 0.90)',
 	        	backgroundColor: 'rgba(233, 233, 233, 0.10)',
-	            padding: 22,
+	            padding: 16,
 	            itemStyle : {
 	            	fontFamily: 'Roboto',
 	            	color : "#E9E9E9",
@@ -666,7 +776,7 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 	            itemHiddenStyle: {
 	            	color: 'rgba(40, 34, 34, 0.7)'
 	            },
-	            itemDistance: 140,
+	            //itemDistance: 140,
 	            layout: 'vertical'
 	        },
 
@@ -678,27 +788,77 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 	        series: [
 		        {
 		        	name: i18n[ 'forest_change_ar' ],
-		        	data: dataClasses[1]
+		        	data: dataClasses[0]
 		        }, {
 		        	name: i18n[ 'forest_change_frf' ],
-		        	data: dataClasses[2]
+		        	data: dataClasses[1]
 		        }
 		        ,{
 		            name: i18n[ 'forest_change_d' ],
-		            data: dataClasses[0]
+		            data: dataClasses[2]
 		        }
 		        , {
 		        	name: i18n[ 'forest_change_nf' ],
 		            data: dataClasses[3]
 		        }
 	        ]
-	    });
+	    });	
+		charts[ chartId ] = chart; 
 		
-		$( window ).resize( function(e){
-			if( container ){
-				container.highcharts().redraw();
-			}
-		});
-	
+		//resizeChart( chart , container , $('.dashboard').width()*0.80 , $( window ).height() *0.5 );
 	};
+	
+	//resize events
+	var resizeChart = function( chart , elem , w , h ){
+		
+		elem.css( { width: w, height : h} );
+		chart.setSize( w, h );
+		//chart.redraw();
+	};	
+	
+	var resizeCharts = function( h ){	
+		for( var chartId in charts ){
+			
+			var chart = charts[ chartId ];
+			var elem 	= $( '#'+chartId );
+			
+			if( elem.length ){
+				var h = getChartHeight();
+				var w = $('.dashboard').width()*0.75;
+				resizeChart( chart , elem , w , h );
+			
+			} else {
+			
+				charts[ chartId ] = null;
+			
+			}
+		}
+		
+	};
+
+	var getChartHeight = function(){
+		var h = $( window ).height() * ( dashboard.isExpanded() ? 0.65 : 0.5 );
+		return h ;
+	};
+	
+	bus.listen( 'dashboard-expand' , function(){
+		setTimeout(function(){
+			resizeCharts();	
+		}, 300 );
+	});
+	
+	bus.listen( 'dashboard-reduce' , function(){
+//		resizeCharts();		
+		setTimeout(function(){
+			resizeCharts();	
+		}, 300 );
+	});
+	
+	$(window).resize( function(){
+		resizeCharts()
+	});
+	
+	
+	
+	
 });

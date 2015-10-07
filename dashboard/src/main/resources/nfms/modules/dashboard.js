@@ -25,24 +25,77 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 	var dashboardToggle = $( '<div class="col-md-1 col-sm-2 dashboard-toggle no-padding "></div>' )
 	dashboard.append( dashboardToggle );
 	
-	var dashboardToggleBtn = $( '<div class="dashboard-toggle-btn"></div>' )
-	dashboardToggle.append( dashboardToggleBtn );
-	var btnCollapse = $( '<button class="btn btn-collapse">' + iconOpened + '</button>' );
-	dashboardToggleBtn.append( btnCollapse );
+//	var dashboardToggleBtn = $( '<div class="dashboard-toggle-btn"></div>' )
+//	dashboardToggle.append( dashboardToggleBtn );
+	var btnHide 	= $( '<button class="btn btn-collapse">' + iconClosed +'</button>' );
+	var btnExpand 	= $( '<button class="btn btn-collapse"><i class="fa fa-expand"></i></button>' );
+	var btnReduce 	= $( '<button class="btn btn-collapse"><i class="fa fa-compress"></i></button>' );
+	
+	dashboardToggle.append( $('<div class="dashboard-toggle-btn"/>' ).append( btnHide ) );
+	dashboardToggle.append( $('<div class="dashboard-toggle-btn" style="display: none" />' ).append(btnExpand ) );
+	dashboardToggle.append( $('<div class="dashboard-toggle-btn" style="display: none" />' ).append(btnReduce ) );
+	
+//	var btnCollapse = $( '<button class="btn btn-collapse">' + iconOpened + '</button>' );
+//	dashboardToggleBtn.append( btnCollapse );
 	var dashboardToggleEmptyCol = $( '<div class="dashboard-toggle-empty-col"></div>' )
 	dashboardToggle.append( dashboardToggleEmptyCol );
-	
-	btnCollapse.click( function(e){
+	var tooltipTemplate = '<div class="tooltip portal-tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>';
+
+	btnHide.click( function(e){
 		bus.send( "dashboard-toggle-visibility" );
-		btnCollapse.blur();
+		btnHide.blur();
 	});
+	btnHide.tooltip({
+		title :  function(){ 
+			if( btnHide.find('i').hasClass('fa-angle-double-right') ){
+				return  i18n[ 'dashboard_close_tooltip'];
+			} else {
+				return  i18n[ 'dashboard_open_tooltip'];
+			}
+		}, 
+		container: 'body', 
+		placement:'left', 
+		template:tooltipTemplate , 
+		delay: { "show": 0, "hide": 20 }, 
+		html:true 
+	});
+	btnExpand.click( function(e){
+		bus.send( "dashboard-expand" );
+		btnExpand.blur();
+	});
+	btnExpand.tooltip({
+		title : i18n[ 'dashboard_expand_tooltip'], 
+		container: 'body', 
+		placement:'left', 
+		template:tooltipTemplate , 
+		delay: { "show": 0, "hide": 20 }, 
+		html:true 
+	});
+	btnReduce.click( function(e){
+		bus.send( "dashboard-reduce" );
+		btnReduce.blur();
+	});
+	btnReduce.tooltip({
+		title : i18n[ 'dashboard_reduce_tooltip'], 
+		container: 'body', 
+		placement:'left', 
+		template:tooltipTemplate , 
+		delay: { "show": 0, "hide": 20 }, 
+		html:true 
+	});
+	
+	
 	
 	
 	// main dashbaord container
 	var dashboardContainer	= $( '<div class="col-md-11 col-sm-10 height100 dashboard-container"></div>' );
 	dashboard.append( dashboardContainer );
-		
-	dashboard.css( 'right' , '-' + (dashboard.width() ) +'px' );
+	
+	// 15 pixel margin of .row class + 1px border
+//	var dashboardMargin = 15 + 1 ;
+	var dashboardMargin = 0 ;
+	dashboard.css( 'left' ,  ( dashboard.width() - dashboardToggle.width()  ) +'px' );
+//	dashboard.css( 'right' , '-' + (dashboard.width() ) +'px' );
 //	dashboard.css( 'right' , '-' + (dashboard.width() - dashboardToggle.width() ) +'px' );
 	dashboard.addClass( 'closed' );
 //	dashboard.animate( {'opacity':0.9}, 300 );
@@ -51,7 +104,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 	// add dashboard content
 	var dashboardBtnBar = $( '<div class="row dashboard-btn-bar"></div>' );
 	dashboardContainer.append( dashboardBtnBar );
-	var dashboardBtnBarCol	= $( '<div class="col-md-12 heigth100"></div>' );
+	var dashboardBtnBarCol	= $( '<div class="col-md-12 height100"></div>' );
 	dashboardBtnBar.append( dashboardBtnBarCol );
 //	dashboardBtnBarCol.append( btnCollapse );
 	
@@ -92,7 +145,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 	
 	var dashboardContentRow = $( '<div class="row dashboard-content"></div>' );
 	dashboardContainer.append( dashboardContentRow );
-	var dashboardContent	= $( '<div class="col-md-12 heigth100"></div>' );
+	var dashboardContent	= $( '<div class="col-md-12 height100"></div>' );
 	dashboardContentRow.append( dashboardContent );
 	
 	
@@ -214,29 +267,62 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 			
 			if( dashboard.hasClass('opened') && !open){
 				dashboard.removeClass( 'opened' ).addClass( 'closed' );
-				dashboard.stop().animate( {'right': '-' + (dashboard.width() - dashboardToggle.width() + 1 ) +'px' }, 500 );
+				dashboard.stop().animate( {'left':  ( dashboard.width() - dashboardToggle.width() ) +'px' }, 100 );
+//				dashboard.stop().animate( {'right': '-' + (dashboard.width() - dashboardToggle.width() + 1 ) +'px' }, 500 );
 				
 				icon = iconClosed;
+				
+				btnExpand.parent().hide();
+				btnReduce.parent().hide();
 			} else {
 				dashboard.removeClass( 'closed' ).addClass( 'opened' );
-				dashboard.animate( {'right': 0 }, 700 ,'easeInOutQuad');
+				dashboard.stop().animate( {'left':  (0+dashboardMargin) +'px' }, 100 );
+//				dashboard.animate( {'right': 0 }, 700 ,'easeInOutQuad');
 				
 				
 				icon = iconOpened;
+				
+				btnExpand.parent().fadeIn( 700 );
 			}
 			
 			icon = $( icon );
 			icon.hide();
 			setTimeout( function(){
-				btnCollapse.empty();
-				btnCollapse.append( icon );
-				btnCollapse.blur();
+				btnHide.empty();
+				btnHide.append( icon );
+				btnHide.blur();
 				
 				icon.fadeIn();
 			}, 300 );
 			
 		}
 	});
+	
+	bus.listen( "dashboard-expand" , function(event , open){
+		if( !dashboard.hasClass( 'expanded' ) ){
+			dashboardContainer.animate( {backgroundColor: 'rgba(61, 65, 70, 0.97)'} , 500 );
+			
+			dashboard.addClass( 'expanded' );
+			
+			btnExpand.parent().hide();
+			btnHide.parent().hide();
+			btnReduce.parent().show();
+		}
+	});
+	
+	bus.listen( "dashboard-reduce" , function(event , open){
+		if( dashboard.hasClass( 'expanded' ) ){
+		
+			dashboardContainer.animate( {backgroundColor: 'rgba(61, 65, 70, 0.85)'} , 500 );
+			
+			dashboard.removeClass( 'expanded' );
+			btnReduce.parent().hide();
+			btnHide.parent().show();
+			btnExpand.parent().show();
+		}
+	});
+
+	
 	//on windows resize
 	$( window ).resize(function() {
 //		var right = ( dashboard.hasClass( 'opened' ) ) ? "0" : "-"+(dashboard.width() ) +"px";
@@ -499,7 +585,12 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 	return {
 		
 		SOURCE	: DashboardSources,		
-		TYPE	: DashboardTypes
+		TYPE	: DashboardTypes,
+		
+		isExpanded : function(){
+			return dashboard.hasClass( 'expanded' );
+		}
+		
 	}
 	
 });

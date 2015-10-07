@@ -51,7 +51,8 @@
 				"restrictedExtent" 	: "new OpenLayers.Bounds(6508820.487818,-2113638.656093,17492931.344928,5798477.168139)"
 			}
 		}, time-slider : {
-			"styles" : { "left" : "30%" }
+			"styles" 			: { "left" : "30%" },
+			"defaultItemIndex" 	: 3
 		}
 	}
 }

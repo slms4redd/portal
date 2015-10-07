@@ -1,5 +1,6 @@
 .toolbar {
 	padding: 15px 10px;
+	max-height: 60px;
 }
 
 .toolbar .btn-container {
