@@ -47,7 +47,8 @@ public class DefaultConfig implements Config {
 	private String configInitParameter;
 	private boolean useCache;
 	private HashMap<Locale, ResourceBundle> localeBundles = new HashMap<Locale, ResourceBundle>();
-	private String layersContent;
+//	private String layersContent;
+	private Map<Locale,String> layersContent;
 	private ArrayList<ModuleConfigurationProvider> moduleConfigurationProviders = new ArrayList<ModuleConfigurationProvider>();
 
 	public DefaultConfig(String rootPath, String configInitParameter, boolean useCache) {
@@ -56,6 +57,8 @@ public class DefaultConfig implements Config {
 		this.useCache = useCache;
 
 		moduleConfigurationProviders.add(new PluginJSONConfigurationProvider());
+		
+		layersContent = new HashMap<Locale, String>();
 	}
 
 	@Override
@@ -147,10 +150,12 @@ public class DefaultConfig implements Config {
 
 	@Override
 	public String getLayers(Locale locale, HttpServletRequest request) throws IOException, ConfigurationException {
-		if (layersContent == null || !useCache) {
-			layersContent = getLocalizedFileContents(getLayersFile(request), locale);
+		if (! (layersContent.containsKey(locale) && useCache) ) {
+			String layer = getLocalizedFileContents(getLayersFile(request), locale);
+			layersContent.put( locale , layer );
 		}
-		return layersContent;
+		
+		return layersContent.get( locale );
 	}
 
 	@Override

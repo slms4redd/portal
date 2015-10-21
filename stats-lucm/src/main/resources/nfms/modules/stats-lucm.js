@@ -579,43 +579,43 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 	                 ,'rgba(110, 140, 62, 0.5)','rgba(2, 73, 30, 0.5)','rgba(3, 108, 45, 0.5)','rgba(19, 122, 109, 0.5)','rgba(43, 101, 89, 0.5)','rgba(202, 204, 0, 0.5)' ],
 	        series: [
 		        {
-		            name: i18n['evergreen_broadleaves_rich'],
+		            name: i18n['nfi-class-1'],
 		            data: [5, 3, 4, 7, 2]
 		        }, {
-		            name:  i18n['evergreen_broadleaves_medium'],
+		            name:  i18n['nfi-class-2'],
 		            data: [2, 2, 3, 2, 1]
 		        }, {
-		            name:  i18n['evergreen_broadleaves_poor'],
+		            name:  i18n['nfi-class-3'],
 		            data: [3, 4, 4, 2, 5]
 		        },
 		        {
-		        	name: i18n['evergreen_broadleaves_regrowth'],
+		        	name: i18n['nfi-class-4'],
 		        	data: [5, 3, 4, 7, 2]
 		        }, {
-		        	name:  i18n['deciduous_forest'],
+		        	name:  i18n['nfi-class-5'],
 		        	data: [2, 2, 3, 2, 1]
 		        }, {
-		        	name:  i18n['bamboo_forest'],
+		        	name:  i18n['nfi-class-6'],
 		        	data: [3, 4, 4, 2, 5]
 		        },
 		        {
-		        	name: i18n['mixed_wood_bamboo_forests'],
+		        	name: i18n['nfi-class-7'],
 		        	data: [5, 3, 4, 7, 2]
 		        }, {
-		        	name:  i18n['coniferous_forests'],
+		        	name:  i18n['nfi-class-8'],
 		        	data: [2, 2, 3, 2, 1]
 		        }, {
-		        	name:  i18n['mixed_broadleaves_and_coniferous_forests'],
+		        	name:  i18n['nfi-class-9'],
 		        	data: [3, 4, 4, 2, 5]
 		        },
 		        {
-		        	name: i18n['mangrove_forests'],
+		        	name: i18n['nfi-class-10'],
 		        	data: [5, 3, 4, 7, 2]
 		        }, {
-		        	name:  i18n['lime_stone_forests'],
+		        	name:  i18n['nfi-class-11'],
 		        	data: [2, 2, 3, 2, 1]
 		        }, {
-		        	name:  i18n['plantation_forest'],
+		        	name:  i18n['nfi-class-12'],
 		        	data: [3, 4, 4, 2, 5]
 		        },
 	        
