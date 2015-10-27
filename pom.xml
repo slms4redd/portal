@@ -11,7 +11,7 @@
 		<module>base</module>
 		<module>demo</module>
 		<module>jwebclient-analyzer</module>
-		<module>jwebclient-analyzer-maven-plugin</module>
+		<!--module>jwebclient-analyzer-maven-plugin</module-->
 		<module>feedback</module>
 		<module>layer-time-sliders</module>
 		<module>geoexplorer-reader</module>
