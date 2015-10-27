@@ -61,7 +61,7 @@
 		<repository>
 			<id>nfms4redd</id>
 			<name>nfms4redd maven repository</name>
-			<url>http://maven.nfms4redd.org/</url>
+			<url>http://maven.slms4redd.org/</url>
 		</repository>
 		<repository>
 			<id>EclipseLink</id>
