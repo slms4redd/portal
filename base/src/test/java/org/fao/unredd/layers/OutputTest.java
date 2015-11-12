@@ -42,6 +42,7 @@ public class OutputTest {
 		nameIterator.next();
 		nameIterator.next();
 		nameIterator.next();
+		nameIterator.next();
 		assertTrue(!nameIterator.hasNext());
 	}
 }
