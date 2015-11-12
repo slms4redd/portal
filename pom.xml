@@ -10,12 +10,9 @@
 		<module>core</module>
 		<module>base</module>
 		<module>demo</module>
-		<module>jwebclient-analyzer</module>
-		<!--module>jwebclient-analyzer-maven-plugin</module-->
 		<module>feedback</module>
 		<module>layer-time-sliders</module>
 		<module>geoexplorer-reader</module>
-		<module>integration-tests</module>
 		<module>time-slider</module>
 		<module>language-buttons</module>
     	<module>stats-lucm</module>
