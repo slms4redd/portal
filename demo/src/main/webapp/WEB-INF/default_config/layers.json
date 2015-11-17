@@ -1,0 +1,65 @@
+{
+	"wmsLayers" : [
+        {
+			"id" : "drc_forest_classification",
+			"baseUrl" : "http://slms4redd.org/geoserver/wms",
+			"wmsName" : "unredd:drc_forest_classification",
+			"imageFormat" : "image/png8",
+			"visible" : true
+		},
+		{
+			"id" : "drc_boundary",
+			"baseUrl" : "http://slms4redd.org/geoserver/wms",
+			"wmsName" : "unredd:drc_boundary",
+			"imageFormat" : "image/png8",
+			"visible" : true
+		}
+		,
+		{
+			"id" : "drc_provinces",
+			"baseUrl" : "http://slms4redd.org/geoserver/wms",
+			"wmsName" : "unredd:drc_provinces",
+			"imageFormat" : "image/png8",
+			"visible" : true
+		}
+	],
+	"portalLayers" : [
+		{
+			"id" : "drc_boundary",
+			"active" : true,
+            "label" : "country boundaries",
+			"layers" : [ "drc_boundary"  ],
+			"feedback" : false
+		}
+		, {
+			"id" : "drc_provinces",
+			"active" : true,
+			"label" : "province boundaries",
+			"layers" : [ "drc_provinces"  ],
+			"feedback" : false
+		}, {
+			"id" : "drc_forest_classification",
+			"active" : true,
+			"label" : "forest classification",
+			"layers" : [ "drc_forest_classification"  ],
+			"feedback" : false
+		}
+	],
+
+	"groups" : [
+		{
+			"id" : "base",
+			"label" : "${base_layers}",
+			"visible" : true,
+			"items" : [ "drc_boundary", "drc_provinces"]
+			
+		},
+        {
+			"id" : "forest",
+			"label" : "${landcover_layers}",
+			"visible" : true,
+			"items" : [ "drc_forest_classification"]
+			
+		}
+	]
+}
