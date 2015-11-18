@@ -1,197 +1,65 @@
 {
 	"wmsLayers" : [
-
+        {
+			"id" : "drc_forest_classification",
+			"baseUrl" : "http://slms4redd.org/geoserver/wms",
+			"wmsName" : "unredd:drc_forest_classification",
+			"imageFormat" : "image/png8",
+			"visible" : true
+		},
 		{
-			"id" : "world_borders",
-			"baseUrl" : "http://redd.vnforest.gov.vn/diss_geoserver/wms",
-			"wmsName" : "unredd:NE2_HR_LC_SR_W_DR",
+			"id" : "drc_boundary",
+			"baseUrl" : "http://slms4redd.org/geoserver/wms",
+			"wmsName" : "unredd:drc_boundary",
 			"imageFormat" : "image/png8",
 			"visible" : true
 		}
-		, {
-			"id": "jica",
-			"label": "Jica",
-			"baseUrl": "http://178.33.8.123/stg_geoserver/wms",
-			"wmsTime": "1990-01-01T00:00:00.000Z,1995-01-01T00:00:00.000Z,2000-01-01T00:00:00.000Z,2005-01-01T00:00:00.000Z,2010-01-01T00:00:00.000Z",
-			"wmsName": "unredd:jica",
-			"imageFormat": "image/png8",
-			"visible": true,
-			"queryable" : false
-		},
+		,
 		{
-			"id" : "commune",
-			"baseUrl" : "http://redd.vnforest.gov.vn/diss_geoserver/wms",
-			"wmsName" : "unredd:commune",
+			"id" : "drc_provinces",
+			"baseUrl" : "http://slms4redd.org/geoserver/wms",
+			"wmsName" : "unredd:drc_provinces",
 			"imageFormat" : "image/png8",
-			"visible" : true,
-			"queryable" : false
-		} ,
-		{
-			"id" : "district",
-			"baseUrl" : "http://redd.vnforest.gov.vn/diss_geoserver/wms",
-			"wmsName" : "unredd:district",
-			"imageFormat" : "image/png8",
-			"visible" : true,
-			"queryable" : false
-		} ,
-		{
-			"id" : "province",
-			"baseUrl" : "http://redd.vnforest.gov.vn/diss_geoserver/wfs",
-			"wmsName" : "unredd:province",
-			"imageFormat" : "image/png8",
-			"visible" : true,
-			"queryable" : true
-		} ,
-		{
-			"id" : "ecoregion",
-			"baseUrl" : "http://redd.vnforest.gov.vn/diss_geoserver/wms",
-			"wmsName" : "unredd:ecoregion",
-			"imageFormat" : "image/png8",
-			"visible" : true,
-			"queryable" : false,
-			"wmsOptions" : { "singleTile": true, "ratio": 1}
-		} 
-		, {
-			"id" : "country",
-			"baseUrl" : "http://redd.vnforest.gov.vn/diss_geoserver/wms",
-			"wmsName" : "unredd:country",
-			"imageFormat" : "image/png8",
-			"visible" : true,
-			"queryable" : true
+			"visible" : true
 		}
-		, {
-			"id" : "province_fcpf_cf",
-			"baseUrl" : "http://redd.vnforest.gov.vn/diss_geoserver/wms",
-			"wmsName" : "unredd:province",
-			"imageFormat" : "image/png8",
-			"visible" : true,
-			"queryable" : true,
-			"wmsParameters" : { "styles" : "province_cf" }
-		}
-		, {
-			"id" : "province_prap",
-			"baseUrl" : "http://redd.vnforest.gov.vn/diss_geoserver/wms",
-			"wmsName" : "unredd:province",
-			"imageFormat" : "image/png8",
-			"visible" : true,
-			"queryable" : true,
-			"wmsParameters" : { "styles" : "province_prap" }
-		}
-		, {
-			"id" 			: "province_center",
-			"baseUrl" 		: "http://redd.vnforest.gov.vn/diss_geoserver/wfs",
-			"type"			: "wfs",
-			"featureType"	: "province_center",
-			"featureNN"		:"http://www.nfms4redd.org",
-			"styleMap"		: "new OpenLayers.StyleMap({'strokeWidth' : 0,fillOpacity : 0})"
-		}
-		
 	],
-
 	"portalLayers" : [
 		{
-			"id" : "country",
-			"active" : false,
-			"label" : "${country}",
-			"layers" : [ "country" ]
-		}, 
-		{
-			"id" : "ecoregion",
-			"active" : false,
-			"label" : "${eco_region}",
-			"layers" : [ "ecoregion" ]
-		}
-		, {
-			"id" : "province",
+			"id" : "drc_boundary",
 			"active" : true,
-			"label" : "${provinces}",
-			"layers" : [ "province" ]
-		} ,
-		{
-			"id" : "district",
-			"active" : false,
-			"label" : "${district}",
-			"layers" : [ "district" ]
-		},
-		{
-			"id" : "commune",
-			"active" : false,
-			"label" : "${commune}",
-			"layers" : [ "commune" ]
-		}
-		, {
-			"id" : "jica",
-			"active" : true,
-			"label" : "${jica}",
-			"layers" : [ "jica" ],
-			"feedback" : true,
-			"legendFile" : "jica_legend.html",
-			"openDashboard" : true
-		}
-		, {
-			"id" : "ne2",
-			"active" : true,
-			"label" : "${natural_earth}",
-			"layers" : [ "world_borders"  ],
+            "label" : "country boundaries",
+			"layers" : [ "drc_boundary"  ],
 			"feedback" : false
 		}
 		, {
-			"id" : "province_fcpf_cf",
-			"active" : false,
-			"label" : "${province_fcpf_cf}",
-			"layers" : [ "province_fcpf_cf" ],
+			"id" : "drc_provinces",
+			"active" : true,
+			"label" : "province boundaries",
+			"layers" : [ "drc_provinces"  ],
+			"feedback" : false
+		}, {
+			"id" : "drc_forest_classification",
+			"active" : true,
+			"label" : "forest classification",
+			"layers" : [ "drc_forest_classification"  ],
 			"feedback" : false
 		}
-		, {
-			"id" : "province_prap",
-			"active" : false,
-			"label" : "${province_prap}",
-			"layers" : [ "province_prap" ],
-			"feedback" : false,
-			"legendFile" : "prap_legend.html"
-		}
-		, {
-			"id" : "province_center",
-			"active" : false,
-			"label" : "${redd_projects}",
-			"layers" : [ "province_center" ]
-		}
-		
 	],
 
 	"groups" : [
 		{
 			"id" : "base",
 			"label" : "${base_layers}",
-			"visible" : false,
-			"items" : [ "ne2" ]
+			"visible" : true,
+			"items" : [ "drc_boundary", "drc_provinces"]
 			
-		}
-		, {
-			"id" : "admin",
-			"label" : "${admin_areas}",
-			"items" : [ "country" , "ecoregion" , "province" , "district", "commune" ],
-			"legendFile" : "admin.html",
-			"open"	: true 
-		}
-		, {
-			"id" : "redd_registry",
-			"label" : "${redd_registry}",
-			"items" : [
-				"province_prap" ,
-				{
-					"id" : "others",
-					"mutuallyExclusive" : true,
-					"label" : "${other_initiatives}",
-					"items": [ "province_fcpf_cf" ,"province_center"]
-				}
-			]
-		}
-		, {
-			"id" : "landcover",
-			"label" : "${land_cover_maps}",
-			"items" : ["jica" ],
-			"open"	: true
+		},
+        {
+			"id" : "forest",
+			"label" : "${landcover_layers}",
+			"visible" : true,
+			"items" : [ "drc_forest_classification"]
+			
 		}
 	]
 }
