@@ -46,7 +46,7 @@
 		}, map : {
 			"options": { 
 				"minScale"			: 50000, 
-				"maxScale"			: 15000000, 
+				"maxScale"			: 17000000, 
 				"numZoomLevels" 	: 12,
 				"restrictedExtent" 	: "new OpenLayers.Bounds(6508820.487818,-2113638.656093,17492931.344928,5798477.168139)"
 			}
