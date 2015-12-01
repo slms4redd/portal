@@ -5,27 +5,54 @@
 				[
 					{ 
 						"name"		: "div" , 
-						"styles"	: {"position": "absolute" , "color" : "#142022", "font-size" : "60px",
-										"z-index" : "1001" , "text-align" : "center" , "left" : "30%" ,
-										"width": "40%" , "background-color": "rgba(157, 157, 157, 0.66)"} ,
+						"styles"	: {"position": "absolute" , "color" : "rgba(233, 233, 233, 0.5)", "font-size" : "60px",
+										"z-index" : "1001" , "text-align" : "center" , "left" : "35%" ,
+										"width": "30%" , "background-color": "rgba(61, 65, 70, 0.85)"} ,
 						"label"		: "demo",
 						"attributes": {},	
 						"cssClasses": ["test","test2"],	
-						"elements"	: []				
+						"elements"	: []
 					 }
 				]
 		},
 		footer : {
+			"elements" : 
+				[
+					{ 
+						"name"		: "img" , 
+						"styles"	: {"width": "140px",
+									    "left": "25px",
+									    "position": "absolute",
+									    "opacity": ".8",
+									    "border": "none",
+									    "padding": "2px 14px",
+									    "background-color": "rgba(240, 240, 240, 1)",
+									    "-webkit-box-shadow": "0px 0px 1px 1px rgba(70,159,30,0.8)",
+										"-moz-box-shadow": "0px 0px 1px 1px rgba(70,159,30,0.8)",
+										"box-shadow": "0px 0px 1px 1px rgba(70,159,30,0.8)"
+									    } ,
+						"label"		: "",
+						"attributes": {"src":"static/img/logo.png"},
+						"cssClasses": [],	
+						"elements"	: []				
+					 }
+				]
 		}, tutorial : {
+			"href" : "tutorial.html"
 		}, dashboard : {
+			"open" 	: true
 		}, feature-info-control : {
+			"disabled" 		: true
 		}, map : {
 			"options": { 
 				"minScale"			: 50000, 
 				"maxScale"			: 15000000, 
 				"numZoomLevels" 	: 12,
-				"restrictedExtent" 	: "new OpenLayers.Bounds(6508820.487818,-2113638.656093,17492931.344928,5798477.168139)"
+				"restrictedExtent" 	: "new OpenLayers.Bounds(988177.90,-1599674.13,3835304.33,650631.98)"
 			}
+		}, time-slider : {
+			"styles" 			: { "left" : "30%" },
+			"defaultItemIndex" 	: 3
 		}
 	}
 }

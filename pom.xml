@@ -10,12 +10,9 @@
 		<module>core</module>
 		<module>base</module>
 		<module>demo</module>
-		<module>jwebclient-analyzer</module>
-		<module>jwebclient-analyzer-maven-plugin</module>
 		<module>feedback</module>
 		<module>layer-time-sliders</module>
 		<module>geoexplorer-reader</module>
-		<module>integration-tests</module>
 		<module>time-slider</module>
 		<module>language-buttons</module>
     	<module>stats-lucm</module>
@@ -61,7 +58,7 @@
 		<repository>
 			<id>nfms4redd</id>
 			<name>nfms4redd maven repository</name>
-			<url>http://maven.nfms4redd.org/</url>
+			<url>http://maven.slms4redd.org/</url>
 		</repository>
 		<repository>
 			<id>EclipseLink</id>

@@ -1,0 +1,19 @@
+sudo: false
+language: java
+script: mvn install
+jdk:
+  - openjdk7
+branches:
+  only:
+  - master
+notifications:
+  email:
+    recipients:
+        - damiano.giampaoli@geo-solutions.it
+        - stefano.giaccio@fao.org
+        - alessio.alfonsetti@fao.org
+        - cosimo.togna@fao.org
+    on_success: change
+    on_failure: change
+os:
+  - linux
