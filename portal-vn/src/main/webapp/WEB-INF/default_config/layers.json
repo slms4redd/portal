@@ -188,6 +188,7 @@
 			"layers" : [ "jica" ],
 			"feedback" : true,
 			"legendFile" : "jica_legend.html",
+			"infoFile" 	: "nfi_info.html",
 			"openDashboard" : true,
 			"showTimeSlider" : false
 		}
@@ -220,7 +221,8 @@
 			"id" : "province_center",
 			"active" : false,
 			"label" : "${redd_projects}",
-			"layers" : [ "province_center" ]
+			"layers" : [ "province_center" ],
+			"infoFile" : "redd_projects_info.html"
 		}
 		, {
 			"id" : "province_fcpf_cf",
@@ -235,7 +237,8 @@
 			"label" : "${province_prap}",
 			"layers" : [ "province_prap" ],
 			"feedback" : false,
-			"legendFile" : "prap_legend.html"
+			"legendFile" : "prap_legend.html",
+			"infoFile" : "prap_info.html",
 		}
 		, {
 			"id" : "ecoregion_label",
@@ -273,6 +276,7 @@
 			"label" : "${admin_areas}",
 			"items" : [ "country" , "ecoregion" , "province" , "district", "commune" ],
 			"legendFile" : "admin.html",
+			"infoFile" : "admin_info.html",
 			"open"	: true ,
 			"helpMsg": "click_province"
 		}

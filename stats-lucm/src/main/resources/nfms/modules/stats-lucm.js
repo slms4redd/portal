@@ -1,24 +1,24 @@
-define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.actual.min"], function($, bus, i18n, dashboard ,highcharts) {
+define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customization", "jquery.actual.min"], function($, bus, i18n, dashboard ,highcharts, customization) {
 	var tooltipTemplate = '<div class="tooltip portal-tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>';
 
-//	var startYears 			= new Array();
-//	var endYears 			= new Array();
-//	var currentStartYear 	= null;
-//	var currentEndYear 		= null;
-	
 	var charts = [];
 	
 	bus.listen( "add-feature-stats" , function( event , feature , openSection , expand ){
-		var resources = parseResources( feature );
+
+		var resources 				= parseResources( feature , "lucm" );
 		
-//		startYears 			= new Array();
-//		endYears 			= new Array();
-//		currentStartYear 	= null;
-//		currentEndYear 		= null;
+		var carbonStockResources	= parseResources( feature , "carbon_stock" );
+		var carbonStock				= null;
+		if( carbonStockResources.length > 0 ){
+			carbonStock = carbonStockResources[ 0 ];
+		}
+		
+		
 		var startYears 			= new Array();
 		var endYears 			= new Array();
 		var currentStartYear 	= null;
 		var currentEndYear 		= null;
+		
 		if( resources.length > 0 ){
 			
 			var container = $( '<div class="width100 height100 lucm"></div>' );
@@ -33,6 +33,10 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 							'</div>'+
 						'</div> ');
 			container.append( headerBtns );
+			
+			if( carbonStock ){
+				headerBtns.find( 'ul' ).append( '<li><button class="btn btn-default" data-target="carbon-stock">'+i18n['btn-stats-carbon-stock']+'</button></li>' );
+			}
 			
 			var rowHeader = $( '<div class="row row-dashbaord-padded info-table lucm-table"></div>' );
 			container.append( rowHeader );
@@ -66,7 +70,7 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 			
 			// forest change data 
 			var forestChangeData = [];
-			
+			var forestAreaData	= [];
 			for( var i = 0 ; i < resources.length ; i++ ){
 				var resource 	= resources[ i ];
 				
@@ -88,9 +92,6 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 				startYears 	= startYears.sort( compareYears );
 				endYears 	= endYears.sort( compareYears );
 				
-//				console.log( resource );
-//				console.log( endYears );
-//				console.log( startYears );
 				
 				// now append lucm table 
 				var rowMatrix = $( '<div class="row row-matrix"></div>' );
@@ -142,7 +143,8 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 				}
 				
 				
-				var forestChange = [ 0 , 0 , 0 , 0 ];
+				var forestChange 	= [ 0 , 0 , 0 , 0 ];
+				var forestArea	 	= new Array();
 				
 				// add row
 				for( var r = 0 ; r < data.length ; r++ ){
@@ -212,10 +214,15 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 					var tdTot = $( '<td></td>' );
 					tdTot.html(  (+ rowTot.toFixed(0)).toLocaleString() );
 					tr.append( tdTot );
-//					td.addClass( (r+1) + '-' + (c+1) );
+					
+					forestArea.push( rowTot );
 				}
 				
 				forestChangeData[ startYear + '~' + endYear ] = forestChange;
+				forestAreaData[ startYear + '' ] = forestArea.slice(0, 12);
+				if( i == resources.length-1 ){
+					forestAreaData[ endYear + '' ] = colTot.slice(0, 12);
+				}
 				
 				// add total rows
 				var trTot = $(  '<tr></tr>' );
@@ -300,20 +307,51 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 			
 			// add chart containers
 			
+			var addSource = function( sectionButton , sectionData , file ){
+				var sourceBtn = $( '<button class="btn btn-default chart_source_btn"></button>' );
+				sourceBtn.append( i18n['chart_source_btn']  );
+				sectionButton.append( sourceBtn );
+				
+				var rowSource = $( '<div class="row"></div>' );
+				sectionData.append( rowSource );
+				
+				var colSource = $( '<div class="col-md-12"></div>' );
+				rowSource.append(colSource);
+				rowSource.hide();
+				
+				var linkSource = "static/loc/" + customization.languageCode + "/html/" + file;
+				$.ajax({
+					url			: linkSource ,
+					data		: {bust : (new Date()).getTime()},
+					dataType 	: "html" ,
+					success		: function(data){
+						colSource.append( data );
+					}
+				});
+				sourceBtn.click( function(e){
+					e.preventDefault();
+					sourceBtn.blur();
+					if( rowSource.is(":hidden") ){
+						rowSource.slideDown();
+					} else {
+						rowSource.slideUp();
+					}
+				});
+			};
+			
 			// change of forest area
 			var rowForestArea = $( '<div class="row row-dashbaord-padded info-table lucm-fa-chart"></div>' );
 			container.append( rowForestArea );
 			var colFAHeader = $( '<div class="col-md-12 title"></div>' );
 			colFAHeader.append( i18n['change_forest_area'] );
 			rowForestArea.append(  colFAHeader );
-//			var toggleButtonFA = $( '<button class="btn btn-transparent btn-toggle-item" data-target="lucm-fa-chart"><i class="fa fa-caret-right"></i>&nbsp;</button>' );
-//			toggleButtonFA.append( i18n['change_forest_area'] );
-//			colFAHeader.append( toggleButtonFA );
 			
-//			var colCollapsableFA = $( '<div class="col-md-12 lucm-fa-chart">' );
+			var colFASrc = $( '<div class="col-md-12">' );
+			rowForestArea.append(  colFASrc );
+			addSource( colFAHeader ,  colFASrc , "nfi_info.html" );
+			
 			var colCollapsableFA = $( '<div class="col-md-12">' );
 			rowForestArea.append(  colCollapsableFA );
-			
 			
 			//area of land cover change
 			var rowLCHeader = $( '<div class="row row-dashbaord-padded info-table lucm-lc-chart"></div>' );
@@ -321,24 +359,72 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 			var colLCHeader = $( '<div class="col-md-12 title"></div>' );
 			colLCHeader.append( i18n['area_land_cover_change'] );
 			rowLCHeader.append(  colLCHeader );
-//			var toggleButtonLC = $( '<button class="btn btn-transparent btn-toggle-item" data-target="lucm-lc-chart"><i class="fa fa-caret-right"></i>&nbsp;</button>' );
-//			toggleButtonLC.append( i18n['area_land_cover_change'] );
-//			colLCHeader.append( toggleButtonLC );
 			
-			var colCollapsableLC = $( '<div class="col-md-12">' );
-//			var colCollapsableLC = $( '<div class="col-md-12 lucm-lc-chart">' );
+			var colLCSrc = $( '<div class="col-md-12">' );
+			rowLCHeader.append(  colLCSrc );
+			addSource( colLCHeader ,  colLCSrc , "nfi_info.html" );
+			
+			var colCollapsableLC 		= $( '<div class="col-md-12">' );
 			rowLCHeader.append(  colCollapsableLC );
 			
+			
+			// Carbon Stock
+			if( carbonStock ){
+				var rowCS = $( '<div class="row row-dashbaord-padded info-table carbon-stock"></div>' );
+				container.append( rowCS );
+				var colCSHeader = $( '<div class="col-md-12 title"></div>' );
+				colCSHeader.append( i18n['carbon_stock_estimates'] );
+				rowCS.append(  colCSHeader );
+				
+				
+				var colCollapsableCS = $( '<div class="col-md-12">' );
+				rowCS.append( colCollapsableCS );
+				
+				addSource( colCSHeader ,  colCollapsableCS , "carbon_stock_info.html" );
+				
+				
+				var div = $('<div class="table-responsive">'+
+								'<table class="table">'+
+									'<thead>'+
+										'<tr>'+
+											'<th class="col-md-8"></th>'+
+											'<th class="col-md-4">'+i18n['avg']+'</th>'+
+										'</tr>'+
+									'</thead>'+
+								'</table>'+
+							'</div>');
+				var tbody = $( '<tbody/>' );
+				div.find( 'table' ).append( tbody );
+				colCollapsableCS.append( div );
+				
+				var addCSRow = function( index , data ){
+					
+					var tr = $( '<tr/>' );
+					tbody.append( tr );
+					
+					var td1 = $( '<td></td>' );
+					var nfiCls	= 'nfi-class-'+(index+1);
+					td1.append( i18n['nfi-class-'+( parseInt(index)+1)] );
+					tr.append( td1 );
+					
+					var valueStr = ( +data.toFixed(2) ).toLocaleString();
+					var td2 = $( '<td></td>' );
+					td2.append( valueStr );
+					tr.append( td2 );
+				};
+				
+				var csData = $.parseJSON(carbonStock.data.data);
+				for( var l in csData ){
+					addCSRow( l , csData[ l ] );
+				}
+				
+			}
 			
 			// add UI element to dashboard
 			var fId = feature.fid.replace( '.' , '-' );
 			bus.send( 'add-dashboard-element' , [fId , feature.attributes.name, container , true , dashboard.TYPE.STATS, dashboard.SOURCE.FEATURES]);
 			
-//			if( openSection ){
-//				bus.send( "dashboard-show-type" , [dashboard.TYPE.STATS, dashboard.SOURCE.FEATURES] );
-//			} else {
 			bus.send( "dashboard-activate-type" , [dashboard.TYPE.STATS, dashboard.SOURCE.FEATURES] );
-//			}
 			
 			if( !expand ){
 				bus.send( 'dashboard-element-toggle-state' , [dashboard.TYPE.STATS , fId , false] );
@@ -346,7 +432,7 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 			
 			
 			// add charts
-			createForestAreaChart( colCollapsableFA , null );
+			createForestAreaChart( colCollapsableFA , forestAreaData );
 			createForestChangeChart( colCollapsableLC , forestChangeData );
 			
 			// bind events
@@ -367,22 +453,7 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 				}
 			});
 			btns[0].click();
-//			container.find( '.btn-toggle-item' ).each( function(i,b){
-//				var btn = $( b );
-//				var target = container.find( '.' + btn.attr( 'data-target' ) );
-//				target.hide();
-//			});
-//			container.find( '.btn-toggle-item' ).click(function(){
-//				var btn = $( this );
-//				var target = container.find( '.' + btn.attr( 'data-target' ) );
-//				if( target.is(':visible') ){
-//					target.slideUp();
-//					btn.find( 'i' ).removeClass().addClass( 'fa fa-caret-right' );
-//				} else {
-//					target.slideDown();
-//					btn.find( 'i' ).removeClass().addClass( 'fa fa-caret-down' );
-//				}
-//			});
+			
 		}
 		
 	});
@@ -440,14 +511,14 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 //				
 			} );
 	};
-
-	var parseResources = function(feature) {
+	
+	var parseResources = function(feature , statsType) {
 		var resources = new Array();
 		if ( feature.attributes.ResourceList ) {
 			for ( var i = 0; i < feature.attributes.ResourceList.Resource.length; i++ ) {
 				var resource = feature.attributes.ResourceList.Resource[i];
 				var attribute = getAttributeByName( resource.Attributes.attribute, 'stats_type' );
-				if ( attribute.value == "lucm" ) {
+				if ( attribute.value ==  statsType ) {
 					resources.push(resource);
 				}
 			}
@@ -466,6 +537,23 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 	};
 	
 	var createForestAreaChart = function( container , data ){
+		var years 		= new Array();
+		var dataClasses = new Array();
+		
+		for( var y in data ){
+			years.push( y );
+			
+			var dataArray = data[ y ];
+			for( var d in dataArray ){
+				var datum = dataArray[ d ];
+				
+				if( dataClasses.length <= d ){
+					dataClasses.push( new Array() );
+				}
+				dataClasses[ d ].push( datum );
+			}
+		}
+		
 		var h = getChartHeight();
 		container.css( 'height',  h + 'px' );
 		var chartId = 'chart-fa-'+$.now();
@@ -494,7 +582,8 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 	            margin: 0
 	        },
 	        xAxis: {
-	            categories: ['1990', '1995', '2000', '2005', '2010'],
+	            categories: years,
+//	            categories: ['1990', '1995', '2000', '2005', '2010'],
 	            labels: { 
 	            	style: {
 	            		fontFamily: 'Roboto',
@@ -580,43 +669,44 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" , "jquery.
 	        series: [
 		        {
 		            name: i18n['nfi-class-1'],
-		            data: [5, 3, 4, 7, 2]
+//		            data: [5, 3, 4, 7, 2]
+		        	data: dataClasses[ 0 ]
 		        }, {
 		            name:  i18n['nfi-class-2'],
-		            data: [2, 2, 3, 2, 1]
+		            data: dataClasses[ 1 ]
 		        }, {
 		            name:  i18n['nfi-class-3'],
-		            data: [3, 4, 4, 2, 5]
+		            data: dataClasses[ 2 ]
 		        },
 		        {
 		        	name: i18n['nfi-class-4'],
-		        	data: [5, 3, 4, 7, 2]
+		        	data: dataClasses[ 3 ]
 		        }, {
 		        	name:  i18n['nfi-class-5'],
-		        	data: [2, 2, 3, 2, 1]
+		        	data: dataClasses[ 4 ]
 		        }, {
 		        	name:  i18n['nfi-class-6'],
-		        	data: [3, 4, 4, 2, 5]
+		        	data: dataClasses[ 5 ]
 		        },
 		        {
 		        	name: i18n['nfi-class-7'],
-		        	data: [5, 3, 4, 7, 2]
+		        	data: dataClasses[ 6 ]
 		        }, {
 		        	name:  i18n['nfi-class-8'],
-		        	data: [2, 2, 3, 2, 1]
+		        	data: dataClasses[ 7 ]
 		        }, {
 		        	name:  i18n['nfi-class-9'],
-		        	data: [3, 4, 4, 2, 5]
+		        	data: dataClasses[ 8 ]
 		        },
 		        {
 		        	name: i18n['nfi-class-10'],
-		        	data: [5, 3, 4, 7, 2]
+		        	data: dataClasses[ 9 ]
 		        }, {
 		        	name:  i18n['nfi-class-11'],
-		        	data: [2, 2, 3, 2, 1]
+		        	data: dataClasses[ 10 ]
 		        }, {
 		        	name:  i18n['nfi-class-12'],
-		        	data: [3, 4, 4, 2, 5]
+		        	data: dataClasses[ 11 ]
 		        },
 	        
 	        ]

@@ -1,4 +1,4 @@
-define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], function($, bus, layerListSelector, i18n) {
+define([ "jquery", "message-bus", "layer-list-selector", "i18n", "dashboard", "bootstrap" ], function($, bus, layerListSelector, i18n, dashboard) {
 	
 	// common id prexif 
 	var groupHeadingPrefix			= "group-heading-";
@@ -16,29 +16,9 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 	
 	bus.listen("add-group", function(event, groupInfo) {
 		
-		
-		// TODO
-//		if (groupInfo.hasOwnProperty("infoLink")) {
-//			infoButton = $('<a style="position:absolute;top:3px;right:4px;width:16px;height:16px;padding:0;" class="layer_info_button" href="' + groupInfo.infoLink + '"></a>');
-//
-//			// prevent accordion item from expanding
-//			// when clicking on the info button
-//			infoButton.click(function(event) {
-//				event.stopPropagation()
-//			});
-//
-//			infoButton.fancybox({
-//				'autoScale' : false,
-//				'openEffect' : 'elastic',
-//				'closeEffect' : 'elastic',
-//				'type' : 'ajax',
-//				'overlayOpacity' : 0.5
-//			});
-//
-//			divTitle.append(infoButton);
-//		}
 		if( groupInfo.visible === false ){
 			// nothing
+			
 		} else {
 			
 			if( groupInfo.hasOwnProperty("parentId") ){
@@ -73,7 +53,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 					});
 					settingsBtn.hide();
 					
-					col					= $( '<div class="col-md-10 col-sm-8 col-xs-12 group-dropdown layer"></div>' );
+					col					= $( '<div class="col-md-9 col-sm-8 col-xs-12 group-dropdown layer"></div>' );
 					row.append( col );
 					
 					var btnGroup = $( '<div class="btn-group width100"><button type="button" class="btn label-btn">'+ i18n['none'] +'</button>'+
@@ -99,19 +79,28 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 						}
 						bus.send( "layer-dropdown-select" , [groupInfo , portalLayer ] );
 					});
-					
-					var dashboard			= $( '<div class="col-md-1 no-padding dashboard-btn" />' );
-					row.append( dashboard );
-					var dashboardBtn = $( '<button class="btn btn-transparent"><i class="fa fa-tachometer"></i></button>' );
-					dashboard.append( dashboardBtn );
-					
-					dashboardBtn.click(function(){
-						bus.send( "layer-dropdown-dashboard-click" , groupInfo );
-						
-						dashboardBtn.blur();
-					});
-					dashboardBtn.hide();
 				}
+				
+				// add dashboard link buttons
+				var dashboardBtnsCol		= $( '<div class="col-md-2 hidden-xs hidden-sm no-padding dashboard-btn" />' );
+				row.append( dashboardBtnsCol );
+				
+				var addDashboardBtn = function( id , btn , type ){
+					btn.addClass( 'dashboard-group-btn-' + id );
+					dashboardBtnsCol.append( btn );
+					
+					btn.click(function(){
+						bus.send( "layer-dropdown-dashboard-click" , [groupInfo , type] );
+						btn.blur();
+					});
+					btn.hide();
+				};
+				
+				var legendBtn = $( '<button class="btn btn-transparent legend-btn"><i class="fa fa-list-ul"></i></button>' );
+				addDashboardBtn( groupInfo.id, legendBtn , dashboard.TYPE.LEGEND );
+				
+				var infoBtn = $( '<button class="btn btn-transparent info-btn"><i class="fa fa-info-circle"></i></button>' );
+				addDashboardBtn( groupInfo.id, infoBtn , dashboard.TYPE.INFO );
 				
 			} else {
 				
@@ -126,7 +115,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 				
 				var rowHeading = $( '<div class="row"/>' );
 				heading.append( rowHeading );
-				var colBtn 		= $( '<div class="col-md-10 col-md-offset-1 col-xs-12 col-sm-12 panel-title no-padding" />' );
+				var colBtn 		= $( '<div class="col-md-9 col-md-offset-1 col-xs-12 col-sm-12 panel-title no-padding" />' );
 				rowHeading.append( colBtn );
 	
 				var collapseId 	= groupCollapsePrefix + groupInfo.id;
@@ -138,21 +127,31 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 				btn.append( '<span class="badge">0</span>' );
 				colBtn.append( btn );
 				
-				if( groupInfo.hasDashboard ){
-						var colDashbaord 		= $( '<div class="col-md-1 hidden-xs hidden-sm dashboard-btn no-padding" />' );
-						rowHeading.append( colDashbaord );
+				
+				// add dashboard link buttons
+				var dashboardBtnsCol		= $( '<div class="col-md-2 hidden-xs hidden-sm no-padding dashboard-btn" />' );
+				rowHeading.append( dashboardBtnsCol );
+				
+				var addDashboardBtn = function( id , btn , type ){
+					btn.addClass( 'dashboard-group-btn-' + id );
+					dashboardBtnsCol.append( btn );
 					
-						var dashboardBtn = $( '<button class="btn btn-transparent"><i class="fa fa-arrow-circle-right"></i></button>' );
-						dashboardBtn.addClass( 'dashboard-group-btn-' + groupInfo.id );
-						colDashbaord.append( dashboardBtn );
-						
-						dashboardBtn.click(function(){
-							bus.send( "open-layer-dashboard" , groupInfo.id );
-							
-							dashboardBtn.blur();
-						});
+					btn.click(function(){
+						bus.send( 'highlight-dashboard-element' , [ id, type, dashboard.SOURCE.LAYERS] );
+						btn.blur();
+					});
+				};
+				
+				if( groupInfo.legendLink ){
+					var dashboardBtn = $( '<button class="btn btn-transparent"><i class="fa fa-list-ul"></i></button>' );
+					addDashboardBtn( groupInfo.id, dashboardBtn , dashboard.TYPE.LEGEND );
+				}
+				if( groupInfo.infoLink ){
+					var dashboardBtn = $( '<button class="btn btn-transparent"><i class="fa fa-info-circle"></i></button>' );
+					addDashboardBtn( groupInfo.id, dashboardBtn , dashboard.TYPE.INFO );
 				}
 				
+				// add layers container
 				var content	= $( '<div class="panel-collapse collapse" role="tabpanel" />' );
 				content.attr( 'id' , collapseId );
 				content.attr( 'aria-labelledby' , headingId );
@@ -229,11 +228,11 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 					var settings				= $( '<div class="col-md-1 settings no-padding hidden-xs hidden-sm" />' );
 					row.append( settings );
 					
-					var layer				= $( '<div class="col-md-10 col-sm-12 col-xs-12 layer" />' );
+					var layer					= $( '<div class="col-md-9 col-sm-12 col-xs-12 layer" />' );
 					row.append( layer );
 					
-					var dashboard			= $( '<div class="col-md-1 hidden-xs hidden-sm no-padding dashboard-btn" />' );
-					row.append( dashboard );
+					var dashboardBtnsCol		= $( '<div class="col-md-2 hidden-xs hidden-sm no-padding dashboard-btn" />' );
+					row.append( dashboardBtnsCol );
 					
 					if ( portalLayer.isPlaceholder ){
 						
@@ -265,15 +264,22 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 						layer.append( btnLayer );
 						
 						// add dashboard button
-						if( portalLayer.hasDashboard ){
-							var dashboardBtn = $( '<button class="btn btn-transparent"><i class="fa fa-arrow-circle-right"></i></button>' );
-							dashboard.append( dashboardBtn );
+						var addBtn = function( btn , id , type ){
+							dashboardBtnsCol.append( btn );
 							
 							dashboardBtn.click(function(){
-								bus.send( "open-layer-dashboard" , portalLayer.id );
-								
-								dashboardBtn.blur();
+								bus.send( 'highlight-dashboard-element' , [ id, type, dashboard.SOURCE.LAYERS] );
+								btn.blur();
 							});
+							
+						};
+						if( portalLayer.legendLink ){
+							var dashboardBtn = $( '<button class="btn btn-transparent"><i class="fa fa-list-ul"></i></button>' );
+							addBtn( dashboardBtn , portalLayer.id, dashboard.TYPE.LEGEND );
+						}
+						if( portalLayer.infoLink ){
+							var dashboardBtn = $( '<button class="btn btn-transparent"><i class="fa fa-info-circle"></i></button>' );
+							addBtn( dashboardBtn , portalLayer.id, dashboard.TYPE.INFO );
 						}
 						
 					}
@@ -397,9 +403,15 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 			layerBtn.hide();
 			
 			row.find( 'div.settings button' ).fadeIn( 200 );
-			if( layer.hasDashboard ){
-				row.find( 'div.dashboard-btn button' ).fadeIn( 200 );
+			if( layer.hasOwnProperty('legendLink') ){
+				row.find( 'div.dashboard-btn button.legend-btn' ).fadeIn( 200 );
 			}
+			if( layer.hasOwnProperty('infoLink') ){
+				row.find( 'div.dashboard-btn button.info-btn' ).fadeIn( 200 );
+			}
+//			if( layer.hasDashboard ){
+//				row.find( 'div.dashboard-btn button' ).fadeIn( 200 );
+//			}
 		} else {
 //			btnLabel.html( i18n['none'] );
 			
@@ -416,10 +428,10 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "bootstrap" ], 
 		}
 	});
 	
-	bus.listen( "layer-dropdown-dashboard-click" , function( event, group ){
+	bus.listen( "layer-dropdown-dashboard-click" , function( event, group, type ){
 		var activeLayer = activeDropDownLayers[ group.id ];
 		if( activeLayer ){
-			bus.send( "open-layer-dashboard" , activeLayer.id );
+			bus.send( 'highlight-dashboard-element' , [ activeLayer.id, type, dashboard.SOURCE.LAYERS] );
 		}
 	});
 	

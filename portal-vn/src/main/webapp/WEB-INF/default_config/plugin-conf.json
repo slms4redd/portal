@@ -40,7 +40,9 @@
 		}, tutorial : {
 			"href" : "tutorial.html"
 		}, dashboard : {
-			"open" 	: true
+			"open" 			: true,
+			"types"	: [ 'legend','info','redd_profile','stats' ],
+			"sections"  : [ { 'name' : 'redd_profile' , 'header' : 'under_developement' } ]
 		}, feature-info-control : {
 			"disabled" 		: true
 		}, map : {

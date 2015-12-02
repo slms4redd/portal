@@ -1,6 +1,5 @@
 define([ "jquery", "message-bus", "layout", "customization", "i18n", "bootstrap" ], function($, bus, layout, customization, i18n) {
-//	var iconClosed = '<span class="fa-stack"><i class="fa fa-circle-thin fa-stack-2x"></i><i class="fa fa-angle-double-right fa-stack-1x"></i></span>';
-//	var iconOpened = '<span class="fa-stack"><i class="fa fa-circle-thin fa-stack-2x"></i><i class="fa fa-angle-double-left fa-stack-1x"></i></span>';
+
 	var iconClosed = '<i class="fa fa-angle-double-right"></i>';
 	var iconOpened = '<i class="fa fa-angle-double-left"></i>';
 
@@ -8,8 +7,6 @@ define([ "jquery", "message-bus", "layout", "customization", "i18n", "bootstrap"
 
 	var row 		= $( '<div class="row height85"></div>' );
 	layout.container.append( row );
-//	var container	= $( '<div class="col-md-3 col-sm-3 col-xs-3 panel-group layers-container open" id="group-accordion" role="tablist" aria-multiselectable="true"></div>' );
-//	row.append( container );
 	
 	var col	= $( '<div class="col-md-3 col-sm-4 col-xs-5 height100"></div>' );
 	row.append( col );

@@ -1,8 +1,24 @@
 @CHARSET "UTF-8";
 
-.projects a.ext-link{
-	margin: .1em 0em;
-    display: block;
-    padding: 3px 4px;
-/*     font-size: 11px; */
+a.ext-link {
+    margin: .1em 0em;
+    display: inline-block;
+    padding: 3px 8px;
+    /* font-size: 11px; */
+}
+table.info-table {
+    border: 1px solid rgba(233, 233, 233, 0.20);
+}
+table.info-table td {
+	border-left: 1px solid rgba(221, 221, 221, 0.15) !important;
+	border-top: none !important;
+}
+button.chart_source_btn ,
+button.chart_source_btn:active ,
+button.chart_source_btn:focus {
+	width: 20% !important;
+    margin-left: 2em;
+    border-radius: 2px;
+    padding: 3px;
+    background-color: rgba(48, 46, 47, 0.6);
 }

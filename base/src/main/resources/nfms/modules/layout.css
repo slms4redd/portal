@@ -112,7 +112,9 @@ button.btn {
 .btn-transparent.active {
 	color : rgb(50, 153, 187);
 }
-
+.btn.disabled, .btn[disabled], fieldset[disabled] .btn {
+    opacity: .45 !important;
+}
 /* default button style */
 button.btn-default ,
 button.btn-default[disabled] ,
@@ -344,7 +346,7 @@ table.table > thead > tr > th {
 }
 table.table > tbody > tr > td {
 	border-color: 	rgba(233, 233, 233, 0.20);
-	background-color: rgba(233, 233, 233, 0.10);
+	background-color: rgba(171, 166, 166, 0.2);
 	padding-left: 15px;	
 }
 td.indent {

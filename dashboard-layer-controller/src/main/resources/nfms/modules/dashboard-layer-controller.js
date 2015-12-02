@@ -6,6 +6,9 @@
 define([ "jquery", "message-bus", "dashboard" ,"module" ],
 		function($, bus, dashboard, module ) {
 	
+	// by deafault legends and info are activated for layers
+	bus.send('dashboard-activate-type' , [dashboard.TYPE.LEGEND, dashboard.SOURCE.LAYERS] );
+	bus.send('dashboard-activate-type' , [dashboard.TYPE.INFO, dashboard.SOURCE.LAYERS] );
 	
 	bus.listen("add-group", function(event, groupInfo) {
 		// add legend
@@ -15,10 +18,11 @@ define([ "jquery", "message-bus", "dashboard" ,"module" ],
 					data		: {bust : (new Date()).getTime()},
 					dataType 	: "html" ,
 					success		: function(data){
-//						dashboard.addLayerLegend( groupInfo.id, groupInfo.name , data , true );
 						bus.send( 'add-dashboard-element' , [groupInfo.id , groupInfo.name, data , true , dashboard.TYPE.LEGEND, dashboard.SOURCE.LAYERS]);
 					}
 				});
+				
+				
 		}
 		
 		// add info
@@ -28,9 +32,8 @@ define([ "jquery", "message-bus", "dashboard" ,"module" ],
 				data		: {bust : (new Date()).getTime()},
 				dataType 	: "html" ,
 				success		: function(data){
-//					dashboard.addDashboardItem( groupInfo.id, groupInfo.name , 'info', infoLayers , data , true );
-//					dashboard.addLayerInfo( groupInfo.id, groupInfo.name , data , true );
 					bus.send( 'add-dashboard-element' , [groupInfo.id , groupInfo.name, data , true , dashboard.TYPE.INFO, dashboard.SOURCE.LAYERS]);
+					
 				}
 			});
 		}
@@ -48,8 +51,6 @@ define([ "jquery", "message-bus", "dashboard" ,"module" ],
 						data		: {bust : (new Date()).getTime()},
 						dataType 	: "html" ,
 						success		: function(data){
-//							dashboard.addDashboardItem( portalLayer.id, portalLayer.label , 'legend', legendLayers , data , portalLayer.active);
-//							dashboard.addLayerLegend( portalLayer.id, portalLayer.label , data  , portalLayer.active);
 							bus.send( 'add-dashboard-element' , [portalLayer.id , portalLayer.label, data , portalLayer.active , dashboard.TYPE.LEGEND, dashboard.SOURCE.LAYERS]);
 						}
 					});
@@ -64,8 +65,6 @@ define([ "jquery", "message-bus", "dashboard" ,"module" ],
 				data		: {bust : (new Date()).getTime()},
 				dataType 	: "html" ,
 				success		: function(data){
-//					dashboard.addDashboardItem( portalLayer.id, portalLayer.label , 'info', infoLayers , data , portalLayer.active );
-//					dashboard.addLayerInfo( portalLayer.id, portalLayer.label , data , portalLayer.active);
 					bus.send( 'add-dashboard-element' , [portalLayer.id , portalLayer.label, data , portalLayer.active , dashboard.TYPE.INFO, dashboard.SOURCE.LAYERS]);
 				}
 			});

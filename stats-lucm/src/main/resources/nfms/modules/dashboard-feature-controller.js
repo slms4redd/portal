@@ -1,5 +1,7 @@
 define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "dashboard","features" ,"redd_projects"], function(module, $, bus, map, i18n, customization, dashboard) {
 	
+	var PROFILE = 'redd_profile';
+	
 	var infoQueryUrl 	= customization['info.queryUrl'] ;
 	var serverUrl 		= customization['info.serverUrl'] ;
 	var sameOrigin = StringUtils.startsWith( window.location.origin , serverUrl );	
@@ -170,7 +172,7 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 			
 			bus.send( "dashboard-toggle-visibility" , true );
 
-			bus.send( "dashboard-reset-type" , [dashboard.TYPE.INFO, dashboard.SOURCE.FEATURES] );
+			bus.send( "dashboard-reset-type" , [ PROFILE, dashboard.SOURCE.FEATURES] );
 			bus.send( "dashboard-reset-type" , [dashboard.TYPE.LEGEND, dashboard.SOURCE.FEATURES] );
 			bus.send( "dashboard-reset-type" , [dashboard.TYPE.STATS, dashboard.SOURCE.FEATURES] );
 			
@@ -224,16 +226,16 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 				Features.processProvince ( feature , data ,section );
 			}
 			
-			bus.send( 'add-dashboard-element' , [fId , feature.attributes.name, data , true , dashboard.TYPE.INFO, dashboard.SOURCE.FEATURES]);
+			bus.send( 'add-dashboard-element' , [fId , feature.attributes.name, data , true , PROFILE, dashboard.SOURCE.FEATURES]);
 			
 			if( openSection ){
-				bus.send( "dashboard-show-type" , [dashboard.TYPE.INFO, dashboard.SOURCE.FEATURES] );
+				bus.send( "dashboard-show-type" , [PROFILE, dashboard.SOURCE.FEATURES] );
 			} else {
-				bus.send( "dashboard-activate-type" , [dashboard.TYPE.INFO, dashboard.SOURCE.FEATURES] );
+				bus.send( "dashboard-activate-type" , [PROFILE, dashboard.SOURCE.FEATURES] );
 			}
 			
 			if( !expand ){
-				bus.send( 'dashboard-element-toggle-state' , [dashboard.TYPE.INFO , fId , false] );
+				bus.send( 'dashboard-element-toggle-state' , [PROFILE , fId , false] );
 			}
 			
 		}
@@ -252,16 +254,16 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 					
 					Features.appendLabels( data );
 					
-					bus.send( 'add-dashboard-element' , [fId , feature.attributes.name, data , true , dashboard.TYPE.INFO, dashboard.SOURCE.FEATURES]);
+					bus.send( 'add-dashboard-element' , [fId , feature.attributes.name, data , true , PROFILE, dashboard.SOURCE.FEATURES]);
 					
 					if( openSection ){
-						bus.send( "dashboard-show-type" , [dashboard.TYPE.INFO, dashboard.SOURCE.FEATURES] );
+						bus.send( "dashboard-show-type" , [ PROFILE, dashboard.SOURCE.FEATURES] );
 					} else {
-						bus.send( "dashboard-activate-type" , [dashboard.TYPE.INFO, dashboard.SOURCE.FEATURES] );
+						bus.send( "dashboard-activate-type" , [ PROFILE, dashboard.SOURCE.FEATURES] );
 					}
 					
 					if( !expand ){
-						bus.send( 'dashboard-element-toggle-state' , [dashboard.TYPE.INFO , fId , false] );
+						bus.send( 'dashboard-element-toggle-state' , [ PROFILE , fId , false] );
 					}
 				}
 			});
