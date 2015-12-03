@@ -6,7 +6,8 @@
 			"baseUrl" : "http://temp-redd.vnforest.gov.vn/diss_geoserver/wms",
 			"wmsName" : "unredd:ne_10m_oceans_grid2",
 			"imageFormat" : "image/png8",
-			"visible" : true
+			"visible" : true,
+			"wmsParameters" : { "tiled" : "true"  }
 		}
 		,
 		{
@@ -14,7 +15,8 @@
 			"baseUrl" : "http://temp-redd.vnforest.gov.vn/diss_geoserver/wms",
 			"wmsName" : "unredd:ne_10m_land_grid1",
 			"imageFormat" : "image/png8",
-			"visible" : true
+			"visible" : true,
+			"wmsParameters" : { "tiled" : "true"  }
 		}
 		,
 		{
@@ -23,7 +25,7 @@
 			"wmsName" : "unredd:province",
 			"imageFormat" : "image/png8",
 			"visible" : true,
-			"wmsParameters" : { "styles" : "world_borders" }
+			"wmsParameters" : { "styles" : "world_borders"  }
 		}
 		,
 		{
@@ -31,17 +33,19 @@
 			"baseUrl" : "http://temp-redd.vnforest.gov.vn/diss_geoserver/wms",
 			"wmsName" : "unredd:ne_10m_minor_islands",
 			"imageFormat" : "image/png8",
-			"visible" : true
+			"visible" : true,
+			"wmsParameters" : { "tiled" : "true"  }
 		}
 		, {
 			"id": "jica",
 			"label": "Jica",
-			"baseUrl": "http://temp-redd.vnforest.gov.vn/diss_geoserver/wms",
+			"baseUrl": "http://temp-redd.vnforest.gov.vn/stg_geoserver/wms",
 			"wmsTime": "1995-01-01T00:00:00.000Z,2000-01-01T00:00:00.000Z,2005-01-01T00:00:00.000Z,2010-01-01T00:00:00.000Z,2015-01-01T00:00:00.000Z",
 			"wmsName": "unredd:nfi",
 			"imageFormat": "image/png8",
 			"visible": true,
-			"queryable" : false
+			"queryable" : false,
+			"wmsParameters" : { "tiled" : "true"  }
 		},
 		{
 			"id" : "commune",
@@ -49,7 +53,8 @@
 			"wmsName" : "unredd:commune",
 			"imageFormat" : "image/png8",
 			"visible" : true,
-			"queryable" : false
+			"queryable" : false,
+			"wmsParameters" : { "tiled" : "true"  }
 		} ,
 		{
 			"id" : "district",
@@ -57,7 +62,8 @@
 			"wmsName" : "unredd:district",
 			"imageFormat" : "image/png8",
 			"visible" : true,
-			"queryable" : false
+			"queryable" : false,
+			"wmsParameters" : { "tiled" : "true"  }
 		} ,
 		{
 			"id" : "province",
@@ -65,7 +71,8 @@
 			"wmsName" : "unredd:province",
 			"imageFormat" : "image/png8",
 			"visible" : true,
-			"queryable" : true
+			"queryable" : true,
+			"wmsParameters" : { "tiled" : "true"  }
 		} ,
 		{
 			"id" : "ecoregion",
@@ -73,7 +80,8 @@
 			"wmsName" : "unredd:ecoregion",
 			"imageFormat" : "image/png8",
 			"visible" : true,
-			"queryable" : false
+			"queryable" : false,
+			"wmsParameters" : { "tiled" : "true"  }
 		} 
 		, {
 			"id" : "country",
@@ -81,7 +89,8 @@
 			"wmsName" : "unredd:country",
 			"imageFormat" : "image/png8",
 			"visible" : true,
-			"queryable" : true
+			"queryable" : true,
+			"wmsParameters" : { "tiled" : "true"  }
 		}
 		, {
 			"id" 			: "province_center",
@@ -89,7 +98,8 @@
 			"type"			: "wfs",
 			"featureType"	: "province_center",
 			"featureNN"		:"http://www.nfms4redd.org",
-			"styleMap"		: "new OpenLayers.StyleMap({'strokeWidth' : 0,fillOpacity : 0})"
+			"styleMap"		: "new OpenLayers.StyleMap({'strokeWidth' : 0,fillOpacity : 0})",
+			"wmsParameters" : { "tiled" : "true"  }
 		}
 		, {
 			"id" : "province_fcpf_cf",
@@ -98,7 +108,7 @@
 			"imageFormat" : "image/png8",
 			"visible" : true,
 			"queryable" : true,
-			"wmsParameters" : { "styles" : "province_cf" }
+			"wmsParameters" : { "styles" : "province_cf" , "tiled" : "true" }
 		}
 		, {
 			"id" : "province_prap",
@@ -107,7 +117,7 @@
 			"imageFormat" : "image/png8",
 			"visible" : true,
 			"queryable" : true,
-			"wmsParameters" : { "styles" : "province_prap" }
+			"wmsParameters" : { "styles" : "province_prap" , "tiled" : "true" }
 		}
 		, {
 			"id" 			: "ecoregion_label",
@@ -153,13 +163,13 @@
 	"portalLayers" : [
 		{
 			"id" : "country",
-			"active" : false,
+			"active" : true,
 			"label" : "${country}",
 			"layers" : [ "country" ]
 		}, 
 		{
 			"id" : "ecoregion",
-			"active" : true,
+			"active" : false,
 			"label" : "${eco_region}",
 			"layers" : [ "ecoregion" ]
 		}
@@ -268,13 +278,13 @@
 			"id" : "base",
 			"label" : "${base_layers}",
 			"visible" : false,
-			"items" : [ "oceans", "ne2" ,"province_placeholder" ,"ne_10m_minor_islands" , "ecoregion_label" ,"province_label" , "district_label" , "commune_label"]
+			"items" : [ "oceans", "ne2" ,"province_placeholder" ,"ne_10m_minor_islands" ]
 			
 		}
 		, {
 			"id" : "admin",
 			"label" : "${admin_areas}",
-			"items" : [ "country" , "ecoregion" , "province" , "district", "commune" ],
+			"items" : [ "country" , "province" , "district", "commune" ],
 			"legendFile" : "admin.html",
 			"infoFile" : "admin_info.html",
 			"open"	: true ,
