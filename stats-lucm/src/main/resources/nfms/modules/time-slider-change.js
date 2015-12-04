@@ -15,10 +15,10 @@ define([ "module", "jquery", "message-bus", "i18n" ],
 					bus.send("info" , [ i18n['time_slider_change_2015_alert'] , offset]);
 //					bus.send("info" , [ i18n['time_slider_change_2015_alert'] ]);
 					
-					nfiNoData.fadeIn();
+					nfiNoData.removeClass( 'hidden' );
 				} else {
 					
-					nfiNoData.fadeOut();
+					nfiNoData.addClass( 'hidden' );
 				}
 				
 			});

@@ -31,7 +31,7 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "features" ],
 			Features.getFeatureInfo(  
 				true,
 				'unredd:country,unredd:ecoregion,unredd:province', 
-				'(name,area,info_file)(name,eco_zone_c)(name,area,info_file,province_c)',
+				'(name,area,info_file)(ecozonedef,ecozonecod)(name,area,info_file,province_c)',
 				e.xy.x ,   e.xy.y , map.size.h , map.size.w ,
 				 map.getExtent().toBBOX()
 			);

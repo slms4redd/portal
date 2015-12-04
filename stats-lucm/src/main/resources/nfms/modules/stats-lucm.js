@@ -4,8 +4,13 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 	var charts = [];
 	
 	bus.listen( "add-feature-stats" , function( event , feature , openSection , expand ){
-
-		var resources 				= parseResources( feature , "lucm" );
+		var compareLucmRes			= function (a , b){
+			var y1  	= getAttributeByName( a.Attributes.attribute , 'start_period').value;
+			var y2  	= getAttributeByName( b.Attributes.attribute , 'start_period').value;
+			return ( y1 < y2 ) ? -1 : 1;
+		};
+		
+		var resources 				= parseResources( feature , "lucm" , compareLucmRes );
 		
 		var carbonStockResources	= parseResources( feature , "carbon_stock" );
 		var carbonStock				= null;
@@ -422,14 +427,14 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 			
 			// add UI element to dashboard
 			var fId = feature.fid.replace( '.' , '-' );
-			bus.send( 'add-dashboard-element' , [fId , feature.attributes.name, container , true , dashboard.TYPE.STATS, dashboard.SOURCE.FEATURES]);
+			var fName = ( feature.isEcoregion ) ? feature.attributes.ecozonedef : feature.attributes.name ; 
+			bus.send( 'add-dashboard-element' , [fId , fName, container , true , dashboard.TYPE.STATS, dashboard.SOURCE.FEATURES]);
 			
 			bus.send( "dashboard-activate-type" , [dashboard.TYPE.STATS, dashboard.SOURCE.FEATURES] );
 			
 			if( !expand ){
 				bus.send( 'dashboard-element-toggle-state' , [dashboard.TYPE.STATS , fId , false] );
 			}
-			
 			
 			// add charts
 			createForestAreaChart( colCollapsableFA , forestAreaData );
@@ -512,7 +517,7 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 			} );
 	};
 	
-	var parseResources = function(feature , statsType) {
+	var parseResources = function(feature , statsType , compareFunction ) {
 		var resources = new Array();
 		if ( feature.attributes.ResourceList ) {
 			for ( var i = 0; i < feature.attributes.ResourceList.Resource.length; i++ ) {
@@ -523,7 +528,11 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 				}
 			}
 		}
-
+		
+		if( compareFunction ){
+			resources.sort(compareFunction);
+		}
+		
 		return resources;
 	};
 	
@@ -947,8 +956,5 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 	$(window).resize( function(){
 		resizeCharts()
 	});
-	
-	
-	
 	
 });

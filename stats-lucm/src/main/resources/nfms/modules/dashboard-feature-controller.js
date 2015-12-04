@@ -76,7 +76,7 @@ define([ "module", "jquery", "message-bus", "map", "i18n", "customization", "das
 			statsQueryData += '<ATTRIBUTE><name>zone_id</name><operator>EQUAL_TO</operator><type>STRING</type><value>'+ provinceId +'</value></ATTRIBUTE>' ;
 			
 		} else if( feature.isEcoregion ){
-			var ecoregionId 	= feature.attributes.eco_zone_c;
+			var ecoregionId 	= feature.attributes.ecozonecod;
 			statsQueryData += '<ATTRIBUTE><name>zone_id</name><operator>EQUAL_TO</operator><type>STRING</type><value>'+ ecoregionId +'</value></ATTRIBUTE>' ;
 			
 		} else {

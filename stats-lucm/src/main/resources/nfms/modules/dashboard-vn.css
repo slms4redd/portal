@@ -16,9 +16,9 @@ table.info-table td {
 button.chart_source_btn ,
 button.chart_source_btn:active ,
 button.chart_source_btn:focus {
-	width: 20% !important;
     margin-left: 2em;
     border-radius: 2px;
-    padding: 3px;
+    padding: 3px 5px;
     background-color: rgba(48, 46, 47, 0.6);
+    width: auto !important;
 }

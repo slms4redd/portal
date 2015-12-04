@@ -102,15 +102,6 @@
 			"wmsParameters" : { "tiled" : "true"  }
 		}
 		, {
-			"id" : "province_fcpf_cf",
-			"baseUrl" : "http://temp-redd.vnforest.gov.vn/diss_geoserver/wms",
-			"wmsName" : "unredd:province",
-			"imageFormat" : "image/png8",
-			"visible" : true,
-			"queryable" : true,
-			"wmsParameters" : { "styles" : "province_cf" , "tiled" : "true" }
-		}
-		, {
 			"id" : "province_prap",
 			"baseUrl" : "http://temp-redd.vnforest.gov.vn/diss_geoserver/wms",
 			"wmsName" : "unredd:province",
@@ -118,6 +109,15 @@
 			"visible" : true,
 			"queryable" : true,
 			"wmsParameters" : { "styles" : "province_prap" , "tiled" : "true" }
+		}
+		, {
+			"id" : "province_fcpf_cf",
+			"baseUrl" : "http://temp-redd.vnforest.gov.vn/diss_geoserver/wms",
+			"wmsName" : "unredd:province",
+			"imageFormat" : "image/png8",
+			"visible" : true,
+			"queryable" : true,
+			"wmsParameters" : { "styles" : "province_cf" , "tiled" : "true" }
 		}
 		, {
 			"id" 			: "ecoregion_label",
@@ -163,13 +163,13 @@
 	"portalLayers" : [
 		{
 			"id" : "country",
-			"active" : true,
+			"active" : false,
 			"label" : "${country}",
 			"layers" : [ "country" ]
 		}, 
 		{
 			"id" : "ecoregion",
-			"active" : false,
+			"active" : true,
 			"label" : "${eco_region}",
 			"layers" : [ "ecoregion" ]
 		}
@@ -234,13 +234,7 @@
 			"layers" : [ "province_center" ],
 			"infoFile" : "redd_projects_info.html"
 		}
-		, {
-			"id" : "province_fcpf_cf",
-			"active" : false,
-			"label" : "${province_fcpf_cf}",
-			"layers" : [ "province_fcpf_cf" ],
-			"feedback" : false
-		}
+		
 		, {
 			"id" : "province_prap",
 			"active" : false,
@@ -249,6 +243,13 @@
 			"feedback" : false,
 			"legendFile" : "prap_legend.html",
 			"infoFile" : "prap_info.html",
+		}, {
+			"id" : "province_fcpf_cf",
+			"active" : false,
+			"label" : "${province_fcpf_cf}",
+			"layers" : [ "province_fcpf_cf" ],
+			"legendFile" : "fcpf_legend.html",
+			"feedback" : false
 		}
 		, {
 			"id" : "ecoregion_label",
@@ -284,7 +285,7 @@
 		, {
 			"id" : "admin",
 			"label" : "${admin_areas}",
-			"items" : [ "country" , "province" , "district", "commune" ],
+			"items" : [ "country" , "ecoregion" , "province" , "district", "commune" ],
 			"legendFile" : "admin.html",
 			"infoFile" : "admin_info.html",
 			"open"	: true ,

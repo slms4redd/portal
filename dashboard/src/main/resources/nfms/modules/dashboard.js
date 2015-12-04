@@ -466,6 +466,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n" ,"customization"
 		var toggleBtn 	= container.find( '.' + TYPE.toString() + '-toggle-' + id );
 		var targetItem 	= container.find( '.' + TYPE.toString() + '-' + SOURCE.toString()+ '-' + id  )
 		
+		bus.send( "dashboard-toggle-visibility" , [true] );
 		bus.send( 'dashboard-show-type' , [TYPE, SOURCE] );
 		
 		var highlightItem = function(){
