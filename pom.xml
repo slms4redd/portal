@@ -8,22 +8,7 @@
 	<name>UNREDD NFMS portal</name>
 	<modules>
 		<module>core</module>
-		<module>base</module>
 		<module>demo</module>
-		<module>feedback</module>
-		<module>layer-time-sliders</module>
-		<module>geoexplorer-reader</module>
-		<module>time-slider</module>
-		<module>language-buttons</module>
-    	<module>stats-lucm</module>
-    	<module>feedback-vn</module>
-    	<module>dashboard</module>
-    	<module>dashboard-layer-controller</module>
-   	 	<module>time-slider-absolute</module>
-   	 	<module>portal-vn</module>
-
-   	 	<module>map-ol2</module>
-   	 	<module>dashboard-feature-controller</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
