@@ -2,16 +2,15 @@ package org.fao.unredd.portal;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
-import java.util.Map;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -34,33 +33,11 @@ public class ConfigServlet extends HttpServlet {
 		String title = bundle.getString("title");
 
 		JSONObject moduleConfig = new JSONObject();
-		// Fixed elements
-		moduleConfig.element(
-				"customization",
-				buildCustomizationObject(req.getServletContext(), config,
-						locale, title));
+		moduleConfig.element("customization",
+				buildCustomizationObject(config, locale, title));
 		moduleConfig.element("i18n", buildI18NObject(bundle));
 		moduleConfig.element("layers",
-				JSONSerializer.toJSON(config.getLayers(locale, req)));
-		moduleConfig.element("url-parameters",
-				JSONSerializer.toJSON(req.getParameterMap()));
-		// plugin elements
-		@SuppressWarnings("unchecked")
-		Map<String, JSONObject> pluginConfiguration = (Map<String, JSONObject>) getServletContext()
-				.getAttribute("plugin-configuration");
-		Map<String, JSONObject> pluginConfigurationOverride = config
-				.getPluginConfiguration(req);
-		for (String configurationItem : pluginConfigurationOverride.keySet()) {
-			moduleConfig.element(configurationItem,
-					pluginConfigurationOverride.get(configurationItem));
-		}
-		for (String configurationItem : pluginConfiguration.keySet()) {
-			JSONObject defaultConfiguration = pluginConfiguration
-					.get(configurationItem);
-			if (!pluginConfigurationOverride.containsKey(configurationItem)) {
-				moduleConfig.element(configurationItem, defaultConfiguration);
-			}
-		}
+				JSONSerializer.toJSON(config.getLayers(locale)));
 
 		String json = new JSONObject().element("config", moduleConfig)
 				.toString();
@@ -80,8 +57,8 @@ public class ConfigServlet extends HttpServlet {
 		return messages;
 	}
 
-	private JSONObject buildCustomizationObject(ServletContext servletContext,
-			Config config, Locale locale, String title) {
+	private JSONObject buildCustomizationObject(Config config, Locale locale,
+			String title) {
 		// These properties will be handled manually at the end of the method
 		HashSet<String> manuallyHandled = new HashSet<String>();
 		Collections.addAll(manuallyHandled, Config.PROPERTY_CLIENT_MODULES,
@@ -101,17 +78,10 @@ public class ConfigServlet extends HttpServlet {
 		obj.element("title", title);
 		obj.element(Config.PROPERTY_LANGUAGES, config.getLanguages());
 		obj.element("languageCode", locale.getLanguage());
+		obj.element("modules",
+				config.getPropertyAsArray(Config.PROPERTY_CLIENT_MODULES));
 		obj.element(Config.PROPERTY_MAP_CENTER,
 				config.getPropertyAsArray(Config.PROPERTY_MAP_CENTER));
-
-		ArrayList<String> modules = new ArrayList<String>();
-		Collections.addAll(modules,
-				config.getPropertyAsArray(Config.PROPERTY_CLIENT_MODULES));
-		@SuppressWarnings("unchecked")
-		ArrayList<String> classPathModules = (ArrayList<String>) servletContext
-				.getAttribute("js-paths");
-		modules.addAll(classPathModules);
-		obj.element("modules", modules);
 
 		return obj;
 	}
