@@ -65,26 +65,6 @@
 					<target>1.6</target>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>license-maven-plugin</artifactId>
-				<configuration>
-					<inceptionYear>2014</inceptionYear>
-					<organizationName>FAO</organizationName>
-					<projectName>NFMS Dissemination Portal</projectName>
-					<licenseName>gpl_v3</licenseName>
-					<roots>
-						<root>src/main/java</root>
-						<root>src/main/resources/nfms/modules</root>
-						<root>src/main/resources/nfms/styles</root>
-					</roots>
-					<includes>
-						<include>*.java</include>
-						<include>*.js</include>
-						<include>*.css</include>
-					</includes>
-				</configuration>
-			</plugin>
 		</plugins>
 		<extensions>
 			<extension>
