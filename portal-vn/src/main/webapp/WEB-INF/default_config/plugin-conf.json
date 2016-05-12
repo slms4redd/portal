@@ -1,31 +1,19 @@
 {
 	"default-conf" : {
 		"banner" : {
-			"elements" : 
-				[
-					{ 
-						"name"		: "div" , 
-						"styles"	: {"position": "absolute" , "color" : "rgba(233, 233, 233, 0.5)", "font-size" : "60px",
-										"z-index" : "1001" , "text-align" : "center" , "left" : "35%" ,
-										"width": "30%" , "background-color": "rgba(61, 65, 70, 0.85)"} ,
-						"label"		: "demo",
-						"attributes": {},	
-						"cssClasses": ["test","test2"],	
-						"elements"	: []				
-					 }
-				]
+			"elements" : []
 		},
 		footer : {
 			"elements" : 
 				[
 					{ 
 						"name"		: "img" , 
-						"styles"	: {"width": "140px",
-									    "left": "25px",
+						"styles"	: {"width": "150px",
+									    "right": "20px",
+									    "bottom": "1px",
 									    "position": "absolute",
 									    "opacity": ".8",
 									    "border": "none",
-									    "padding": "2px 14px",
 									    "background-color": "rgba(240, 240, 240, 1)",
 									    "-webkit-box-shadow": "0px 0px 1px 1px rgba(70,159,30,0.8)",
 										"-moz-box-shadow": "0px 0px 1px 1px rgba(70,159,30,0.8)",
@@ -53,6 +41,14 @@
 		}, time-slider : {
 			"styles" 			: { "left" : "30%" },
 			"defaultItemIndex" 	: 3
+		}, overview-map : {
+			bbox : ['94.36550279395','-0.6658781203921','124.24042754841','33.174744610324'],
+			width : 300,
+			height : 300,
+			tile_width : 300,
+			tile_height : 300,
+			layername : "unredd:vietnam_overview",
+			wmsurl : "http://temp-redd.vnforest.gov.vn/diss_geoserver/wms"
 		}
 	}
 }

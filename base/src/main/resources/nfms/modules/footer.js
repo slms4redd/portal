@@ -5,11 +5,11 @@ define([ "jquery", "layout", "i18n", "message-bus", "module","portal-ui" ], func
 	var footer = $( '<div class="row footer" />' );
 	layout.container.append( footer );
 	
-	var footerContainer = $( '<div class="col-md-12" />' );
-	footer.append( footerContainer );
+//	var footerContainer = $( '<div class="col-md-12" />' );
+//	footer.append( footerContainer );
 	
 	if( config.elements ){
-		UI.parseElements(footerContainer , config.elements );
+		UI.parseElements(footer , config.elements );
 	}
 	
 });

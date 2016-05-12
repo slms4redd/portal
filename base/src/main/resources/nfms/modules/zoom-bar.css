@@ -1,19 +1,11 @@
 .zoom-bar {
-    /* position: fixed; */
-    /* z-index: 1001; */
-    /* float: right; */
-    /* bottom: 40px; */
-    /* right: 0px; */
     position: fixed;
     z-index: 1001;
-    /* float: right; */
     bottom: 0px;
-    right: 10%;
-    /* left: 4%; */
-    /* top: 1%; */
-    /* left: 10%; */
+    right: 150px;
     height: 5%;
     width: 200px;
+    font-weight: bold;
 }
 .zoom-bar button.btn-default {
     font-size: 16px;

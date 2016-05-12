@@ -1,0 +1,10 @@
+#overviewmap{
+	background-color: rgba(61, 65, 70, 0.85);
+	position: absolute;
+    bottom: 0px;
+    left: 0px;
+}
+
+div .olControlOverviewMapElement{
+	background-color: rgba(61, 65, 70, 0.85);
+}

@@ -1,3 +1,13 @@
-@CHARSET "UTF-8";
+/*@CHARSET "UTF-8";
 
-@IMPORT url("scale.less");
+@IMPORT url("scale.less");*/
+
+
+div .olControlScale {
+	position: absolute;
+    bottom: 0px;
+    right: 370px;
+    background-color: rgba(40, 34, 34, 0.9);
+	opacity: 0.65;
+	padding: 0.6em;
+}
