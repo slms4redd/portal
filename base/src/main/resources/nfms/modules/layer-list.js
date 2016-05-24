@@ -464,11 +464,17 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "dashboard", "b
 			}
 		}
 		activeLayersCountMap[ groupId ] = count;
-		var span = $( '#' + groupHeadingPrefix + groupId ).find( 'button span[class=badge]' );
+		var span = $( '#' + groupHeadingPrefix + groupId ).find( 'button span[class*=badge]' );
 
 		span.stop().animate( {opacity: "0"}, 400 , function(){
 			span.html( count );
 			span.animate( {opacity: "1"}, 200);
+			if(count > 0){
+				span.addClass('badge-active');
+			}
+			else{
+				span.removeClass('badge-active');
+			}
 		});
 		
 		bus.send( "group-active-layers-changed" , [groupId , count] );
