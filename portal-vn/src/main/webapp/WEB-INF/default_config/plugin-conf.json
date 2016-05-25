@@ -55,8 +55,8 @@
 			"defaultItemIndex" 	: 3
 		}, overview-map : {
 			bbox : ['101.513672','-2.262595','116.696777','19.642588'],
-			width : 300,
-			height : 200,
+			width : 230,
+			height : 180,
 			tile_width : 500,
 			tile_height : 300,
 			layername : "unredd:vietnam_overview",
