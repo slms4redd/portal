@@ -7,22 +7,34 @@
 			"elements" : 
 				[
 					{ 
-						"name"		: "img" , 
-						"styles"	: {"width": "150px",
-									    "right": "20px",
-									    "bottom": "1px",
-									    "position": "absolute",
-									    "opacity": ".8",
-									    "border": "none",
-									    "background-color": "rgba(240, 240, 240, 1)",
-									    "-webkit-box-shadow": "0px 0px 1px 1px rgba(70,159,30,0.8)",
-										"-moz-box-shadow": "0px 0px 1px 1px rgba(70,159,30,0.8)",
-										"box-shadow": "0px 0px 1px 1px rgba(70,159,30,0.8)"
-									    } ,
+						"name"		: "a" , 
+						"styles"	: {} ,
 						"label"		: "",
-						"attributes": {"src":"static/img/logo.png"},
+						"attributes": {"href":"http://vietnam-redd.org/Web/Default.aspx?lang=en-US",
+                                        "target":"_blank"
+                                        },
 						"cssClasses": [],	
-						"elements"	: []				
+						"elements"	: 
+                            [
+                                { 
+                                    "name"		: "img" , 
+                                    "styles"	: {"width": "100px",
+                                                    "height": "50%",
+                                                    "right": "20px",
+                                                    "bottom": "1px",
+                                                    "position": "absolute",
+                                                    "opacity": ".8",
+                                                    "background-color": "rgba(240, 240, 240, 1)",
+                                                    "-webkit-box-shadow": "0px 0px 1px 1px rgba(70,159,30,0.8)",
+                                                    "-moz-box-shadow": "0px 0px 1px 1px rgba(70,159,30,0.8)",
+                                                    "box-shadow": "0px 0px 1px 1px rgba(70,159,30,0.8)"
+                                                    } ,
+                                    "label"		: "",
+                                    "attributes": {"src":"static/img/logo.png"},
+                                    "cssClasses": [],
+                                    "elements"	: []
+                                 }
+                            ]
 					 }
 				]
 		}, tutorial : {
@@ -42,10 +54,10 @@
 			"styles" 			: { "left" : "30%" },
 			"defaultItemIndex" 	: 3
 		}, overview-map : {
-			bbox : ['94.36550279395','-0.6658781203921','124.24042754841','33.174744610324'],
+			bbox : ['101.513672','-2.262595','116.696777','19.642588'],
 			width : 300,
-			height : 300,
-			tile_width : 300,
+			height : 200,
+			tile_width : 500,
 			tile_height : 300,
 			layername : "unredd:vietnam_overview",
 			wmsurl : "http://temp-redd.vnforest.gov.vn/diss_geoserver/wms"
