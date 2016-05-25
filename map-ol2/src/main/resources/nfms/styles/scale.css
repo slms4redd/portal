@@ -1,13 +1,14 @@
-/*@CHARSET "UTF-8";
+div.olControlScale {
+	right: 20px;
+}
 
-@IMPORT url("scale.less");*/
-
-
-div .olControlScale {
-	position: absolute;
-    bottom: 0px;
-    right: 370px;
-    background-color: rgba(40, 34, 34, 0.9);
-	opacity: 0.65;
-	padding: 0.6em;
+@media (min-width: 768px) {
+	div .olControlScale {
+		position: absolute;
+	    bottom: 0px;
+	    right: 320px;
+	    background-color: rgba(40, 34, 34, 0.9);
+		opacity: 0.65;
+		padding: 0.6em;
+	}
 }

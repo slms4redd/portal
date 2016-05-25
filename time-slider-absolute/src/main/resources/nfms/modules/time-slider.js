@@ -23,7 +23,7 @@ define([ "jquery", "message-bus", "toolbar", "jquery-ui-slider","layout" , "modu
 		var lastTimestampIndex = timestamps.length - 1;
 
 		if (timestamps.length > 0) {
-			var row = $( '<div class="row time-slider-container"></div>' );
+			var row = $( '<div class="row time-slider-container hidden-xs hidden-sm"></div>' );
 			layout.container.append( row );
 			
 			UI.parseStyle( row , config );
