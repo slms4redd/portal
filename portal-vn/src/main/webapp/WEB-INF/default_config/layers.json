@@ -288,13 +288,11 @@
 			"items" : [ "country" , "ecoregion" , "province" , "district", "commune" ],
 			"legendFile" : "admin.html",
 			"infoFile" : "admin_info.html",
-			"open"	: true ,
-			"helpMsg": "click_province"
+			"open"	: false
 		}
 		, {
 			"id" : "redd_registry",
 			"label" : "${redd_registry}",
-			"helpMsg": "click_province",
 			"items" : [
 				"province_prap" ,
 				{
@@ -303,13 +301,14 @@
 					"label" : "${other_initiatives}",
 					"items": [ "province_center" , "province_fcpf_cf" ]
 				}
-			]
+			],
+			"open"	: false
 		}
 		, {
 			"id" : "landcover",
 			"label" : "${land_cover_maps}",
 			"items" : ["jica" ],
-			"open"	: true
+			"open"	: false
 		}
 	]
 }
