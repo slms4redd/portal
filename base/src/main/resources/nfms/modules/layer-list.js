@@ -105,7 +105,7 @@ define([ "jquery", "message-bus", "layer-list-selector", "i18n", "dashboard", "b
 			} else {
 				
 				// see http://getbootstrap.com/javascript/#collapse-example-accordion
-				var panel	= $( '<div class="panel width100" />' );
+				var panel	= $( '<div class="panel width100 layer-group" />' );
 				layerListSelector.layersContainer.append( panel );
 				
 				

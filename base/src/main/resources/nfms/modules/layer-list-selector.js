@@ -118,7 +118,7 @@ define([ "jquery", "message-bus", "layout", "customization", "i18n", "bootstrap"
 			container.animate( {'left': '-' + (container.parent().width() - toggleLayersSection.width() ) +'px' }, 500 );
 
 			var panel = container.children( '.panel' );
-			panel.animate( {opacity: "0"}, 500 );
+			panel.animate( {opacity: "0"}, 500, function(){$(container.find('.panel.width100')).hide();});
 			
 			setTimeout( function(){
 				btn.empty();
@@ -126,6 +126,8 @@ define([ "jquery", "message-bus", "layout", "customization", "i18n", "bootstrap"
 				btn.blur();
 				
 			}, 200 );
+			
+			$(container.find('.panel.width100')).hide();
 			
 		} else {
 			container.addClass( 'open' );
@@ -135,6 +137,8 @@ define([ "jquery", "message-bus", "layout", "customization", "i18n", "bootstrap"
 //			container.animate( {width: container.parent().width() }, 600 );
 			container.animate( {'left': '0px' }, 500 );
 
+			$(container.find('.panel.width100')).show();
+
 			var panel = container.children( '.panel' );
 			panel.animate( {opacity: "1"}, 400 );
 
@@ -143,6 +147,8 @@ define([ "jquery", "message-bus", "layout", "customization", "i18n", "bootstrap"
 				btn.append( iconOpened );
 				btn.blur();
 			}, 200 );
+			
+			$(container.find('.panel.width100')).show();
 		}
 	});
 	
