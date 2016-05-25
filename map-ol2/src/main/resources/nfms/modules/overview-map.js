@@ -23,6 +23,5 @@ define([ "message-bus", "layout", "map", "module" ], function(bus, layout, map, 
 			}
 		});
 		map.addControl(overview1);
-		map.restrictedExtent = new OpenLayers.Bounds(10830821.1599,836526.8376,12831636.8123,2715043.2447);
 	});
 });
