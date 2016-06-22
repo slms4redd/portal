@@ -27,3 +27,8 @@ div.lucm .row-matrix tr td:first-child {
 	padding : 6px 5px;
 	background-color: rgba(50, 153, 187, 0.15);
 }
+
+select.stats-select{
+	background-color: rgba(50, 50, 54, 1) !important;
+	width: 60%;
+}

@@ -30,17 +30,19 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 			
 			var headerBtns = $(' <div class="row row-dashbaord-padded header-btns">'+
 								'<div class="col-md-12" >'+
-								'<ul class="nav nav-tabs nav-justified">'+
-									'<li><button class="btn btn-default" data-target="lucm-fa-chart">'+i18n['btn-stats-forest-area']+'</button></li>'+
-									'<li><button class="btn btn-default" data-target="lucm-lc-chart">'+i18n['btn-stats-forest-change']+'</button></li>'+
-									'<li><button class="btn btn-default" data-target="lucm-table">'+i18n['btn-stats-change-matrix']+'</button></li>'+
-								'</ul>'+
+								'<select class="stats-select form-control">'+
+									'<option data-target="lucm-fa-chart" selected="selected">'+i18n['btn-stats-forest-area']+'</option>'+
+									'<option data-target="lucm-lc-chart">'+i18n['btn-stats-forest-change']+'</option>'+
+									'<option data-target="lucm-table">'+i18n['btn-stats-change-matrix']+'</option>'+
+									'<option data-target="lucm-emission-removal-activities">'+i18n['btn-stats-er-activities']+'</option>'+
+									'<option data-target="lucm-emission-removal-categories">'+i18n['btn-stats-er-categories']+'</option>'+
+								'</select>'+
 							'</div>'+
 						'</div> ');
 			container.append( headerBtns );
 			
 			if( carbonStock ){
-				headerBtns.find( 'ul' ).append( '<li><button class="btn btn-default" data-target="carbon-stock">'+i18n['btn-stats-carbon-stock']+'</button></li>' );
+				headerBtns.find( 'select.stats-select' ).append( '<option data-target="carbon-stock">'+i18n['btn-stats-carbon-stock']+'</option>' );
 			}
 			
 			var rowHeader = $( '<div class="row row-dashbaord-padded info-table lucm-table"></div>' );
@@ -372,6 +374,11 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 			var colCollapsableLC 		= $( '<div class="col-md-12">' );
 			rowLCHeader.append(  colCollapsableLC );
 			
+			// emission removal activities
+			bus.send( 'emission-removal-activities' , [container, feature]);
+			
+			// emission removal categories
+			bus.send( 'emission-removal-categories' , [container, feature]);
 			
 			// Carbon Stock
 			if( carbonStock ){
@@ -444,21 +451,17 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 			var infoTables = container.find( '.info-table' );
 			infoTables.hide();
 			
-			var btns =  container.find( '.header-btns button');
-			btns.click( function(e){
-				var btn = $( this );
-				if( !btn.hasClass('active') ){
-
-					btns.removeClass( 'active' );
-					btn.addClass( 'active' );
-					
-					infoTables.hide();
-					var target = container.find( '.' + btn.attr( 'data-target' ) );
-					target.fadeIn();
-				}
-			});
-			btns[0].click();
+			var options =  container.find( '.stats-select');
 			
+			var activateStats = function(){
+				var option = $(this).find(":selected");
+					infoTables.hide();
+					var target = container.find( '.' + option.attr( 'data-target' ) );
+					target.fadeIn();
+			}
+			
+			options.change( activateStats );
+			options.ready( activateStats );			
 		}
 		
 	});

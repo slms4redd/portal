@@ -1,0 +1,16 @@
+table.emission-removal tr, td {
+    border-top: 1px solid rgba(233, 233, 233, 0.20);
+    border-bottom: 1px solid rgba(233, 233, 233, 0.20);
+    text-align-last: center;
+    height: 25px;
+    padding: 5px !important;
+}
+
+td.first{
+	background-color: rgba(50, 153, 187, 0.15);
+	border-top: 0px;
+}
+
+td.er-value{
+	background-color: rgba(50, 40, 20, 0.498039);
+}
