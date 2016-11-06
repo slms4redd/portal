@@ -34,8 +34,6 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 									'<option data-target="lucm-fa-chart" selected="selected">'+i18n['btn-stats-forest-area']+'</option>'+
 									'<option data-target="lucm-lc-chart">'+i18n['btn-stats-forest-change']+'</option>'+
 									'<option data-target="lucm-table">'+i18n['btn-stats-change-matrix']+'</option>'+
-									'<option data-target="lucm-emission-removal-activities">'+i18n['btn-stats-er-activities']+'</option>'+
-									'<option data-target="lucm-emission-removal-categories">'+i18n['btn-stats-er-categories']+'</option>'+
 								'</select>'+
 							'</div>'+
 						'</div> ');
@@ -44,6 +42,7 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 			if( carbonStock ){
 				headerBtns.find( 'select.stats-select' ).append( '<option data-target="carbon-stock">'+i18n['btn-stats-carbon-stock']+'</option>' );
 			}
+			headerBtns.find( 'select.stats-select' ).append( '<option data-target="lucm-emission-removal-categories">'+i18n['btn-stats-er-categories']+'</option>' ).append('<option data-target="lucm-emission-removal-activities">'+i18n['btn-stats-er-activities']+'</option>');
 			
 			var rowHeader = $( '<div class="row row-dashbaord-padded info-table lucm-table"></div>' );
 			container.append( rowHeader );
@@ -63,11 +62,16 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 			colCollapsableMatrix.append( rowStartYear );
 			var colStartYearLabel = $( '<div class="col-md-4"></div>' );
 			rowStartYear.append( colStartYearLabel );
-			colStartYearLabel.html( i18n['initial_year'] );
-			var colStartYearBtns = $( '<div class="col-md-8 period-btns start-period-btns"></div>' );
+			//colStartYearLabel.html( i18n['initial_year'] );
+			var colStartYearBtns = $( '<div class="col-md-12 period-btns start-period-btns"></div>' );
 			rowStartYear.append( colStartYearBtns );
 			
 			var rowEndYear = $( '<div class="row"></div>' );
+			
+			// HACK 06/11/2016: LUCM data are only for contiguous years so the end years buttons are useless 
+			// just hide them for now
+			rowEndYear.css("display","none")
+			
 			colCollapsableMatrix.append( rowEndYear );
 			var colEndYearLabel = $( '<div class="col-md-4"></div>' );
 			rowEndYear.append( colEndYearLabel );
@@ -257,10 +261,13 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 				var addBtn = function(){
 					var startYear = startYears[ i ];
 					var btn = $( '<button class="btn btn-default"></button>' );
-					btn.html( startYear );
+					var endYear = endYears[i];
+					btn.html( startYear + "-" + endYear);
 					btn.addClass( startYear+'' );
 					btn.click(function(){
 						changeStartYear( startYear );
+						// HACK 06/11/2016 set here also end year
+						changeEndYear( endYear );
 					});
 					colStartYearBtns.append( btn );
 				};

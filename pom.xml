@@ -37,16 +37,16 @@
 	</scm>
 	<distributionManagement>
 		<repository>
-			<id>nfms4redd</id>
-			<url>ftp://maven.nfms4redd.org/repo</url>
+			<id>slms4redd</id>
+			<url>ftp://maven.slms4redd.org/repo</url>
 			<uniqueVersion>false</uniqueVersion>
 		</repository>
 	</distributionManagement>
 	<pluginRepositories>
 		<pluginRepository>
 			<id>nfms4redd</id>
-			<name>nfms4redd maven repository</name>
-			<url>http://maven.nfms4redd.org/</url>
+			<name>slms4redd maven repository</name>
+			<url>http://maven.slms4redd.org/</url>
 		</pluginRepository>
 	</pluginRepositories>
 	<repositories>
@@ -75,29 +75,10 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.6.0</version>
 				<configuration>
 					<source>1.6</source>
 					<target>1.6</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>license-maven-plugin</artifactId>
-				<configuration>
-					<inceptionYear>2014</inceptionYear>
-					<organizationName>FAO</organizationName>
-					<projectName>NFMS Dissemination Portal</projectName>
-					<licenseName>gpl_v3</licenseName>
-					<roots>
-						<root>src/main/java</root>
-						<root>src/main/resources/nfms/modules</root>
-						<root>src/main/resources/nfms/styles</root>
-					</roots>
-					<includes>
-						<include>*.java</include>
-						<include>*.js</include>
-						<include>*.css</include>
-					</includes>
 				</configuration>
 			</plugin>
 		</plugins>

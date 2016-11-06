@@ -76,10 +76,10 @@ define([ "jquery" , "message-bus" , "i18n", "customization","mustache"], functio
 		}
 		
 		erCategories.append('<p>' + i18n[ 'er_categories_uom' ] + '</p>');
-		var yearsMenu = $('<div class="col-md-8 period-btns">');
-		yearsMenu.append('<button class="yearsbtn btn btn-default 1995 active">1995</button>');
-		yearsMenu.append('<button class="yearsbtn btn btn-default 2000">2000</button>');
-		yearsMenu.append('<button class="yearsbtn btn btn-default 2005">2005</button>');
+		var yearsMenu = $('<div class="col-md-12 period-btns">');
+		yearsMenu.append('<button data-year="1995" class="yearsbtn btn btn-default 1995 active">1995-2000</button>');
+		yearsMenu.append('<button data-year="2000" class="yearsbtn btn btn-default 2000">2000-2005</button>');
+		yearsMenu.append('<button data-year="2005" class="yearsbtn btn btn-default 2005">2005-2010</button>');
 		var rowMenu = $('<div class="row">');
 		rowMenu.append(yearsMenu);
 		erCategories.append(rowMenu);
@@ -100,7 +100,7 @@ define([ "jquery" , "message-bus" , "i18n", "customization","mustache"], functio
 			
 			var statsQueryData = '<AND><ATTRIBUTE><name>zone_type</name><operator>EQUAL_TO</operator><type>STRING</type><value>' + zonesArray[index] + '</value></ATTRIBUTE>';
 			statsQueryData += '<ATTRIBUTE><name>zone_id</name><operator>EQUAL_TO</operator><type>STRING</type><value>' + (feature.properties[codesArray[index]]||codesArray[index]) + '</value></ATTRIBUTE>' ;
-			statsQueryData += '<ATTRIBUTE><name>start_period</name><operator>EQUAL_TO</operator><type>STRING</type><value>' + erCategories.find('.yearsbtn.active').text() + '</value></ATTRIBUTE>' ;
+			statsQueryData += '<ATTRIBUTE><name>start_period</name><operator>EQUAL_TO</operator><type>STRING</type><value>' + erCategories.find('.yearsbtn.active').data('year') + '</value></ATTRIBUTE>' ;
 			statsQueryData += '<ATTRIBUTE><name>stats_type</name><operator>EQUAL_TO</operator><type>STRING</type><value>emission-removals-landzone</value></ATTRIBUTE>' ;		
 			statsQueryData += '</AND>';
 			
