@@ -37,17 +37,26 @@
 			"wmsParameters" : { "tiled" : "true"  }
 		}
 		, {
-			"id": "jica",
-			"label": "Jica",
+			"id": "change",
+			"label": "change",
 			"baseUrl": "http://temp-redd.vnforest.gov.vn/stg_geoserver/wms",
 			"wmsTime": "1995-01-01T00:00:00.000Z,2000-01-01T00:00:00.000Z,2005-01-01T00:00:00.000Z,2010-01-01T00:00:00.000Z,2015-01-01T00:00:00.000Z",
-			"wmsName": "unredd:nfi",
+			"wmsName": "unredd:change",
 			"imageFormat": "image/png8",
 			"visible": true,
 			"queryable" : false,
 			"wmsParameters" : { "tiled" : "true"  }
-		},
-		{
+		},{
+                        "id": "jica",
+                        "label": "Jica",
+                        "baseUrl": "http://temp-redd.vnforest.gov.vn/stg_geoserver/wms",
+                        "wmsTime": "1995-01-01T00:00:00.000Z,2000-01-01T00:00:00.000Z,2005-01-01T00:00:00.000Z,2010-01-01T00:00:00.000Z,2015-01-01T00:00:00.000Z",
+                        "wmsName": "unredd:nfi30",
+                        "imageFormat": "image/png8",
+                        "visible": true,
+                        "queryable" : false,
+                        "wmsParameters" : { "tiled" : "true"  }
+                },{
 			"id" : "commune",
 			"baseUrl" : "http://temp-redd.vnforest.gov.vn/diss_geoserver/wms",
 			"wmsName" : "unredd:commune",
@@ -201,6 +210,17 @@
 			"infoFile" 	: "nfi_info.html",
 			"openDashboard" : true,
 			"showTimeSlider" : false
+		},
+		{
+			"id" : "change",
+			"active" : false,
+			"label" : "${forest_change}",
+			"layers" : [ "change" ],
+			"feedback" : true,
+			"legendFile" : "change_legend.html",
+			"infoFile"      : "change_info.html",
+			"openDashboard" : true,
+			"showTimeSlider" : false
 		}
 		, {
 			"id" : "oceans",
@@ -306,8 +326,14 @@
 		}
 		, {
 			"id" : "landcover",
+			"mutuallyExclusive" : true,
 			"label" : "${land_cover_maps}",
-			"items" : ["jica" ],
+			"items" : [
+				{
+					"mutuallyExclusive" : true,
+					"items" : ["jica", "change" ]
+				}
+			],
 			"open"	: false
 		}
 	]
