@@ -3,6 +3,38 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 
 	var charts = [];
 	
+	var addSource = function( sectionButton , sectionData , file ){
+		var sourceBtn = $( '<button class="btn btn-default chart_source_btn"></button>' );
+		sourceBtn.append( i18n['chart_source_btn']  );
+		sectionButton.append( sourceBtn );
+		
+		var rowSource = $( '<div class="row"></div>' );
+		sectionData.append( rowSource );
+		
+		var colSource = $( '<div class="col-md-12"></div>' );
+		rowSource.append(colSource);
+		rowSource.hide();
+		
+		var linkSource = "static/loc/" + customization.languageCode + "/html/" + file;
+		$.ajax({
+			url			: linkSource ,
+			data		: {bust : (new Date()).getTime()},
+			dataType 	: "html" ,
+			success		: function(data){
+				colSource.append( data );
+			}
+		});
+		sourceBtn.click( function(e){
+			e.preventDefault();
+			sourceBtn.blur();
+			if( rowSource.is(":hidden") ){
+				rowSource.slideDown();
+			} else {
+				rowSource.slideUp();
+			}
+		});
+	};
+	
 	bus.listen( "add-feature-stats" , function( event , feature , openSection , expand ){
 		var compareLucmRes			= function (a , b){
 			var y1  	= getAttributeByName( a.Attributes.attribute , 'start_period').value;
@@ -49,15 +81,14 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 			var colHeader = $( '<div class="col-md-12 title"></div>' );
 			colHeader.append( i18n['forest_cover_change_matrix'] );
 			rowHeader.append(  colHeader );
-//			var toggleButton = $( '<button class="btn btn-transparent btn-toggle-item" data-target="lucm-table"><i class="fa fa-caret-right"></i>&nbsp;</button>' );
-//			toggleButton.append( i18n['forest_cover_change_matrix'] );
-//			colHeader.append( toggleButton );
 			
-//			var colCollapsableMatrix = $( '<div class="col-md-12 lucm-table">' );
+			var colFASrc = $( '<div class="col-md-12">' );
+			rowHeader.append(  colFASrc );
+			addSource( colHeader ,  colFASrc , "lucc_info.html" );
+			
 			var colCollapsableMatrix = $( '<div class="col-md-12">' );
 			rowHeader.append(  colCollapsableMatrix );
-			
-			
+						
 			var rowStartYear = $( '<div class="row"></div>' );
 			colCollapsableMatrix.append( rowStartYear );
 			var colStartYearLabel = $( '<div class="col-md-4"></div>' );
@@ -321,38 +352,6 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 			
 			// add chart containers
 			
-			var addSource = function( sectionButton , sectionData , file ){
-				var sourceBtn = $( '<button class="btn btn-default chart_source_btn"></button>' );
-				sourceBtn.append( i18n['chart_source_btn']  );
-				sectionButton.append( sourceBtn );
-				
-				var rowSource = $( '<div class="row"></div>' );
-				sectionData.append( rowSource );
-				
-				var colSource = $( '<div class="col-md-12"></div>' );
-				rowSource.append(colSource);
-				rowSource.hide();
-				
-				var linkSource = "static/loc/" + customization.languageCode + "/html/" + file;
-				$.ajax({
-					url			: linkSource ,
-					data		: {bust : (new Date()).getTime()},
-					dataType 	: "html" ,
-					success		: function(data){
-						colSource.append( data );
-					}
-				});
-				sourceBtn.click( function(e){
-					e.preventDefault();
-					sourceBtn.blur();
-					if( rowSource.is(":hidden") ){
-						rowSource.slideDown();
-					} else {
-						rowSource.slideUp();
-					}
-				});
-			};
-			
 			// change of forest area
 			var rowForestArea = $( '<div class="row row-dashbaord-padded info-table lucm-fa-chart"></div>' );
 			container.append( rowForestArea );
@@ -362,7 +361,7 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 			
 			var colFASrc = $( '<div class="col-md-12">' );
 			rowForestArea.append(  colFASrc );
-			addSource( colFAHeader ,  colFASrc , "nfi_info.html" );
+			addSource( colFAHeader ,  colFASrc , "forest_area_info.html" );
 			
 			var colCollapsableFA = $( '<div class="col-md-12">' );
 			rowForestArea.append(  colCollapsableFA );
@@ -376,7 +375,7 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 			
 			var colLCSrc = $( '<div class="col-md-12">' );
 			rowLCHeader.append(  colLCSrc );
-			addSource( colLCHeader ,  colLCSrc , "nfi_info.html" );
+			addSource( colLCHeader ,  colLCSrc , "forest_change_info.html" );
 			
 			var colCollapsableLC 		= $( '<div class="col-md-12">' );
 			rowLCHeader.append(  colCollapsableLC );

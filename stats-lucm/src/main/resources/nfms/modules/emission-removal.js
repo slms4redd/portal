@@ -1,5 +1,37 @@
 define([ "jquery" , "message-bus" , "i18n", "customization","mustache"], function($, bus, i18n, customization, mustache) {
 	
+	var addSource = function( sectionButton , sectionData , file ){
+		var sourceBtn = $( '<button class="btn btn-default chart_source_btn"></button>' );
+		sourceBtn.append( i18n['chart_source_btn']  );
+		sectionButton.append( sourceBtn );
+		
+		var rowSource = $( '<div class="row"></div>' );
+		sectionData.append( rowSource );
+		
+		var colSource = $( '<div class="col-md-12"></div>' );
+		rowSource.append(colSource);
+		rowSource.hide();
+		
+		var linkSource = "static/loc/" + customization.languageCode + "/html/" + file;
+		$.ajax({
+			url			: linkSource ,
+			data		: {bust : (new Date()).getTime()},
+			dataType 	: "html" ,
+			success		: function(data){
+				colSource.append( data );
+			}
+		});
+		sourceBtn.click( function(e){
+			e.preventDefault();
+			sourceBtn.blur();
+			if( rowSource.is(":hidden") ){
+				rowSource.slideDown();
+			} else {
+				rowSource.slideUp();
+			}
+		});
+	};
+	
 	bus.listen( "emission-removal-activities" , function( event, container, feature ){
 		var erActivities = $( '<div class="row row-dashbaord-padded info-table lucm-emission-removal-activities"></div>' );
 		container.append( erActivities );
@@ -22,7 +54,13 @@ define([ "jquery" , "message-bus" , "i18n", "customization","mustache"], functio
 		statsQueryData += '<ATTRIBUTE><name>stats_type</name><operator>EQUAL_TO</operator><type>STRING</type><value>emission-removals-activity</value></ATTRIBUTE>' ;		
 		statsQueryData += '</AND>';
 		
-		erActivities.append('<p>' + i18n[ 'er_activities_uom' ] + '</p>');
+		var colHeader = $( '<div class="col-md-12 title"></div>' );
+		colHeader.append( i18n['er_activities_uom'] );
+		erActivities.append(  colHeader );
+		
+		var colFASrc = $( '<div class="col-md-12">' );
+		erActivities.append(  colFASrc );
+		addSource( colHeader ,  colFASrc , "er_activities_info.html" );
 		
 		$.ajax({
 			url			: infoQueryUrl ,
@@ -49,7 +87,7 @@ define([ "jquery" , "message-bus" , "i18n", "customization","mustache"], functio
 					"<td class='first'>2000-2005</td>" + 
 					"<td class='first'>2005-2010</td>" +
 					"</tr>";
-					var template = "<div style='overflow-x:auto;' class='row emission-removal'><table class='emission-removal'>" + tableHeader + "{{#data}}<tr><td class='first'>{{label}}</td>{{#.}}<td>{{.}}</td>{{/.}}</tr>{{/data}}</table></div>"
+					var template = "<div class='row emission-removal'><table class='emission-removal'>" + tableHeader + "{{#data}}<tr><td class='first'>{{label}}</td>{{#.}}<td>{{.}}</td>{{/.}}</tr>{{/data}}</table></div>"
 					erActivities.find('div.emission-removal').remove();
 					erActivities.append(mustacheEngine.render(template, table));
  
@@ -75,7 +113,14 @@ define([ "jquery" , "message-bus" , "i18n", "customization","mustache"], functio
 			infoQueryUrl 	= "proxy?url=" + encodeURIComponent( infoQueryUrl );
 		}
 		
-		erCategories.append('<p>' + i18n[ 'er_categories_uom' ] + '</p>');
+		var colHeader = $( '<div class="col-md-12 title"></div>' );
+		colHeader.append( i18n[ 'er_categories_uom' ] );
+		erCategories.append(  colHeader );
+		
+		var colFASrc = $( '<div class="col-md-12">' );
+		erCategories.append(  colFASrc );
+		addSource( colHeader ,  colFASrc , "er_categories_info.html" );
+		
 		var yearsMenu = $('<div class="col-md-12 period-btns">');
 		yearsMenu.append('<button data-year="1995" class="yearsbtn btn btn-default 1995 active">1995-2000</button>');
 		yearsMenu.append('<button data-year="2000" class="yearsbtn btn btn-default 2000">2000-2005</button>');

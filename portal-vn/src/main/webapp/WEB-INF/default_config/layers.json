@@ -326,10 +326,10 @@
 		}
 		, {
 			"id" : "landcover",
-			"mutuallyExclusive" : true,
 			"label" : "${land_cover_maps}",
 			"items" : [
 				{
+					"id" : "timeseries-dropdown",
 					"mutuallyExclusive" : true,
 					"items" : ["jica", "change" ]
 				}
