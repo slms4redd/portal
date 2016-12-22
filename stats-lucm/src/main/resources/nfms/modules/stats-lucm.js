@@ -47,7 +47,7 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 		var carbonStockResources	= parseResources( feature , "carbon_stock" );
 		var carbonStock				= null;
 		if( carbonStockResources.length > 0 ){
-			carbonStock = carbonStockResources[ 0 ];
+			carbonStock = carbonStockResources;
 		}
 		
 		
@@ -71,9 +71,7 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 						'</div> ');
 			container.append( headerBtns );
 			
-			if( carbonStock ){
-				headerBtns.find( 'select.stats-select' ).append( '<option data-target="carbon-stock">'+i18n['btn-stats-carbon-stock']+'</option>' );
-			}
+			headerBtns.find( 'select.stats-select' ).append( '<option data-target="carbon-stock">'+i18n['btn-stats-carbon-stock']+'</option>' );
 			headerBtns.find( 'select.stats-select' ).append( '<option data-target="lucm-emission-removal-categories">'+i18n['btn-stats-er-categories']+'</option>' ).append('<option data-target="lucm-emission-removal-activities">'+i18n['btn-stats-er-activities']+'</option>');
 			
 			var rowHeader = $( '<div class="row row-dashbaord-padded info-table lucm-table"></div>' );
@@ -386,57 +384,95 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 			// emission removal categories
 			bus.send( 'emission-removal-categories' , [container, feature]);
 			
-			// Carbon Stock
-			if( carbonStock ){
-				var rowCS = $( '<div class="row row-dashbaord-padded info-table carbon-stock"></div>' );
-				container.append( rowCS );
-				var colCSHeader = $( '<div class="col-md-12 title"></div>' );
-				colCSHeader.append( i18n['carbon_stock_estimates'] );
-				rowCS.append(  colCSHeader );
+			// Carbon Stock	
+			var rowCS = $( '<div class="row row-dashbaord-padded info-table carbon-stock"></div>' );
+			container.append( rowCS );
+			
+			
+			var yearsMenu = $('<div class="col-md-12 period-btns">');
+			yearsMenu.append('<button data-year="1995" class="yearsbtn btn btn-default 1995">1995</button>');
+			yearsMenu.append('<button data-year="2000" class="yearsbtn btn btn-default 2000">2000</button>');
+			yearsMenu.append('<button data-year="2005" class="yearsbtn btn btn-default 2005">2005</button>');
+			yearsMenu.append('<button data-year="2010" class="yearsbtn btn btn-default 2010">2010</button>');
+			var rowMenu = $('<div class="row">');
+			rowMenu.append(yearsMenu);
+			rowCS.append(rowMenu);
+			
+			var yearsBtns = rowCS.find('.yearsbtn');
+			
+			
+			var colCSHeader = $( '<div class="col-md-12 title"></div>' );
+			colCSHeader.append( i18n['carbon_stock_estimates'] );
+			rowCS.append(  colCSHeader );
+			
+			
+			var colCollapsableCS = $( '<div class="col-md-12">' );
+			rowCS.append( colCollapsableCS );
+			
+			addSource( colCSHeader ,  colCollapsableCS , "carbon_stock_info.html" );
+			
+			
+			var div = $('<div class="table-responsive">'+
+							'<table class="table">'+
+								'<thead>'+
+									'<tr>'+
+										'<th class="col-md-8"></th>'+
+										'<th class="col-md-4">'+i18n['avg']+'</th>'+
+									'</tr>'+
+								'</thead>'+
+							'</table>'+
+						'</div>');
+			var tbody = $( '<tbody/>' );
+			div.find( 'table' ).append( tbody );
+			colCollapsableCS.append( div );
+			
+			var addCSRow = function( index , data ){
 				
+				var tr = $( '<tr/>' );
+				tbody.append( tr );
 				
-				var colCollapsableCS = $( '<div class="col-md-12">' );
-				rowCS.append( colCollapsableCS );
+				var td1 = $( '<td></td>' );
+				var nfiCls	= 'nfi-class-'+(index+1);
+				td1.append( i18n['nfi-class-'+( parseInt(index)+1)] );
+				tr.append( td1 );
 				
-				addSource( colCSHeader ,  colCollapsableCS , "carbon_stock_info.html" );
+				//var valueStr = ( +data.toFixed(2) ).toLocaleString();
+				var valueStr = data;
+				var td2 = $( '<td></td>' );
+				td2.append( valueStr );
+				tr.append( td2 );
+			};
+			
+			
+			yearsBtns.click(function(){
+				var btn = $( this );
+				if( !btn.hasClass('active') ){
+					yearsBtns.removeClass( 'active' );
+					btn.addClass( 'active' );
+				}
+				var selectedYear = rowCS.find('.yearsbtn.active').data('year')
+				tbody.empty();
 				
-				
-				var div = $('<div class="table-responsive">'+
-								'<table class="table">'+
-									'<thead>'+
-										'<tr>'+
-											'<th class="col-md-8"></th>'+
-											'<th class="col-md-4">'+i18n['avg']+'</th>'+
-										'</tr>'+
-									'</thead>'+
-								'</table>'+
-							'</div>');
-				var tbody = $( '<tbody/>' );
-				div.find( 'table' ).append( tbody );
-				colCollapsableCS.append( div );
-				
-				var addCSRow = function( index , data ){
-					
-					var tr = $( '<tr/>' );
-					tbody.append( tr );
-					
-					var td1 = $( '<td></td>' );
-					var nfiCls	= 'nfi-class-'+(index+1);
-					td1.append( i18n['nfi-class-'+( parseInt(index)+1)] );
-					tr.append( td1 );
-					
-					var valueStr = ( +data.toFixed(2) ).toLocaleString();
-					var td2 = $( '<td></td>' );
-					td2.append( valueStr );
-					tr.append( td2 );
-				};
-				
-				var csData = $.parseJSON(carbonStock.data.data);
-				for( var l in csData ){
-					addCSRow( l , csData[ l ] );
+				var carbonStockStats = null;
+				for( i=0; i<carbonStock.length; i++){
+					var cs = carbonStock[i];
+					for(j=0; j<cs.Attributes.attribute.length; j++){
+						var el = cs.Attributes.attribute[j];
+						if(el.name=='year' && el.value==selectedYear){
+							carbonStockStats = cs;
+						}
+					}
 				}
 				
-			}
+				var csData = carbonStockStats ? $.parseJSON(carbonStockStats.data.data) : null;
+				if(csData){
+					for( var l in csData ){
+						addCSRow( l , csData[ l ] );
+					}
+				}
+			})
+			yearsBtns[0].click();
+
 			
 			// add UI element to dashboard
 			var fId = feature.fid.replace( '.' , '-' );

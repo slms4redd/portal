@@ -51,7 +51,7 @@
                         "label": "Jica",
                         "baseUrl": "http://temp-redd.vnforest.gov.vn/stg_geoserver/wms",
                         "wmsTime": "1995-01-01T00:00:00.000Z,2000-01-01T00:00:00.000Z,2005-01-01T00:00:00.000Z,2010-01-01T00:00:00.000Z,2015-01-01T00:00:00.000Z",
-                        "wmsName": "unredd:nfi30",
+                        "wmsName": "unredd:vietnam_landcover",
                         "imageFormat": "image/png8",
                         "visible": true,
                         "queryable" : false,
