@@ -80,6 +80,9 @@ define([ "jquery" , "message-bus" , "i18n", "customization","mustache"], functio
 								var labelArray = {"1":i18n[ 'deforestation' ],"2":i18n[ 'degradation' ],"3":i18n[ 'reforestation' ],"4":i18n[ 'restoration' ],"5":i18n[ 'tot_emissions' ],"6":i18n[ 'tot_removals' ],"7":i18n[ 'frel' ],"8":i18n[ 'frl_adj' ],"9":i18n[ 'frl_w_adj' ]};
 								++window['INDEX']||(window['INDEX']=0);
 								return labelArray[window['INDEX']];
+							},
+							formatNumber: function( ) {
+								return this.toLocaleString('en', {useGrouping:true, maximumFractionDigits:0});
 							}
 					}
 					var tableHeader = "<tr><td></td>" + 
@@ -87,7 +90,7 @@ define([ "jquery" , "message-bus" , "i18n", "customization","mustache"], functio
 					"<td class='first'>2000-2005</td>" + 
 					"<td class='first'>2005-2010</td>" +
 					"</tr>";
-					var template = "<div class='row emission-removal'><table class='emission-removal'>" + tableHeader + "{{#data}}<tr><td class='first'>{{label}}</td>{{#.}}<td>{{.}}</td>{{/.}}</tr>{{/data}}</table></div>"
+					var template = "<div class='row emission-removal'><table class='emission-removal'>" + tableHeader + "{{#data}}<tr><td class='first'>{{label}}</td>{{#.}}<td>{{formatNumber}}</td>{{/.}}</tr>{{/data}}</table></div>"
 					erActivities.find('div.emission-removal').remove();
 					erActivities.append(mustacheEngine.render(template, table));
  
@@ -168,6 +171,9 @@ define([ "jquery" , "message-bus" , "i18n", "customization","mustache"], functio
 								},
 								tooltipMsg: function(){
 									return i18n[ 'nfi-class-' + (window['INDEX']+1) ]
+								},
+								formatNumber: function( ) {
+									return this.toLocaleString('en', {useGrouping:true, maximumFractionDigits:0});
 								}
 						}
 						
@@ -196,7 +202,7 @@ define([ "jquery" , "message-bus" , "i18n", "customization","mustache"], functio
 											"<tr>" +
 											"<td class='first' data-toggle='tooltip' data-placement='top' title='{{tooltipMsg}}'>{{index}}</td>" +
 											"{{#.}}" +
-											"<td class='er-value'>{{.}}</td>" +
+											"<td class='er-value'>{{formatNumber}}</td>" +
 											"{{/.}}" +
 											"</tr>{{/data}}" +
 											"</table>"
