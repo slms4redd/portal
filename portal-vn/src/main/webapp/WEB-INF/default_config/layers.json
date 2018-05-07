@@ -219,7 +219,7 @@
 			"feedback" : true,
 			"legendFile" : "change_legend.html",
 			"infoFile"      : "change_info.html",
-			"openDashboard" : true,
+			"openDashboard" : false,
 			"showTimeSlider" : false
 		}
 		, {
@@ -262,7 +262,7 @@
 			"layers" : [ "province_prap" ],
 			"feedback" : false,
 			"legendFile" : "prap_legend.html",
-			"infoFile" : "prap_info.html",
+			"infoFile" : "prap_info.html"
 		}, {
 			"id" : "province_fcpf_cf",
 			"active" : false,
