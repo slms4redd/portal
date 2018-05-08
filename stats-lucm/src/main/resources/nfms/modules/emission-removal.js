@@ -73,13 +73,41 @@ define([ "jquery" , "message-bus" , "i18n", "customization","mustache"], functio
 			}, 
 			success		: function(data){
 				if( data.ResourceList ){
-					window['INDEX']=0;
-					var table = {
-							data : JSON.parse(data.ResourceList.Resource.data.data),
+					
+					var full_data= JSON.parse(data.ResourceList.Resource.data.data);
+					var first_table_data = full_data.slice(0,4);
+					// var tots_table_data = full_data.slice(4,6);
+					var frel_table_data = full_data.slice(6,9);
+					
+					var obj_array_generic = [];
+
+					for (idx in first_table_data)
+						obj_array_generic.push ({'index': idx, 'values': first_table_data[idx]});
+					
+					var labelsArray = [
+						i18n[ 'deforestation' ],
+						i18n[ 'degradation' ],
+						i18n[ 'reforestation' ],
+						i18n[ 'restoration' ]
+					];
+					/*
+					var totalLabelsArray = [
+						i18n[ 'tot_emissions' ],
+						i18n[ 'tot_removals' ]
+					];
+					*/
+					var frelLabelsArray = [
+						i18n[ 'frel' ],
+						i18n[ 'frl_adj' ],
+						i18n[ 'frl_w_adj' ]
+					];
+					
+					var generic_table = {
+							data : obj_array_generic,
 							label: function() {
-								var labelArray = {"1":i18n[ 'deforestation' ],"2":i18n[ 'degradation' ],"3":i18n[ 'reforestation' ],"4":i18n[ 'restoration' ],"5":i18n[ 'tot_emissions' ],"6":i18n[ 'tot_removals' ],"7":i18n[ 'frel' ],"8":i18n[ 'frl_adj' ],"9":i18n[ 'frl_w_adj' ]};
-								++window['INDEX']||(window['INDEX']=0);
-								return labelArray[window['INDEX']];
+								if (this.index < labelsArray.length)
+									return labelsArray[this.index];
+								return "";
 							},
 							formatNumber: function( ) {
 								return this.toLocaleString('en', {useGrouping:true, maximumFractionDigits:0});
@@ -90,9 +118,33 @@ define([ "jquery" , "message-bus" , "i18n", "customization","mustache"], functio
 					"<td class='first'>2000-2005</td>" + 
 					"<td class='first'>2005-2010</td>" +
 					"</tr>";
-					var template = "<div class='row emission-removal'><table class='emission-removal'>" + tableHeader + "{{#data}}<tr><td class='first'>{{label}}</td>{{#.}}<td>{{formatNumber}}</td>{{/.}}</tr>{{/data}}</table></div>"
+					var template = "<div class='row emission-removal'><table class='emission-removal'>" + tableHeader + "{{#data}}<tr><td class='first'>{{label}}</td>{{#values}}<td>{{formatNumber}}</td>{{/values}}</tr>{{/data}}</table></div>"
+					
 					erActivities.find('div.emission-removal').remove();
-					erActivities.append(mustacheEngine.render(template, table));
+					erActivities.append(mustacheEngine.render(template, generic_table));
+					
+					// FREL Title and table
+					var frelHeader = $( '<div class="col-lg-12 title" style="padding-top: 10px;"></div>' );
+					frelHeader.append( i18n['er_activities_frel_title'] );
+					erActivities.append( frelHeader );
+					
+					var obj_array_frel = [];
+
+					for (idx in frel_table_data)
+						obj_array_frel.push ({'index': idx, 'values': frel_table_data[idx]});
+					
+					var frel_table = {
+							data : obj_array_frel,
+							label: function() {
+								if (this.index < frelLabelsArray.length)
+									return frelLabelsArray[this.index];
+								return "";
+							},
+							formatNumber: function( ) {
+								return this.toLocaleString('en', {useGrouping:true, maximumFractionDigits:0});
+							}
+					}
+					erActivities.append(mustacheEngine.render(template, frel_table));
  
 				}else{
 					erActivities.find('div.emission-removal').remove();
