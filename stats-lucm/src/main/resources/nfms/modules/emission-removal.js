@@ -271,7 +271,7 @@ define([ "jquery" , "message-bus" , "i18n", "customization","mustache"], functio
 						
 						$(".er-value").each(function(){
 							var cell = $(this);
-							var cellValue = $(this).text(); 
+							var cellValue = Number(cell.text().replace(/,/g, '')); 
 							if(cellValue >= 1000){
 								cell.css('background-color','rgba(255, 0, 0, 0.8);')
 							}

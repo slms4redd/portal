@@ -218,7 +218,7 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 						total += value;
 						
 //						console.log( value.toLocaleString() );
-						var valueStr = ( +value.toFixed(0) ).toLocaleString();
+						var valueStr = ( +value.toFixed(0) ).toLocaleString('en', {useGrouping:true, maximumFractionDigits:0});
 //						console.log( "row " + r + " - col " + c + " value " + value );
 						
 						var td = $( '<td></td>' );
@@ -252,7 +252,7 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 						
 					}
 					var tdTot = $( '<td></td>' );
-					tdTot.html(  (+ rowTot.toFixed(0)).toLocaleString() );
+					tdTot.html(  (+ rowTot.toFixed(0)).toLocaleString('en', {useGrouping:true, maximumFractionDigits:0}) );
 					tr.append( tdTot );
 					
 					forestArea.push( rowTot );
@@ -269,14 +269,14 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 				tBody.append( trTot );
 				trTot.append( '<td>' + i18n['total'] + '</td>' );
 				for( var c = 0 ; c < colTot.length ; c++ ){
-					var valueStr = ( +colTot[c].toFixed(0) ).toLocaleString();
+					var valueStr = ( +colTot[c].toFixed(0) ).toLocaleString('en', {useGrouping:true, maximumFractionDigits:0});
 					var td = $(  '<td></td>' );
 					td.html( valueStr );
 					trTot.append( td );
 
 				}
 				var tdTot = $(  '<td></td>' );
-				tdTot.html( ( +total.toFixed(0) ).toLocaleString() );
+				tdTot.html( ( +total.toFixed(0) ).toLocaleString('en', {useGrouping:true, maximumFractionDigits:0}) );
 				trTot.append( tdTot );
 				
 				
@@ -515,50 +515,30 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 			.find( 'td:not(.data-class)' )
 			.css( 'background-color' , function(){
 				var cssClasses = $( this ).get( 0 ).className.split( '-' );
-				var row = parseInt( cssClasses[ 0 ] );
-				var col = parseInt( cssClasses[ 1 ] );
-
-				if( isNaN(row) && isNaN(col) ){
+				var cellValue = Number($( this ).get( 0 ).innerText.replace(/,/g, ''));
+				if(isNaN(cellValue)){
 					return '';
-				} else {
-					if( row <= 10 && col == 11 ){
-//						return 'rgba( 220 , 72 , 72 ,0.5)';
-//						return 'rgba( 224 , 13 , 38 ,0.5)';
-						return 'rgba( 213 , 59 , 53 ,0.5)';
-					} else if( row >=12 && col <= 10 ){
-						// reforestation
-						return 'rgba( 119 , 227 , 160 ,0.5)';
-					} else if( row >= 12 && col == 11 ){
-						// reforestation of plantation 
-						return 'rgba( 202 , 204 , 0 ,0.5)';
-					} else if ( row <= 11 && col >=12 ){
-						return 'rgba( 213 , 9 , 33 ,0.5)';
-					} 
-					
-					else if( col >= 12 && row >= 12 ){
-						return 'rgba(50,40,20,0.5)';
-					} else if( row == col ){
-						return 'rgba( 255 , 255 , 255 ,0.5)';
-					}
-					
-					
-				
-					//random values
-					else if(  row <= 4 && col <= 4){
-						//degradation
-						return 'rgba( 240 , 133 , 39 ,0.5)';
-					} else if( row >= 4 && col <= 7 ) {
-						//restoration
-						return 'rgba( 119 , 227 , 39 ,0.5)';
-					} else if( col >= 8 ){
-						//degradation
-						return 'rgba( 240 , 133 , 39 ,0.5)';
-					} else {
-						//restoration
-						return 'rgba( 119 , 227 , 39 ,0.5)';
-					}
 				}
-//				
+				
+				if(cellValue >= 1000){
+					return 'rgba(255, 0, 0, 0.8);'
+				}
+				if(cellValue >= 1 && cellValue < 1000 ){
+					return 'rgba(255, 80, 80, 0.8);'
+				}
+				if(cellValue > 0 && cellValue < 1 ){
+					return 'rgba(255, 200, 200, 0.8);'
+				}
+				if(cellValue < 0 && cellValue > -1 ){
+					return 'rgba(196, 215, 155, 0.8);'
+				}
+				if(cellValue <= -1 && cellValue > -1000 ){
+					return 'rgba(146, 208, 80, 0.8);'
+				}
+				if(cellValue <= -1000){
+					return 'rgba(0, 176, 80, 0.8);'
+				}
+
 			} );
 	};
 	
