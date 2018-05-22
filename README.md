@@ -12,10 +12,9 @@ It works with a OGC WMS/WFS geospatial servers like [Geoserver](http://geoserver
 From the root of the repo:
 
   ```
-    #user@host$ cd src
     #user@host$ mvn clean install
   ```
 
-the deploy the war in a tomcat6/java7 container.
+then deploy the war in a tomcat7/java7 container.
 
 A ready test environment can be setup running this [cookbook](https://github.com/slms4redd/chef-slms-portal) on a fresh Ubuntu 12.04.5 Virtual Machine or using Vagrant.
