@@ -123,28 +123,30 @@ define([ "jquery" , "message-bus" , "i18n", "customization","mustache"], functio
 					erActivities.find('div.emission-removal').remove();
 					erActivities.append(mustacheEngine.render(template, generic_table));
 					
-					// FREL Title and table
-					var frelHeader = $( '<div class="col-lg-12 title" style="padding-top: 10px;"></div>' );
-					frelHeader.append( i18n['er_activities_frel_title'] );
-					erActivities.append( frelHeader );
-					
-					var obj_array_frel = [];
-
-					for (idx in frel_table_data)
-						obj_array_frel.push ({'index': idx, 'values': frel_table_data[idx]});
-					
-					var frel_table = {
-							data : obj_array_frel,
-							label: function() {
-								if (this.index < frelLabelsArray.length)
-									return frelLabelsArray[this.index];
-								return "";
-							},
-							formatNumber: function( ) {
-								return this.toLocaleString('en', {useGrouping:true, maximumFractionDigits:0});
-							}
+					if(feature.isCountry){
+						// FREL Title and table
+						var frelHeader = $( '<div class="col-lg-12 title" style="padding-top: 10px;"></div>' );
+						frelHeader.append( i18n['er_activities_frel_title'] );
+						erActivities.append( frelHeader );
+						
+						var obj_array_frel = [];
+	
+						for (idx in frel_table_data)
+							obj_array_frel.push ({'index': idx, 'values': frel_table_data[idx]});
+						
+						var frel_table = {
+								data : obj_array_frel,
+								label: function() {
+									if (this.index < frelLabelsArray.length)
+										return frelLabelsArray[this.index];
+									return "";
+								},
+								formatNumber: function( ) {
+									return this.toLocaleString('en', {useGrouping:true, maximumFractionDigits:0});
+								}
+						}
+						erActivities.append(mustacheEngine.render(template, frel_table));
 					}
-					erActivities.append(mustacheEngine.render(template, frel_table));
  
 				}else{
 					erActivities.find('div.emission-removal').remove();
