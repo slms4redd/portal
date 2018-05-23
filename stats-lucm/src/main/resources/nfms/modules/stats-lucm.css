@@ -32,3 +32,22 @@ select.stats-select{
 	background-color: rgba(50, 50, 54, 1) !important;
 	width: 60%;
 }
+
+table.table > tbody > tr > td.bgcolor-red{
+	background-color: rgba(255, 0, 0, 0.8);
+}
+table.table > tbody > tr > td.bgcolor-salmon{
+	background-color: rgba(255, 80, 80, 0.8);
+}
+table.table > tbody > tr > td.bgcolor-rosy{
+	background-color: rgba(255, 200, 200, 0.8);
+}
+table.table > tbody > tr > td.bgcolor-greeny{
+	background-color: rgba(196, 215, 155, 0.8);
+}
+table.table > tbody > tr > td.bgcolor-lightgreen{
+	background-color: rgba(146, 208, 80, 0.8);
+}
+table.table > tbody > tr > td.bgcolor-darkgreen{
+	background-color: rgba(0, 176, 80, 0.8);
+}

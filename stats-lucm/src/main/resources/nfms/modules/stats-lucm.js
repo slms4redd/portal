@@ -36,13 +36,15 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 	};
 	
 	bus.listen( "add-feature-stats" , function( event , feature , openSection , expand ){
-		var compareLucmRes			= function (a , b){
+		
+		var compareByStartPeriod = function (a , b){
 			var y1  	= getAttributeByName( a.Attributes.attribute , 'start_period').value;
 			var y2  	= getAttributeByName( b.Attributes.attribute , 'start_period').value;
 			return ( y1 < y2 ) ? -1 : 1;
 		};
 		
-		var resources 				= parseResources( feature , "lucm" , compareLucmRes );
+		var resources 				= parseResources( feature , "lucm" , compareByStartPeriod );
+		var ERCategoriesData		= parseResources( feature , "emission-removals-landzone" , compareByStartPeriod );
 		
 		var carbonStockResources	= parseResources( feature , "carbon_stock" );
 		var carbonStock				= null;
@@ -50,11 +52,9 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 			carbonStock = carbonStockResources;
 		}
 		
-		
-		var startYears 			= new Array();
-		var endYears 			= new Array();
-		var currentStartYear 	= null;
-		var currentEndYear 		= null;
+		var startYears 		= [];
+		var endYears 		= [];
+		var currentStartYear, currentEndYear;
 		
 		if( resources.length > 0 ){
 			
@@ -119,6 +119,12 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 				var startYear  	= getAttributeByName( attributes , 'start_period').value;
 				var endYear  	= getAttributeByName( attributes , 'end_period').value ;
 				var data 		= $.parseJSON( resource.data.data );
+				var ercData;
+				if(ERCategoriesData.length == resources.length
+				&& ERCategoriesData[i].data 
+				&& ERCategoriesData[i].data.data){
+					ercData	= $.parseJSON( ERCategoriesData[i].data.data );
+				}
 				
 				if( startYears.indexOf(startYear) < 0 ){
 					startYears.push( startYear );
@@ -126,12 +132,6 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 				if( endYears.indexOf(endYear) < 0 ){
 					endYears.push( endYear );
 				}
-				var compareYears = function( a , b ){
-					return parseInt( a ) - parseInt( b );
-				};
-				startYears 	= startYears.sort( compareYears );
-				endYears 	= endYears.sort( compareYears );
-				
 				
 				// now append lucm table 
 				var rowMatrix = $( '<div class="row row-matrix"></div>' );
@@ -226,11 +226,18 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 						tr.append( td );
 						td.addClass( (r+1) + '-' + (c+1) );
 						
+						if(ercData
+						&& ercData.length == data.length
+						&& ercData[r]
+						&& ercData[r].length == rowData.length){
+							td.addClass(getBackgroundColorClass(ercData[r][c]));
+						}
+						
 						// 13 : 17 --> 1 : 12
 						// 1 : 12 --> 1:12
 						// 1:12 --> 13:17
 						//  13:17 -->  13:17
-						// NO DATA Exlcuded
+						// NO DATA Excluded
 						if( c <= 17 && r<= 17 ){
 							
 							if( c<= 12 ){
@@ -279,10 +286,11 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 				tdTot.html( ( +total.toFixed(0) ).toLocaleString('en', {useGrouping:true, maximumFractionDigits:0}) );
 				trTot.append( tdTot );
 				
-				
-				//give table celles a style
- 				styleTableCells( table );
 			}
+			
+			
+			startYears 	= startYears.sort( );
+			endYears 	= endYears.sort( );
 			
 			// add years buttons
 			for( var i = 0 ; i < startYears.length ; i ++ ){
@@ -315,9 +323,6 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 				};
 				addEndBtn();
 			}
-			
-			
-
 			
 			
 			
@@ -507,40 +512,32 @@ define([ "jquery" , "message-bus" , "i18n", "dashboard" ,"highcharts" ,"customiz
 		}
 		
 	});
-	
-
-	var styleTableCells = function( table ){
-		//'rgba(50,40,20,0.5)' 
-		table
-			.find( 'td:not(.data-class)' )
-			.css( 'background-color' , function(){
-				var cssClasses = $( this ).get( 0 ).className.split( '-' );
-				var cellValue = Number($( this ).get( 0 ).innerText.replace(/,/g, ''));
-				if(isNaN(cellValue)){
-					return '';
-				}
+		
+	var getBackgroundColorClass = function( value ){
+		if(isNaN(value)){
+			return '';
+		}
 				
-				if(cellValue >= 1000){
-					return 'rgba(255, 0, 0, 0.8);'
-				}
-				if(cellValue >= 1 && cellValue < 1000 ){
-					return 'rgba(255, 80, 80, 0.8);'
-				}
-				if(cellValue > 0 && cellValue < 1 ){
-					return 'rgba(255, 200, 200, 0.8);'
-				}
-				if(cellValue < 0 && cellValue > -1 ){
-					return 'rgba(196, 215, 155, 0.8);'
-				}
-				if(cellValue <= -1 && cellValue > -1000 ){
-					return 'rgba(146, 208, 80, 0.8);'
-				}
-				if(cellValue <= -1000){
-					return 'rgba(0, 176, 80, 0.8);'
-				}
-
-			} );
+		if(value >= 1000){
+			return 'bgcolor-red';
+		}
+		if(value >= 1 && value < 1000 ){
+			return 'bgcolor-salmon';
+		}
+		if(value > 0 && value < 1 ){
+			return 'bgcolor-rosy';
+		}
+		if(value < 0 && value > -1 ){
+			return 'bgcolor-greeny';
+		}
+		if(value <= -1 && value > -1000 ){
+			return 'bgcolor-lightgreen';
+		}
+		if(value <= -1000){
+			return 'bgcolor-darkgreen';
+		}
 	};
+	
 	
 	var parseResources = function(feature , statsType , compareFunction ) {
 		var resources = new Array();
