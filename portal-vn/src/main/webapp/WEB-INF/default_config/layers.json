@@ -3,7 +3,7 @@
 
 		{
 			"id" : "oceans",
-			"baseUrl" : "http://temp-redd.vnforest.gov.vn/diss_geoserver/wms",
+			"baseUrl" : "/diss_geoserver/wms",
 			"wmsName" : "unredd:ne_10m_oceans_grid2",
 			"imageFormat" : "image/png8",
 			"visible" : true,
@@ -12,7 +12,7 @@
 		,
 		{
 			"id" : "world_borders",
-			"baseUrl" : "http://temp-redd.vnforest.gov.vn/diss_geoserver/wms",
+			"baseUrl" : "/diss_geoserver/wms",
 			"wmsName" : "unredd:ne_10m_land_grid1",
 			"imageFormat" : "image/png8",
 			"visible" : true,
@@ -21,7 +21,7 @@
 		,
 		{
 			"id" : "province_placeholder",
-			"baseUrl" : "http://temp-redd.vnforest.gov.vn/diss_geoserver/wms",
+			"baseUrl" : "/diss_geoserver/wms",
 			"wmsName" : "unredd:province",
 			"imageFormat" : "image/png8",
 			"visible" : true,
@@ -30,7 +30,7 @@
 		,
 		{
 			"id" : "ne_10m_minor_islands",
-			"baseUrl" : "http://temp-redd.vnforest.gov.vn/diss_geoserver/wms",
+			"baseUrl" : "/diss_geoserver/wms",
 			"wmsName" : "unredd:ne_10m_minor_islands",
 			"imageFormat" : "image/png8",
 			"visible" : true,
@@ -39,7 +39,7 @@
 		, {
 			"id": "change",
 			"label": "change",
-			"baseUrl": "http://temp-redd.vnforest.gov.vn/stg_geoserver/wms",
+			"baseUrl": "/stg_geoserver/wms",
 			"wmsTime": "1995-01-01T00:00:00.000Z,2000-01-01T00:00:00.000Z,2005-01-01T00:00:00.000Z,2010-01-01T00:00:00.000Z,2015-01-01T00:00:00.000Z",
 			"wmsName": "unredd:change",
 			"imageFormat": "image/png8",
@@ -47,18 +47,18 @@
 			"queryable" : false,
 			"wmsParameters" : { "tiled" : "true"  }
 		},{
-                        "id": "jica",
-                        "label": "Jica",
-                        "baseUrl": "http://temp-redd.vnforest.gov.vn/stg_geoserver/wms",
-                        "wmsTime": "1995-01-01T00:00:00.000Z,2000-01-01T00:00:00.000Z,2005-01-01T00:00:00.000Z,2010-01-01T00:00:00.000Z,2015-01-01T00:00:00.000Z",
-                        "wmsName": "unredd:vietnam_landcover",
-                        "imageFormat": "image/png8",
-                        "visible": true,
-                        "queryable" : false,
-                        "wmsParameters" : { "tiled" : "true"  }
-                },{
+            "id": "jica",
+            "label": "Jica",
+            "baseUrl": "/stg_geoserver/wms",
+            "wmsTime": "1995-01-01T00:00:00.000Z,2000-01-01T00:00:00.000Z,2005-01-01T00:00:00.000Z,2010-01-01T00:00:00.000Z,2015-01-01T00:00:00.000Z",
+            "wmsName": "unredd:vietnam_landcover",
+            "imageFormat": "image/png8",
+            "visible": true,
+            "queryable" : false,
+            "wmsParameters" : { "tiled" : "true"  }
+        },{
 			"id" : "commune",
-			"baseUrl" : "http://temp-redd.vnforest.gov.vn/diss_geoserver/wms",
+			"baseUrl" : "/diss_geoserver/wms",
 			"wmsName" : "unredd:commune",
 			"imageFormat" : "image/png8",
 			"visible" : true,
@@ -67,7 +67,7 @@
 		} ,
 		{
 			"id" : "district",
-			"baseUrl" : "http://temp-redd.vnforest.gov.vn/diss_geoserver/wms",
+			"baseUrl" : "/diss_geoserver/wms",
 			"wmsName" : "unredd:district",
 			"imageFormat" : "image/png8",
 			"visible" : true,
@@ -76,7 +76,7 @@
 		} ,
 		{
 			"id" : "province",
-			"baseUrl" : "http://temp-redd.vnforest.gov.vn/diss_geoserver/wfs",
+			"baseUrl" : "/diss_geoserver/wfs",
 			"wmsName" : "unredd:province",
 			"imageFormat" : "image/png8",
 			"visible" : true,
@@ -85,7 +85,7 @@
 		} ,
 		{
 			"id" : "ecoregion",
-			"baseUrl" : "http://temp-redd.vnforest.gov.vn/diss_geoserver/wms",
+			"baseUrl" : "/diss_geoserver/wms",
 			"wmsName" : "unredd:ecoregion",
 			"imageFormat" : "image/png8",
 			"visible" : true,
@@ -94,7 +94,7 @@
 		} 
 		, {
 			"id" : "country",
-			"baseUrl" : "http://temp-redd.vnforest.gov.vn/diss_geoserver/wms",
+			"baseUrl" : "/diss_geoserver/wms",
 			"wmsName" : "unredd:country",
 			"imageFormat" : "image/png8",
 			"visible" : true,
@@ -103,7 +103,7 @@
 		}
 		, {
 			"id" 			: "province_center",
-			"baseUrl" 		: "http://temp-redd.vnforest.gov.vn/diss_geoserver/wfs",
+			"baseUrl" 		: "/diss_geoserver/wfs",
 			"type"			: "wfs",
 			"featureType"	: "province_center",
 			"featureNN"		:"http://www.nfms4redd.org",
@@ -112,7 +112,7 @@
 		}
 		, {
 			"id" : "province_prap",
-			"baseUrl" : "http://temp-redd.vnforest.gov.vn/diss_geoserver/wms",
+			"baseUrl" : "/diss_geoserver/wms",
 			"wmsName" : "unredd:province",
 			"imageFormat" : "image/png8",
 			"visible" : true,
@@ -121,7 +121,7 @@
 		}
 		, {
 			"id" : "province_fcpf_cf",
-			"baseUrl" : "http://temp-redd.vnforest.gov.vn/diss_geoserver/wms",
+			"baseUrl" : "/diss_geoserver/wms",
 			"wmsName" : "unredd:province",
 			"imageFormat" : "image/png8",
 			"visible" : true,
@@ -130,7 +130,7 @@
 		}
 		, {
 			"id" 			: "ecoregion_label",
-			"baseUrl" 		: "http://temp-redd.vnforest.gov.vn/diss_geoserver/wfs",
+			"baseUrl" 		: "/diss_geoserver/wfs",
 			"type"			: "wfs",
 			"visible" 		: true,
 			"featureType"	: "ecoregion_center",
@@ -139,7 +139,7 @@
 		}
 		, {
 			"id" 			: "province_label",
-			"baseUrl" 		: "http://temp-redd.vnforest.gov.vn/diss_geoserver/wfs",
+			"baseUrl" 		: "/diss_geoserver/wfs",
 			"type"			: "wfs",
 			"visible" 		: true,
 			"featureType"	: "province_center",
@@ -148,7 +148,7 @@
 		}
 		, {
 			"id" 			: "district_label",
-			"baseUrl" 		: "http://temp-redd.vnforest.gov.vn/diss_geoserver/wfs",
+			"baseUrl" 		: "/diss_geoserver/wfs",
 			"type"			: "wfs",
 			"visible" 		: true,
 			"featureType"	: "district_center",
@@ -157,7 +157,7 @@
 		}
 		, {
 			"id" 			: "commune_label",
-			"baseUrl" 		: "http://temp-redd.vnforest.gov.vn/diss_geoserver/wfs",
+			"baseUrl" 		: "/diss_geoserver/wfs",
 			"type"			: "wfs",
 			"visible" 		: true,
 			"featureType"	: "commune_center",

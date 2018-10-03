@@ -60,7 +60,7 @@
 			tile_width : 500,
 			tile_height : 300,
 			layername : "unredd:vietnam_overview",
-			wmsurl : "http://temp-redd.vnforest.gov.vn/diss_geoserver/wms"
+			wmsurl : "/diss_geoserver/wms"
 		}
 	}
 }
